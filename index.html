@@ -18,7 +18,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap"
+          rel="stylesheet">
 </head>
 <body>
 <header>
@@ -27,23 +28,85 @@
 </header>
 <nav>
     <ul>
-        <li class="active" ><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Blog</a></li>
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Lost</a></li>
+        <li><a href="#">Found</a></li>
     </ul>
 </nav>
 
 <main>
     <section class="hero">
         <img src="images/hero.webp" alt="placeholder image" width="960" height="650">
-        <h1>Lost something? Let’s find it.</h1>
+        <div class="hero-content">
+            <h1>Lost something? Let’s find it.</h1>
+            <button>Report Item</button>
+        </div>
     </section>
     <section class="about">
         <h2>We Find What's Lost.</h2>
-        <p>Lost something? You’re in the right place. Quickly report your item and let our community help bring it back to you.</p>
+        <p>Lost something? You’re in the right place. Quickly report your item and let our community help bring it back
+            to you.</p>
     </section>
+
+    <section class="common-items">
+        <h2>Commonly lost items.</h2>
+        <div class="marquee">
+            <div class="marquee-track">
+                <img src="https://placehold.co/100x100" alt="Wallet">
+                <img src="https://placehold.co/100x100" alt="Keys">
+                <img src="https://placehold.co/100x100" alt="Phone">
+                <img src="https://placehold.co/100x100" alt="Backpack">
+                <img src="https://placehold.co/100x100" alt="Pet">
+                <img src="https://placehold.co/100x100" alt="Wallet">
+                <!-- Duplicate starts here -->
+                <img src="https://placehold.co/100x100" alt="Wallet">
+                <img src="https://placehold.co/100x100" alt="Keys">
+                <img src="https://placehold.co/100x100" alt="Phone">
+                <img src="https://placehold.co/100x100" alt="Backpack">
+                <img src="https://placehold.co/100x100" alt="Pet">
+                <img src="https://placehold.co/100x100" alt="Wallet">
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Features</h2>
+        <ul>
+            <li>Report items</li>
+            <li>Browse items</li>
+            <li>Search items</li>
+        </ul>
+        <h3>Ready to keep your belongings safe?</h3>
+        <button>Get Started</button>
+    </section>
+
+
 </main>
+<footer>
+    <div class="top-footer">
+        <h3>Lost & Found</h3>
+        <p>Helping you reunite with your lost items quickly and easily.</p>
+    </div>
+    <div class="middle">
+        <div class="left-footer">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Report Lost Item</a></li>
+                <li><a href="#">View Found Items</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+
+        <div class="right-footer">
+            <h4>Contact</h4>
+            <p>Lost & Found does not accept feedback or contact requests.</p>        </div>
+    </div>
+
+    <div class="bottom-footer">
+        <p>&copy; 2026 Lost & Found. All rights reserved.</p>
+    </div>
+</footer>
 
 <script src="js/main.js"></script>
 </body>

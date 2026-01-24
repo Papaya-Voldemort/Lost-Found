@@ -24,7 +24,8 @@ header {
     justify-content: left;
     padding: 0.1rem 2vw;
     align-items: center;
-    background-color: #ffbe00;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 190, 0, 0.4);
 }
 
 header h1 {
@@ -48,6 +49,7 @@ nav {
 
     border: 1px solid rgba(255, 166, 0, 0.35);
     border-radius: 1rem;
+    z-index: 100;
 }
 
 nav ul {
@@ -101,6 +103,7 @@ nav li.active a {
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
+    z-index: 0;
 }
 
 .hero img {
@@ -120,10 +123,27 @@ nav li.active a {
     margin: 0;
 }
 
+.hero-content {
+    display: block;
+    z-index: 1;
+}
+
+.hero-content button {
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    background: rgba(255, 166, 0, 0.3);
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 /*About styles*/
 
 .about {
     margin: 0.5rem;
+    text-align: center;
 }
 
 .about h2 {
@@ -135,4 +155,121 @@ nav li.active a {
 }
 
 
+/*Marquee styles*/
+
+.common-items {
+    background: rgba(255, 160, 0, 0.7);
+    padding: 8px 8px 32px 8px;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.marquee {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.marquee-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    animation: marquee-scroll 15s linear infinite;
+}
+
+.marquee-track img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.marquee h2 {
+    margin: 0.5rem 0;
+}
+
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/*Features Styles*/
+
+.features {
+    text-align: center;
+}
+
+.features ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+
+.features li {
+    flex: 1;
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    text-align: center;
+    background: rgba(255, 166, 0, 0.15);
+}
+
+.features h3 {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    color: rgba(255, 166, 0, 0.8);
+    padding-top: 1.5rem;
+}
+
+.features button {
+    margin: 1rem 0;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    background: rgba(255, 166, 0, 0.3);
+    border: none;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 /*Footer Styles*/
+
+footer {
+    background: rgba(255, 166, 0, 0.15);
+    text-align: center;
+    padding: 1rem 0 2.85rem 0;
+    margin: 1rem 0 0 0;
+    position: static;
+}
+
+.middle {
+    display: flex;
+}
+
+.left-footer {
+    flex: 1;
+    border-right: 2px solid rgba(255, 166, 0, 0.3); /* vertical line */
+    padding-right: 1rem;
+}
+
+.left-footer a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.left-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.right-footer {
+    flex: 1;
+    padding-left: 1rem;
+}
