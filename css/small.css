@@ -1,0 +1,75 @@
+/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS.  */
+html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}
+
+/*  apply a natural box layout model to all elements  */
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+body {
+    font-size: 16px;
+    font-family: "Roboto Flex", sans-serif;
+
+}
+
+/*Header Styles*/
+
+header {
+    display: flex;
+    justify-content: left;
+    padding: 0.1rem 2vw;
+    align-items: center;
+    background-color: #ffbe00;
+}
+
+header h1 {
+    font-size: 1rem;
+    padding-left: 0.5rem;
+}
+
+/*Navigation Styles*/
+
+nav {
+    position: fixed;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+
+    background: rgba(255, 166, 0, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 166, 0, 0.35);
+    border-radius: 1rem;
+}
+
+nav ul {
+    list-style: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+nav li {
+    padding: 1rem 2rem;
+    margin: 0 0.25rem;
+    border-radius: 1rem;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+nav li:hover {
+    background: rgba(255, 166, 0, 0.25);
+    box-shadow: 0 4px 20px rgba(255, 166, 0, 0.15);
+    cursor: pointer;
+}
+
+nav li.active {
+    background: rgba(255, 166, 0, 0.3);
+}
+
+nav a {
+    text-decoration: none;
+    color: rgba(255, 166, 0, 0.9);
+    font-weight: 500;
+}
