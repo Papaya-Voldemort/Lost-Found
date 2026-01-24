@@ -9,4 +9,16 @@
         left: 0;
         right: 0;
     }
-} /* end media query*/
+
+    .hero h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero {
+        min-height: 450px;
+        height: 60vh;
+    }
+
+}
+
+/* end media query*/
