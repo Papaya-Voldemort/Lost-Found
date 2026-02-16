@@ -18,44 +18,93 @@ html {
 
     --color-accent: #E39774;
 
+    --color-black: #000;
+    --color-white: #FFF;
+
+    --dark-gray: #808080;
+    --light-gray: #d9d9d9;
+
+
     --color-background: #FFFFFF;
-    --color-surface: #EEEEEE;
-
-    --font-body: "Inter", sans-serif;
-    --font-display: "Poppins", sans-serif;
-
-    scroll-behavior: smooth;
-
 }
 
-/*
-CSS Guidelines and Rules
-- Only vanilla CSS (No Tailwind)
-- Use Variables (so we can change things later)
-- Comment your code (Nobody wants to search for your declarations)
-- Don't Delete CSS (comment out css we might use again)
-
-Note:
-We use progressive enhancement, so we will start with a small.css file that contains the basic styles for mobile devices.
-As we add more features and styles, we will create medium.css and large.css files for tablets and desktops, respectively.
-This way, we can ensure that our website is responsive and looks great on all devices.
-*/
-
-body {
-    font-size: 16px;
-    font-family: "Roboto Flex", sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+h1 {
+    font-family: var(--font-display);
 }
-
-/*NAVIGATION CSS*/
-
-nav {}
 
 /*HEADER CSS*/
 
-header {}
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    margin: 1rem;
+    background-color: var(--light-gray);
+    border-bottom: 1px solid var(--color-dark-gray);
+}
+
+#logo-div {
+    display: flex;
+    margin: 0;
+}
+
+#header-logo {
+    margin: 1rem;
+    width: 50px;
+    height: auto;
+}
+
+/*NAVIGATION CSS*/
+nav {
+    align-content: center;
+    align-self: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+}
+
+nav li {
+    padding: 1rem;
+    background-color: inherit;
+}
+
+
+
+nav a {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    padding-bottom: 4px;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background-color: var(--color-primary);
+
+    transform: scaleX(0);          /* Hidden by default */
+    transform-origin: left;        /* Animation starts from left */
+    transition: transform 0.3s ease;
+}
+
+/* Hover animation */
+nav a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Active link state */
+nav a.active::after {
+    transform: scaleX(1);
+}
 
 /*MAIN CSS*/
 
@@ -63,5 +112,13 @@ main {}
 
 /*FOOTER CSS*/
 
-footer {}
+footer {
+    background-color: var(--light-gray);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 0.5rem;
+    text-align: center;
+    border-top: 1px solid var(--dark-gray);
+}
 

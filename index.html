@@ -11,6 +11,8 @@
 
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
+    <script type="module" src="/js/main.js" defer></script>
+
     <link rel="stylesheet" href="/styles/normalize.css">
     <link rel="stylesheet" href="/styles/small.css">
     <link rel="stylesheet" href="/styles/medium.css">
@@ -18,23 +20,39 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..500&family=Poppins:ital,wght@300;400;500&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <header>
-        <!-- It might seem wierd but its common practice to put the nav inside the header -->
+        <div id="logo-div">
+            <h1>Lost & Found</h1>
+            <img id="header-logo" src="https://placehold.co/100x100" alt="Lost and found logo" width="100" height="100">
+        </div>
+        <!-- It might seem weird but its common practice to put the nav inside the header -->
         <nav>
-
+            <ul>
+                <li><a id="active" href="#home">Home</a></li>
+                <li><a href="#lost">Lost</a></li>
+                <li><a href="#found">Found</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
         </nav>
     </header>
 
     <main>
-
+        <section id="hero">
+            <h1>Find Your Lost Items</h1>
+        </section>
+        <section id="cta-buttons">
+            <button id="get-started-\btn" class="button-primary">Get Started</button>
+            <button id="learn-more-btn" class="button-secondary">Learn More</button>
+        <section id="hero-description">
+            <p>Welcome to our Lost and Found website, where we help you reunite with your lost belongings. Whether you've misplaced your keys, wallet, or any other item, our platform is here to assist you in finding them. Browse through our listings of found items or report your lost item to increase the chances of a successful reunion.</p>
     </main>
 
     <footer>
-
+        <p>&copy; 2026 Lost & Found. All rights reserved.</p>
     </footer>
 </body>
-<script type="module" src="/js/main.js"></script>
 </html>
