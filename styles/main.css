@@ -1,0 +1,83 @@
+/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS.  */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+/*  apply a natural box layout model to all elements  */
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Content Variables */
+    --color-primary: #5C9EAD;
+    --color-primary-dark: #326273;
+
+    --color-accent: #E39774;
+
+    --color-black: #000;
+    --color-white: #FFF;
+
+    --dark-gray: #808080;
+    --light-gray: #d9d9d9;
+
+    --color-background: #FFFFFF;
+
+    /* Font Variables */
+
+    --font-display: 'Poppins', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    main {
+        flex: 1 0 auto;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+}
+
+/*HEADER CSS*/
+
+
+/*NAVIGATION CSS*/
+
+
+
+/*MAIN CSS*/
+
+main {
+    margin-left: 1rem;
+}
+
+/*FOOTER CSS*/
+
+footer {
+    background-color: var(--light-gray);
+    width: 100%;
+    padding: 0.5rem;
+    text-align: center;
+    border-top: 1px solid var(--dark-gray);
+    margin-top: 1rem;
+}
+
+#footer-text {
+    font-family: var(--font-body);
+    font-weight: 300;
+}

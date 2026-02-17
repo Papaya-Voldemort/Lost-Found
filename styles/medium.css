@@ -1,4 +1,76 @@
 @media only screen and (min-width: 35rem) {
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    margin: 1rem;
+    background-color: var(--light-gray);
+    border-bottom: 1px solid var(--color-dark-gray);
+}
+
+#logo-div {
+    display: flex;
+    margin: 0;
+    align-items: center;
+}
+
+#header-logo {
+    margin: 1rem;
+    width: auto;
+    height: 40px;
+}
+
+/*NAVIGATION CSS*/
+nav {
+    align-content: center;
+    align-self: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+nav li {
+    padding: 1rem;
+    background-color: inherit;
+}
+
+nav a {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    padding-bottom: 4px;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background-color: var(--color-primary);
+
+    transform: scaleX(0);          /* Hidden by default */
+    transform-origin: left;        /* Animation starts from left */
+    transition: transform 0.3s ease;
+}
+
+/* Hover animation */
+nav a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Active link state */
+nav a.active::after {
+    transform: scaleX(1);
+}
 }
 
 /* end media query*/
