@@ -1,5 +1,6 @@
 <!DOCTYPE html>
- <html lang="en">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -21,8 +22,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <header>
         <div id="logo-div">
@@ -32,10 +36,29 @@
         <!-- It might seem weird but its common practice to put the nav inside the header -->
         <nav>
             <ul>
-                <li><a id="active" href="#home">Home</a></li>
-                <li><a href="#lost">Lost</a></li>
-                <li><a href="#found">Found</a></li>
-                <li><a href="#login" id="login-link">Login</a></li>
+                <li class="nav-home">
+                    <a id="active" href="#home">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z"></path></svg>
+                        Home
+                    </a>
+                </li>
+                <li class="nav-lost">
+                    <a href="#lost">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M192,96c0,28.51-24.47,52.11-56,55.56V160a8,8,0,0,1-16,0V144a8,8,0,0,1,8-8c26.47,0,48-17.94,48-40s-21.53-40-48-40S80,73.94,80,96a8,8,0,0,1-16,0c0-30.88,28.71-56,64-56S192,65.12,192,96Zm-64,96a16,16,0,1,0,16,16A16,16,0,0,0,128,192Z"></path></svg>
+                        Lost
+                    </a>
+                </li>
+                <li class="nav-found">
+                    <a href="#found">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path></svg>
+                        Found
+                    </a>
+                </li>
+                <li class="nav-login">
+                    <a href="#login" id="login-link">
+                        <!-- <img src="images/svg/login.svg" alt="" class="nav-icon">Login -->
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -45,54 +68,20 @@
             <h1>Find Your Lost Items</h1>
         </section>
         <section id="cta-buttons">
-            <button id="get-started-\btn" class="button-primary">Get Started</button>
+            <button id="get-started-btn" class="button-primary">Get Started</button>
             <button id="learn-more-btn" class="button-secondary">Learn More</button>
+        </section>
         <section id="hero-description">
-            <p>Welcome to our Lost and Found website, where we help you reunite with your lost belongings. Whether you've misplaced your keys, wallet, or any other item, our platform is here to assist you in finding them. Browse through our listings of found items or report your lost item to increase the chances of a successful reunion.</p></section>
-            image<br>
-            image2<br>
-            image3<br>
-            image4<br>
-            image5<br>
-            image6<br>
-            image7<br>
-            image8<br>
-            image9<br>
-            image10<br>
-            image11<br>
-            image12<br>
-            image13<br>
-            image14<br>
-            image15<br>
-            image16<br>
-            image17<br>
-            image18<br>
-            image19<br>
-            image20<br>
-            image<br>
-            image2<br>
-            image3<br>
-            image4<br>
-            image5<br>
-            image6<br>
-            image7<br>
-            image8<br>
-            image9<br>
-            image10<br>
-            image11<br>
-            image12<br>
-            image13<br>
-            image14<br>
-            image15<br>
-            image16<br>
-            image17<br>
-            image18<br>
-            image19<br>
-            image20<br>
+            <p>Welcome to our Lost and Found website, where we help you reunite with your lost belongings. Whether
+                you've misplaced your keys, wallet, or any other item, our platform is here to assist you in finding
+                them. Browse through our listings of found items or report your lost item to increase the chances of a
+                successful reunion.</p>
+        </section>
     </main>
 
     <footer id="footer-text">
         <p>&copy; 2026 Lost & Found. All rights reserved.</p>
     </footer>
 </body>
+
 </html>

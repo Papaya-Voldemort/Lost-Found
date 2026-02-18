@@ -58,18 +58,24 @@ h1 {
 
 /*NAVIGATION CSS*/
 
+.nav-icon {
+    visibility: hidden;
+    display: none;
+}
+
 
 
 /*MAIN CSS*/
 
 main {
     margin-left: 1rem;
+    height: 150vh;
 }
 
 /*FOOTER CSS*/
 
 footer {
-    background-color: var(--light-gray);
+    background-color: var(--color-primary);
     width: 100%;
     padding: 0.5rem;
     text-align: center;
