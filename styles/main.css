@@ -114,7 +114,14 @@ section#hero button {
     border: none;
     top: 45%;
     color: white;
+    transition: transform 0.3s ease, padding 0.3s ease;
 }
+
+section#hero button:hover {
+  transform: scale(1.1);
+  padding: 0.7em 0.9em;
+}
+
 
 section#hero a {
     text-decoration: none;

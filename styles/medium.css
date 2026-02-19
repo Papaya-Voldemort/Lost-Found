@@ -31,13 +31,19 @@ section#hero h1 {
 section#hero button {
     margin: 1rem;
     font-size: 1rem;
-    padding: 0.9rem;
+    padding: 1.1rem;
     position:absolute;
     z-index: 100;
     border-radius: 8px;
     background-color: black;
     border: none;
-    top: 45%;
+    top: 43%;
+    transition: transform 0.3s ease, padding 0.3s ease;
+}
+
+section#hero button:hover {
+  transform: scale(1.1);
+  padding: 1.1em 1.5em;
 }
 
 #mobile-header {
