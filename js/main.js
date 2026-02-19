@@ -1,5 +1,5 @@
 // Type Writer Code for the description section (Made by AI)
-const words = ["report", "search", "recover"];
+const words = ["search", "recover", "report"];
 const typewriter = document.getElementById("typewriter");
 
 let wordIndex = 0;

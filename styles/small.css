@@ -1,111 +1,123 @@
-    @media only screen and (max-width: 31.99rem) { /* There is a 1rem gap between the max-width of this media query and the min-width of the medium.css media query there is 1 rem where no styles are applied */
-    #logo-div {
-        display: none;
+    @media only screen and (max-width: 31.99rem) {
+
+        /* There is a 1rem gap between the max-width of this media query and the min-width of the medium.css media query there is 1 rem where no styles are applied */
+        #logo-div {
+            display: none;
+        }
+
+        header {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav {
+            padding: 0;
+            background-color: var(--color-white);
+            font-family: var(--font-display);
+            width: 100%;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li:has(#login-link) {
+            display: none;
+        }
+
+        nav li {
+            width: calc(100% / 3);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: inherit;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--color-primary);
+        }
+
+        #login-link {
+            visibility: hidden;
+            display: none;
+        }
+
+        .nav-icon {
+            visibility: visible;
+            display: inline-block;
+            width: 1.8rem;
+            height: 1.8rem;
+            fill: var(--color-primary);
+        }
+
+        footer {
+            padding-bottom: 95px;
+        }
+
+        nav a#active {
+            background-color: var(--color-primary);
+            border-radius: 8px;
+            color: white;
+        }
+
+        nav a#active .nav-icon {
+            fill: white;
+        }
+
+
+        .nav-lost {
+            order: 1;
+        }
+
+        .nav-home {
+            order: 2;
+        }
+
+        .nav-found {
+            order: 3;
+        }
+
+        .nav-login {
+            order: 4;
+        }
+
+        #mobile-header {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0 0 1rem;
+            background-color: var(--light-gray);
+        }
+
+        #mobile-header img {
+            width: 5rem;
+            height: auto;
+            margin: 1rem;
+        }
+
+        div#description {
+            margin-left: 0;
+            width: 100%;
+            font-size: 0.5rem;
+        }
+
+        .steps-container {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+
+        .step-card {
+            width: 100% !important;
+            margin-bottom: 1rem;
+        }
+
     }
-
-    header {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-    }
-
-    nav {
-        padding: 0.3rem;
-        background-color: var(--color-white);
-        font-family: var(--font-display);
-    }
-
-    nav ul {
-        display: flex;
-        list-style: none;
-        justify-content: space-around;
-        padding: 0 1rem;
-        margin: 0;
-    }
-
-    nav li:has(#login-link) {
-        display: none;
-    }
-
-    nav li {
-        min-width: 33.33%;
-    }
-
-    nav a {
-        text-decoration: none;
-        color: inherit;
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: var(--color-primary);
-    }
-
-    #login-link {
-        visibility: hidden;
-        display: none;
-    }
-
-    .nav-icon {
-        visibility: visible;
-        display: inline-block;
-        width: 1.8rem;
-        height: 1.8rem;
-        fill: var(--color-primary);
-    }
-
-    footer {
-        padding-bottom: 95px;
-    }
-
-    nav a#active {
-        background-color: var(--color-primary);
-        border-radius: 8px;
-        color: white;
-    }
-
-    nav a#active .nav-icon {
-        fill: white;
-    }
-
-
-    .nav-lost {
-        order: 1;
-    }
-
-    .nav-home {
-        order: 2;
-    }
-
-    .nav-found {
-        order: 3;
-    }
-
-    .nav-login {
-        order: 4;
-    }
-
-    #mobile-header {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 0 0 1rem;
-        background-color: var(--light-gray);
-    }
-
-    #mobile-header img {
-        width: 5rem;
-        height: auto;
-        margin: 1rem;
-    }
-
-    div#description {
-    margin-left: 22%;
-    width: 100%;
-    font-size: 0.5rem;
-    }
-
-}

@@ -47,6 +47,7 @@ html {
 
     main {
         flex: 1 0 auto;
+        z-index: 100;
 }
 
 h1 {
@@ -68,7 +69,7 @@ h1 {
 /*MAIN CSS*/
 main {
     margin-left: 0;
-    height: 150vh;
+    min-height: 150vh;
 }
 
 section#hero {
@@ -174,14 +175,47 @@ div#overlay {
     z-index: 2;
 }
 
+/*How to Section Styling*/
+
+section#how-it-works {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.step-card {
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    padding: 1rem;
+    width: 30%;
+    text-align: center;
+}
+
+.step-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
 /*FOOTER CSS*/
 
 footer {
-    background-color: var(--color-primary);
+    background-color: var(--color-primary-dark);
     width: 100%;
     padding: 0.5rem;
     text-align: center;
     margin-top: 1rem;
+    color: white;
 }
 
 #footer-text {
