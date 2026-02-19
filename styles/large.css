@@ -1,5 +1,13 @@
 @media only screen and (min-width: 60rem) {
 
+    section#hero h1 {
+        font-size: 3.5rem;
+    }
+
+    section#hero button {
+    margin: 1rem;
+    font-size: 1.3rem;
+}
 }
 
 /* end media query*/

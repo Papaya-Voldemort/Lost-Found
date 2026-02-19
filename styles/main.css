@@ -42,6 +42,7 @@ html {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+        background-color: var(--color-background);
     }
 
     main {
@@ -64,12 +65,106 @@ h1 {
 }
 
 
-
 /*MAIN CSS*/
-
 main {
-    margin-left: 1rem;
+    margin-left: 0;
     height: 150vh;
+}
+
+section#hero {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+section#hero img {
+    width: 100%;
+    height: auto;
+    display: none;
+}
+
+section#hero video#hero-video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    z-index: 1;
+}
+
+
+section#hero h1 {
+    position:absolute;
+    z-index: 100;
+    top: 25%;
+    left: auto;
+    right: auto;
+    color: black;
+}
+
+section#hero button {
+    margin: 1rem;
+    padding: 0.6rem;
+    position:absolute;
+    z-index: 100;
+    border-radius: 8px;
+    background-color: black;
+    border: none;
+    top: 45%;
+    color: white;
+}
+
+section#hero a {
+    text-decoration: none;
+    color:  inherit;
+}
+
+section#info {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: var(--color-primary);
+    padding: 1rem;
+}
+
+div#carousel {
+    width: 100%;
+    border-radius: 8px;
+    border: solid 1px #000;
+}
+
+div#description {
+    margin-left: 22%;
+    width: 100%;
+    font-size: 1rem;
+}
+
+#typewriter {
+    color: var(--color-primary-dark);
+    /* text-transform: uppercase; */
+}
+
+#typewriter::after {
+    content: "|";
+    margin-left: 4px;
+    animation: blink 1.3s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+}
+
+div#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(64, 196, 240, 0.403);
+    z-index: 2;
 }
 
 /*FOOTER CSS*/
@@ -79,7 +174,6 @@ footer {
     width: 100%;
     padding: 0.5rem;
     text-align: center;
-    border-top: 1px solid var(--dark-gray);
     margin-top: 1rem;
 }
 

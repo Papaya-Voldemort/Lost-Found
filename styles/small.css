@@ -1,4 +1,4 @@
-@media only screen and (max-width: 34rem) {
+    @media only screen and (max-width: 31.99rem) { /* There is a 1rem gap between the max-width of this media query and the min-width of the medium.css media query there is 1 rem where no styles are applied */
     #logo-div {
         display: none;
     }
@@ -14,7 +14,7 @@
 
     nav {
         padding: 0.3rem;
-        background-color: rgba(240, 240, 240, 0.85);
+        background-color: var(--color-white);
         font-family: var(--font-display);
     }
 
@@ -87,4 +87,25 @@
     .nav-login {
         order: 4;
     }
+
+    #mobile-header {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 0 0 1rem;
+        background-color: var(--light-gray);
+    }
+
+    #mobile-header img {
+        width: 5rem;
+        height: auto;
+        margin: 1rem;
+    }
+
+    div#description {
+    margin-left: 22%;
+    width: 100%;
+    font-size: 0.5rem;
+    }
+
 }
