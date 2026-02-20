@@ -1,9 +1,8 @@
-    @media only screen and (max-width: 31.99rem) {
+@media only screen and (max-width: 47.99rem) {
 
-        /* There is a 1rem gap between the max-width of this media query and the min-width of the medium.css media query there is 1 rem where no styles are applied */
-        #logo-div {
-            display: none;
-        }
+    #logo-div {
+        display: none;
+    }
 
         header {
             position: fixed;
@@ -57,6 +56,10 @@
             width: 1.8rem;
             height: 1.8rem;
             fill: var(--color-primary);
+        }
+
+        .hero-card {
+            min-width: 90%;
         }
 
         footer {

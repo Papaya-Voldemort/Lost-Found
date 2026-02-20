@@ -4,7 +4,7 @@ html {
     -ms-text-size-adjust: 100%;
 }
 
-/*  apply a natural box layout model to all elements  */
+/*  apply a natural box layout model to all elements and default font */
 * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -21,8 +21,8 @@ html {
     --color-black: #000;
     --color-white: #FFF;
 
-    --dark-gray: #808080;
-    --light-gray: #d9d9d9;
+    --color-dark-gray: #808080;
+    --color-light-gray: #d9d9d9;
 
     --color-background: #FFFFFF;
 
@@ -43,6 +43,7 @@ html {
         display: flex;
         flex-direction: column;
         background-color: var(--color-background);
+        font-family: var(--font-body);
     }
 
     main {
@@ -56,6 +57,9 @@ h1 {
 }
 
 /*HEADER CSS*/
+#mobile-header {
+    display: none;
+}
 
 
 /*NAVIGATION CSS*/
@@ -97,25 +101,26 @@ section#hero video#hero-video {
 
 
 section#hero h1 {
-    position:absolute;
+    position: static;
     z-index: 100;
-    top: 25%;
+    margin-bottom: 1.5rem;
+    color: var(--color-primary-dark);
     left: auto;
     right: auto;
     color: black;
 }
 
 section#hero button {
-    margin: 1rem;
     padding: 0.6rem;
-    position:absolute;
     z-index: 100;
+    position: static;
+    margin: 0;
     border-radius: 8px;
-    background-color: black;
+    background-color: var(--color-primary-dark);
     border: none;
-    top: 45%;
     color: white;
     transition: transform 0.3s ease, padding 0.3s ease;
+    display: inline-block;
 }
 
 section#hero button:hover {
@@ -127,6 +132,29 @@ section#hero button:hover {
 section#hero a {
     text-decoration: none;
     color:  inherit;
+}
+
+/* background card for hero section contrast */
+.hero-card {
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 90%;
+    
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+div.section-header h2 {
+    font-family: var(--font-display);
 }
 
 section#info {
@@ -200,11 +228,23 @@ section#how-it-works {
 }
 
 .step-card {
-    background-color: var(--light-gray);
+    background-color: var(--color-light-gray);
     border-radius: 8px;
     padding: 1rem;
     width: 30%;
     text-align: center;
+    font-family: var(--font-display);
+    font-weight: 500;
+}
+
+.step-card h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+}
+
+.step-card p {
+    font-family: var(--font-body);
+    font-weight: 300;
 }
 
 .step-icon {

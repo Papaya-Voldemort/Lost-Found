@@ -1,4 +1,4 @@
-@media only screen and (min-width: 32rem) {
+@media only screen and (min-width: 48rem) {
 
 header {
     display: flex;
@@ -29,21 +29,19 @@ section#hero h1 {
 }
 
 section#hero button {
-    margin: 1rem;
+    margin: 1rem 0 0 0;
     font-size: 1rem;
     padding: 1.1rem;
-    position:absolute;
-    z-index: 100;
-    border-radius: 8px;
-    background-color: black;
-    border: none;
-    top: 43%;
-    transition: transform 0.3s ease, padding 0.3s ease;
+    top: auto;
 }
 
 section#hero button:hover {
   transform: scale(1.1);
   padding: 1.1em 1.5em;
+}
+
+.hero-card {
+    min-width: 600px;
 }
 
 #mobile-header {
@@ -100,5 +98,3 @@ nav a#active::after {
     transform: scaleX(1);
 }
 }
-
-/* end media query*/
