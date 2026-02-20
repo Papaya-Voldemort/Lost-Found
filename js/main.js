@@ -1,4 +1,4 @@
-// Type Writer Code for the description section (Made by AI)
+// Type Writer Code for the description section (TODO: move this to a separate file)
 const words = ["search", "recover", "report"];
 const typewriter = document.getElementById("typewriter");
 
@@ -31,4 +31,3 @@ function typeEffect() {
 }
 
 typeEffect();
-// End of Type Writer Code
