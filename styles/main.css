@@ -88,7 +88,7 @@ section#hero img {
 
 section#hero video#hero-video {
     width: 100%;
-    height: auto;
+    height: 60vh;
     object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
@@ -144,14 +144,19 @@ div#carousel {
 }
 
 div#description {
-    margin-left: 22%;
+    display: flex;
     width: 100%;
     font-size: 1rem;
+    align-items: center;
+    justify-content: center;
 }
 
 #typewriter {
     color: var(--color-primary-dark);
-    /* text-transform: uppercase; */
+    display: inline-block;
+    min-width: 6.7ch;
+    text-align: left;
+    vertical-align: bottom;
 }
 
 #typewriter::after {
