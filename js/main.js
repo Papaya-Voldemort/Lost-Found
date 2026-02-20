@@ -31,4 +31,3 @@ function typeEffect() {
 }
 
 typeEffect();
-// End of Type Writer Code
