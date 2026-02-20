@@ -252,6 +252,70 @@ section#how-it-works {
     margin-bottom: 1rem;
 }
 
+/* END OF HOW IT WORKS SECTION */
+
+/* Start of Impact Stats Section */
+
+section#impact-stats {
+    background-color: var(--color-accent);
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.stat-item {
+    padding: 1rem;
+    min-width: 200px;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+/* END OF IMPACT STATS SECTION */
+
+/* Start of CTA Section */
+
+section#call-to-action {
+    background-color: var(--color-light-gray);
+    padding: 2rem;
+    text-align: center;
+}
+
+section#call-to-action h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+section#call-to-action button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    background-color: var(--color-primary-dark);
+    border: none;
+    color: white;
+    transition: transform 0.3s ease, padding 0.3s ease;
+    margin: 1rem;
+}
+
+section#call-to-action button:hover {
+    transform: scale(1.1);
+    padding: 0.9rem 1.6rem;
+}
+
+section#call-to-action a {
+    text-decoration: none;
+    color: inherit;
+}
+
 /*FOOTER CSS*/
 
 footer {
@@ -263,7 +327,22 @@ footer {
     color: white;
 }
 
-#footer-text {
+.footer-brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.footer-brand h3 {
+    font-size: 1.6rem;
+}
+
+.footer-brand p {
     font-family: var(--font-body);
     font-weight: 300;
+    font-size: 1rem;
 }
+
+
+
