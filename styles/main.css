@@ -88,7 +88,7 @@ section#hero img {
 
 section#hero video#hero-video {
     width: 100%;
-    height: auto;
+    height: 60vh;
     object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
