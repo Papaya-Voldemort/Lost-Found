@@ -1,11 +1,23 @@
+/* Large Desktop - min-width: 60rem (960px) */
 @media only screen and (min-width: 60rem) {
-
     section#hero h1 {
-        font-size: 3.5rem;
+        font-size: var(--font-size-3xl);
     }
 
     section#hero button {
-    margin: 1rem;
-    font-size: 1.3rem;
+        margin: 1rem;
+        font-size: 1.3rem;
+    }
 }
+
+/* Extra Large Desktop - min-width: 75rem (1200px) */
+@media only screen and (min-width: 75rem) {
+    .hero-card {
+        min-width: 700px;
+        padding: 3rem;
+    }
+    
+    .steps-container {
+        gap: var(--space-xl);
+    }
 }

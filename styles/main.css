@@ -1,10 +1,11 @@
-/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS.  */
+/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS. */
 html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
+    line-height: 1.5;
 }
 
-/*  apply a natural box layout model to all elements and default font */
+/* Apply a natural box layout model to all elements */
 * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -26,29 +27,50 @@ html {
 
     --color-background: #FFFFFF;
 
-    /* Font Variables */
+    --color-overlay: rgba(64, 196, 240, 0.403);
 
+    /* Font Variables */
     --font-display: 'Poppins', sans-serif;
     --font-body: 'Inter', sans-serif;
-    }
 
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
+    /* Spacing Scale */
+    --space-xs: 0.25rem;  /* 4px */
+    --space-sm: 0.5rem;   /* 8px */
+    --space-md: 1rem;     /* 16px */
+    --space-lg: 1.5rem;   /* 24px */
+    --space-xl: 2rem;     /* 32px */
+    --space-2xl: 3rem;    /* 48px */
+    --space-3xl: 4rem;    /* 64px */
 
-    body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background-color: var(--color-background);
-        font-family: var(--font-body);
-    }
+    /* Fluid Typography Scale */
+    --font-size-sm: clamp(0.875rem, 0.8rem + 0.25vw, 1rem);
+    --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+    --font-size-lg: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+    --font-size-xl: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    --font-size-2xl: clamp(2rem, 1.5rem + 1.5vw, 2.5rem);
+    --font-size-3xl: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+}
 
-    main {
-        flex: 1 0 auto;
-        z-index: 100;
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--color-background);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+}
+
+main {
+    z-index: 100;
+    flex: 1 0 auto;
 }
 
 h1 {
@@ -56,101 +78,104 @@ h1 {
     font-weight: 600;
 }
 
-/*HEADER CSS*/
+/* ==================== Header ==================== */
+
 #mobile-header {
     display: none;
 }
 
-
-/*NAVIGATION CSS*/
+/* ==================== Navigation ==================== */
 
 .nav-icon {
-    visibility: hidden;
-    display: none;
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
+    transition: fill 0.2s ease, transform 0.2s ease;
 }
 
+/* Remove fill from inline SVGs in HTML */
+.nav-icon[xmlns] {
+    fill: none;
+}
 
-/*MAIN CSS*/
+nav a:hover .nav-icon {
+    fill: var(--color-primary-dark);
+    transform: scale(1.15);
+}
+
+nav a:active .nav-icon {
+    transform: scale(0.95);
+}
+
+/* ==================== Main ==================== */
+
 main {
     margin-left: 0;
     min-height: 150vh;
 }
 
 section#hero {
-    width: 100%;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    width: 100%;
 }
 
 section#hero img {
+    display: none;
     width: 100%;
     height: auto;
-    display: none;
 }
 
 section#hero video#hero-video {
+    z-index: 1;
     width: 100%;
     height: 60vh;
-    object-fit: cover;
     border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-    z-index: 1;
+    object-fit: cover;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
-
 
 section#hero h1 {
     position: static;
     z-index: 100;
-    margin-bottom: 1.5rem;
-    color: var(--color-primary-dark);
     left: auto;
     right: auto;
-    color: black;
+    margin-bottom: 1.5rem;
+    font-size: var(--font-size-3xl);
+    color: var(--color-primary-dark);
 }
 
-section#hero button {
-    padding: 0.6rem;
-    z-index: 100;
-    position: static;
-    margin: 0;
-    border-radius: 8px;
-    background-color: var(--color-primary-dark);
-    border: none;
-    color: white;
-    transition: transform 0.3s ease, padding 0.3s ease;
-    display: inline-block;
-}
-
-section#hero button:hover {
-  transform: scale(1.1);
-  padding: 0.7em 0.9em;
-}
-
-
-section#hero a {
-    text-decoration: none;
-    color:  inherit;
-}
-
-/* background card for hero section contrast */
+/* Background card for hero section contrast */
 .hero-card {
     position: absolute;
     z-index: 100;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    
-    background-color: rgba(255, 255, 255, 0.85);
+    max-width: 90%;
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    max-width: 90%;
-    
-    backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
 
 div.section-header h2 {
@@ -159,10 +184,10 @@ div.section-header h2 {
 
 section#info {
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
-    background-color: var(--color-primary);
+    justify-content: space-between;
     padding: 1rem;
+    background-color: var(--color-primary);
 }
 
 div#carousel {
@@ -173,18 +198,18 @@ div#carousel {
 
 div#description {
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     font-size: 1rem;
-    align-items: center;
-    justify-content: center;
 }
 
 #typewriter {
-    color: var(--color-primary-dark);
     display: inline-block;
     min-width: 6.7ch;
     text-align: left;
     vertical-align: bottom;
+    color: var(--color-primary-dark);
 }
 
 #typewriter::after {
@@ -194,21 +219,29 @@ div#description {
 }
 
 @keyframes blink {
-    0%, 50%, 100% { opacity: 1; }
-    25%, 75% { opacity: 0; }
+    0%,
+    50%,
+    100% {
+        opacity: 1;
+    }
+
+    25%,
+    75% {
+        opacity: 0;
+    }
 }
 
 div#overlay {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 2;
     width: 100%;
     height: 100%;
-    background-color: rgba(64, 196, 240, 0.403);
-    z-index: 2;
+    background-color: var(--color-overlay);
 }
 
-/*How to Section Styling*/
+/* ==================== How It Works Section ==================== */
 
 section#how-it-works {
     display: flex;
@@ -218,23 +251,27 @@ section#how-it-works {
     text-align: center;
 }
 
+section#how-it-works h2 {
+    font-size: var(--font-size-xl);
+}
+
 .steps-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     width: 100%;
     max-width: 1200px;
     margin-top: 2rem;
-    flex-wrap: wrap;
 }
 
 .step-card {
-    background-color: var(--color-light-gray);
-    border-radius: 8px;
-    padding: 1rem;
     width: 30%;
+    padding: 1rem;
+    border-radius: 8px;
     text-align: center;
     font-family: var(--font-display);
     font-weight: 500;
+    background-color: var(--color-light-gray);
 }
 
 .step-card h3 {
@@ -248,30 +285,28 @@ section#how-it-works {
 }
 
 .step-icon {
-    font-size: 2rem;
     margin-bottom: 1rem;
+    font-size: 2rem;
 }
 
-/* END OF HOW IT WORKS SECTION */
-
-/* Start of Impact Stats Section */
+/* ==================== Impact Stats Section ==================== */
 
 section#impact-stats {
-    background-color: var(--color-accent);
     padding: 2rem;
-    text-align: center;
     margin-bottom: 2rem;
+    text-align: center;
+    background-color: var(--color-accent);
 }
 
 .stats-grid {
     display: flex;
-    justify-content: space-around;
     flex-direction: row;
+    justify-content: space-around;
 }
 
 .stat-item {
-    padding: 1rem;
     min-width: 200px;
+    padding: 1rem;
 }
 
 .stat-number {
@@ -279,59 +314,88 @@ section#impact-stats {
     font-weight: 500;
 }
 
-/* END OF IMPACT STATS SECTION */
-
-/* Start of CTA Section */
+/* ==================== CTA Section ==================== */
 
 section#call-to-action {
-    background-color: var(--color-light-gray);
     padding: 2rem;
     text-align: center;
+    background-color: var(--color-light-gray);
 }
 
 section#call-to-action h2 {
-    font-family: var(--font-display);
-    font-weight: 500;
     margin-bottom: 1rem;
+    font-family: var(--font-display);
+    font-size: var(--font-size-xl);
+    font-weight: 500;
 }
 
-section#call-to-action button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1.2rem;
-    border-radius: 8px;
-    background-color: var(--color-primary-dark);
-    border: none;
-    color: white;
-    transition: transform 0.3s ease, padding 0.3s ease;
+.btn-primary,
+.btn-secondary {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
     margin: 1rem;
-}
-
-section#call-to-action button:hover {
-    transform: scale(1.1);
-    padding: 0.9rem 1.6rem;
-}
-
-section#call-to-action a {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: var(--font-size-base);
     text-decoration: none;
-    color: inherit;
+    color: white;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/*FOOTER CSS*/
+.btn-primary {
+    background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--color-primary);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:active,
+.btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn-primary::before,
+.btn-secondary::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background: linear-gradient(135deg, #74e6ff, #6291ff);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.btn-primary:hover::before,
+.btn-secondary:hover::before {
+    opacity: 0.1;
+}
+
+/* ==================== Footer ==================== */
 
 footer {
-    background-color: var(--color-primary-dark);
     width: 100%;
     padding: 0.5rem;
-    text-align: center;
     margin-top: 1rem;
+    text-align: center;
     color: white;
+    background-color: var(--color-primary-dark);
 }
 
 .footer-brand {
+    margin-bottom: 1.5rem;
+    text-align: center;
     font-family: var(--font-display);
     font-weight: 600;
-    text-align: center;
-    margin-bottom: 1.5rem;
 }
 
 .footer-brand h3 {
@@ -340,9 +404,54 @@ footer {
 
 .footer-brand p {
     font-family: var(--font-body);
-    font-weight: 300;
     font-size: 1rem;
+    font-weight: 300;
 }
 
+/* ==================== Reduced Motion Support ==================== */
 
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
 
+/* ============================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ============================================ */
+
+/* Initial state - hidden and shifted */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Visible state - triggered by JavaScript */
+.scroll-animate.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered delays for children */
+.step-card.scroll-animate:nth-child(1) { transition-delay: 0.1s; }
+.step-card.scroll-animate:nth-child(2) { transition-delay: 0.2s; }
+.step-card.scroll-animate:nth-child(3) { transition-delay: 0.3s; }
+
+.stat-item.scroll-animate:nth-child(1) { transition-delay: 0.1s; }
+.stat-item.scroll-animate:nth-child(2) { transition-delay: 0.2s; }
+.stat-item.scroll-animate:nth-child(3) { transition-delay: 0.3s; }
+
+/* Disable for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-animate {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}

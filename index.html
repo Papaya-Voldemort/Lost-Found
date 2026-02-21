@@ -3,23 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Website title</title> <!--TODO: add title-->
     <meta name="description" content="Website description here"> <!--TODO: add description-->
-
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-
     <script type="module" src="js/main.js" defer></script>
-
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/small.css">
     <link rel="stylesheet" href="styles/medium.css">
     <link rel="stylesheet" href="styles/large.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -37,7 +31,7 @@
             <ul>
                 <li class="nav-home">
                     <a id="active" href="#home">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000"
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                             viewBox="0 0 256 256">
                             <path
                                 d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z">
@@ -48,7 +42,7 @@
                 </li>
                 <li class="nav-lost">
                     <a href="#lost">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000"
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                             viewBox="0 0 256 256">
                             <path
                                 d="M192,96c0,28.51-24.47,52.11-56,55.56V160a8,8,0,0,1-16,0V144a8,8,0,0,1,8-8c26.47,0,48-17.94,48-40s-21.53-40-48-40S80,73.94,80,96a8,8,0,0,1-16,0c0-30.88,28.71-56,64-56S192,65.12,192,96Zm-64,96a16,16,0,1,0,16,16A16,16,0,0,0,128,192Z">
@@ -59,7 +53,7 @@
                 </li>
                 <li class="nav-found">
                     <a href="#found">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000"
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                             viewBox="0 0 256 256">
                             <path
                                 d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z">
@@ -70,7 +64,6 @@
                 </li>
                 <li class="nav-login">
                     <a href="#login" id="login-link">
-                        <!-- <img src="images/svg/login.svg" alt="" class="nav-icon">Login -->
                     </a>
                 </li>
             </ul>
@@ -86,7 +79,7 @@
         <section id="hero"> <!--TODO: Add header on top of hero when on mobile UI-->
             <div class="hero-card">
                 <h1>Find Your Lost Items</h1>
-                <button><a href="#">Get Started</a></button> <!--Should go to sign up page-->
+                <a href="#" class="btn-primary hero-btn">Get Started</a>
             </div>
             <video id="hero-video" src="videos/homepage-background.mp4" autoplay loop muted playsinline width="1280"
                 height="720"></video>
@@ -97,9 +90,6 @@
             <div id="description">
                 <h1>A simple app to <span id="typewriter"></span></h1>
             </div>
-            <!-- <div id="carousel">
-                <p>Card carousel with info cards or popular items</p>
-            </div> --> <!--Not sure if we should keep this-->
         </section>
 
         <section id="how-it-works"> <!--Build confidence with the user by being direct about the process-->
@@ -108,61 +98,60 @@
                 <p>Reconnecting you with your belongings in three simple steps.</p>
             </div>
             <div class="steps-container">
-                <div class="step-card">
+                <div class="step-card scroll-animate">
                     <div class="step-icon">1</div>
                     <h3>Report Item</h3>
                     <p>Upload a photo and description of the item you've lost or found. Add tags to help
                         others find it.</p>
                 </div>
 
-                <div class="step-card">
+                <div class="step-card scroll-animate">
                     <div class="step-icon">2</div>
                     <h3>Search & Match</h3>
                     <p>Our system cross-references reports to find potential matches nearby. Browse categories to narrow
                         it down.</p>
                 </div>
 
-                <div class="step-card">
+                <div class="step-card scroll-animate">
                     <div class="step-icon">3</div>
                     <h3>Safe Return</h3>
                     <p>Chat securely through the app to verify ownership and arrange a safe meeting spot for the
-                        hand-off.</p>.
-                    <!--We probably need to update these steps to make sure they are acurate to our vision-->
+                        hand-off.</p>
+                    <!--We probably need to update these steps to make sure they are accurate to our vision-->
                 </div>
             </div>
         </section>
 
-        <section id="impact-stats"> <!--Fake data maybe add animation later-->
+        <section id="impact-stats" class="scroll-animate"> <!--Fake data maybe add animation later-->
             <div class="stats-grid">
-                <div class="stat-item">
+                <div class="stat-item scroll-animate">
                     <span class="stat-number">5,000+</span>
                     <p>Items Reunited</p>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item scroll-animate">
                     <span class="stat-number">12,000</span>
                     <p>Active Users</p>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item scroll-animate">
                     <span class="stat-number">24/7</span>
                     <p>Community Support</p>
                 </div>
             </div>
         </section>
 
-
-        <section id="call-to-action">
+        <section id="call-to-action" class="scroll-animate">
             <div class="cta-content">
                 <h2>Ready to reunite with your belongings?</h2>
                 <p>Join thousands of users helping each other find what matters most.</p>
                 <div class="cta-buttons">
-                    <button><a href="#signup" class="btn-primary">Create an Account</a></button>
-                    <button><a href="#lost" class="btn-secondary">Browse Lost Items</a></button>
+                    <a href="#signup" class="btn-primary">Create an Account</a>
+                    <a href="#lost" class="btn-secondary">Browse Lost Items</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
+    <footer class="scroll-animate">
         <div class="footer-container">
             <div class="footer-brand">
                 <h3>Lost & Found</h3>

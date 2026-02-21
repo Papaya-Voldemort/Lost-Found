@@ -1,4 +1,4 @@
-// Type Writer Code for the description section (TODO: move this to a separate file)
+// TODO: move this to a separate file
 const words = ["search", "recover", "report"];
 const typewriter = document.getElementById("typewriter");
 
@@ -31,3 +31,27 @@ function typeEffect() {
 }
 
 typeEffect();
+
+/* ============================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ============================================ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15 // Trigger when 15% visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target); // Stop observing once animated (single trigger)
+            }
+        });
+    }, observerOptions);
+
+    const animatedElements = document.querySelectorAll('.scroll-animate');
+    animatedElements.forEach(el => observer.observe(el));
+});
