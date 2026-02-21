@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Website title</title> <!--TODO: add title-->
-    <meta name="description" content="Website description here"> <!--TODO: add description-->
+    <title>Login - Lost & Found</title>
+    <meta name="description" content="Login to your Lost & Found account">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
@@ -30,7 +30,7 @@
         <nav>
             <ul>
                 <li class="nav-home">
-                    <a id="active" href="index.html">
+                    <a href="index.html">
                         <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <path d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li class="nav-login">
-                    <a href="login.html" id="login-link">
+                    <a id="login-link" class="active" href="login.html">
                         <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -73,87 +73,13 @@
     </header>
 
     <main>
-        <div id="mobile-header">
-            <h1>Lost & Found</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Lost and found logo" width="350" height="185">
-        </div>
-
-        <section id="hero"> <!--TODO: Add header on top of hero when on mobile UI-->
-            <div class="hero-card">
-                <h1>Find Your Lost Items</h1>
-                <a href="#" class="btn-primary hero-btn">Get Started</a>
-            </div>
-            <video id="hero-video" src="videos/homepage-background.mp4" autoplay loop muted playsinline width="1280"
-                height="720"></video>
-            <div id="overlay"></div>
-        </section>
-
-        <section id="info">
-            <div id="description">
-                <h1>A simple app to <span id="typewriter"></span></h1>
-            </div>
-        </section>
-
-        <section id="how-it-works"> <!--Build confidence with the user by being direct about the process-->
-            <div class="section-header">
-                <h2>How It Works</h2>
-                <p>Reconnecting you with your belongings in three simple steps.</p>
-            </div>
-            <div class="steps-container">
-                <div class="step-card scroll-animate">
-                    <div class="step-icon">1</div>
-                    <h3>Report Item</h3>
-                    <p>Upload a photo and description of the item you've lost or found. Add tags to help
-                        others find it.</p>
-                </div>
-
-                <div class="step-card scroll-animate">
-                    <div class="step-icon">2</div>
-                    <h3>Search & Match</h3>
-                    <p>Our system cross-references reports to find potential matches nearby. Browse categories to narrow
-                        it down.</p>
-                </div>
-
-                <div class="step-card scroll-animate">
-                    <div class="step-icon">3</div>
-                    <h3>Safe Return</h3>
-                    <p>Chat securely through the app to verify ownership and arrange a safe meeting spot for the
-                        hand-off.</p>
-                    <!--We probably need to update these steps to make sure they are accurate to our vision-->
-                </div>
-            </div>
-        </section>
-
-        <section id="impact-stats" class="scroll-animate"> <!--Fake data maybe add animation later-->
-            <div class="stats-grid">
-                <div class="stat-item scroll-animate">
-                    <span class="stat-number">5,000+</span>
-                    <p>Items Reunited</p>
-                </div>
-                <div class="stat-item scroll-animate">
-                    <span class="stat-number">12,000</span>
-                    <p>Active Users</p>
-                </div>
-                <div class="stat-item scroll-animate">
-                    <span class="stat-number">24/7</span>
-                    <p>Community Support</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="call-to-action" class="scroll-animate">
-            <div class="cta-content">
-                <h2>Ready to reunite with your belongings?</h2>
-                <p>Join thousands of users helping each other find what matters most.</p>
-                <div class="cta-buttons">
-                    <a href="#signup" class="btn-primary">Create an Account</a>
-                    <a href="#lost" class="btn-secondary">Browse Lost Items</a>
-                </div>
-            </div>
+        <section id="page-header">
+            <h1>Login</h1>
+            <p>Sign in to your account</p>
         </section>
     </main>
 
-    <footer class="scroll-animate">
+    <footer>
         <div class="footer-container">
             <div class="footer-brand">
                 <h3>Lost & Found</h3>
