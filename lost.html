@@ -87,48 +87,62 @@
     </header>
 
     <main>
-        <section id="page-header">
+        <section class="page-header">
             <h1>Lost Items</h1>
-            <p>Browse items that have been reported as lost</p>
+            <!-- <p>Browse items that have been reported as lost</p> -->
         </section>
 
         <section class="upload-form">
             <h2>Report a Lost Item</h2>
-            <form id="lost-item-form">
-                <label>Item Name <input type="text" placeholder="e.g. Black North Face Backpack" aria-required="true" required></label>
+            <div id="signed-in-lost-item-div">
+                <form class="item-form">
+                    <label>Item Name <input type="text" placeholder="e.g. Black North Face Backpack"
+                            aria-required="true" required></label>
 
-                <label>Category 
-                    <select name="category" id="category" aria-required="true" required>
-                        <option value="none" disabled selected>Select a Category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="id">ID/Keycard</option>
-                        <option value="keys">Keys</option>
-                        <option value="bags">Backpack/Bags</option>
-                        <option value="bottle">Water Bottle</option>
-                        <option value="jewelry">Jewelry</option>
-                        <option value="supplies">Books/Supplies</option>
-                        <option value="other">Other</option>
-                    </select>
-                </label>
+                    <label>Category
+                        <select name="category" id="category" aria-required="true" required>
+                            <option value="none" disabled selected>Select a Category</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="id">ID/Keycard</option>
+                            <option value="keys">Keys</option>
+                            <option value="bags">Backpack/Bags</option>
+                            <option value="bottle">Water Bottle</option>
+                            <option value="jewelry">Jewelry</option>
+                            <option value="supplies">Books/Supplies</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </label>
 
-                <label>Date Lost <input type="date"></label>
+                    <label>Date Lost <input type="date"></label>
 
-                <label>Last Seen Location <input type="text" placeholder="e.g. Library, Gym, Dining Hall"></label>
-                <!--Should this be dropdown or text input?-->
-                <!--TODO: Switch to dropdown with 'other' field that makes a text input appear-->
+                    <label>Last Seen Location <input type="text" placeholder="e.g. Library, Gym, Dining Hall"></label>
+                    <!--TODO: Switch to dropdown with 'other' field that makes a text input appear-->
 
-                <label>Description <textarea placeholder="Anything else that helps identify it?" aria-required="true" required></textarea></label>
+                    <!-- TODO: Add tags field with pill tags you can add/remove for the algorithm -->
 
-                <label>Email: <input type="email" placeholder="e.g. your.email@domain.com" aria-required="true" required></label>
+                    <label class="full-width">Description <textarea placeholder="Anything else that helps identify it?"
+                            aria-required="true" required></textarea></label>
 
-                <label>Image Upload <input type="file" accept="image/*" aria-describedby="photo-hint"></label>
-                <p id="photo-hint" class="form-hint">Optional — a photo helps a lot!</p> <!-- This line was suggested by Claude-->
-                <!--TODO: Add a preview of the image after upload-->
+                    <label class="full-width">Email: <input type="email" placeholder="e.g. your.email@domain.com" aria-required="true"
+                            required></label>
+                    <!-- This form is obsolete because only signed in users can post lost and found items 
+                 If they are signed in we have there email already Remove when making back end-->
+                    <div class="full-width">
+                        <label>Image Upload <input type="file" accept="image/*" aria-describedby="photo-hint"></label>
+                        <p id="photo-hint" class="form-hint">Optional — a photo helps a lot!</p>
+                    </div> <!-- In a div for styling purposes-->
+                    <!--TODO: Add a preview of the image after upload-->
 
-                <input type="submit" value="Submit">
-            </form>
-        </section>
+                    <input type="submit" value="Submit" class="btn-primary full-width">
+                </form>
+            </div>
+            <div id="signed-out-lost-item-div">
+                <h3>Sign in to submit lost items.</h3>
+                <a href="account.html" class="btn-primary">Sign in Now</a>
+            </div>
+        </section><!-- Make sure to show a different screen to not signed in users like a div saying to sign in -->
+
     </main>
 
     <footer>

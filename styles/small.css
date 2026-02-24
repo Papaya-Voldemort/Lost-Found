@@ -127,4 +127,18 @@
         font-size: 1.5rem;
     }
 
+
+    .upload-form {
+        padding: 1rem;
+        margin: 1rem auto;
+        max-width: 95vw;
+    }
+
+    .item-form {
+        gap: 0.8rem;
+    }
+
+    .item-form textarea {
+        min-height: 80px;
+    }
 }
