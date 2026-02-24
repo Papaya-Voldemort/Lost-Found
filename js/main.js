@@ -1,6 +1,8 @@
-// TODO: move this to a separate file
+/* ============================================
+   TYPEWRITER EFFECT
+   ============================================ */
+
 const words = ["search", "recover", "report"];
-const typewriter = document.getElementById("typewriter");
 
 let wordIndex = 0;
 let charIndex = 0;
@@ -8,6 +10,13 @@ let isDeleting = false;
 let typingSpeed = 100;
 
 function typeEffect() {
+    const typewriter = document.getElementById("typewriter");
+    
+    // Guard clause: exit if element doesn't exist (e.g., on pages without typewriter)
+    if (!typewriter) {
+        return;
+    }
+    
     const currentWord = words[wordIndex];
 
     if (!isDeleting) {
@@ -30,24 +39,26 @@ function typeEffect() {
     setTimeout(typeEffect, isDeleting ? 50 : typingSpeed);
 }
 
-typeEffect();
-
 /* ============================================
    SCROLL-TRIGGERED ANIMATIONS
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Start typewriter effect only after DOM is ready
+    typeEffect();
+    
+    // Scroll animation observer
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.15 // Trigger when 15% visible
+        threshold: 0.15 
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target); // Stop observing once animated (single trigger)
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);

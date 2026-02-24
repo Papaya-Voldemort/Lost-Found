@@ -31,39 +31,53 @@
             <ul>
                 <li class="nav-home">
                     <a href="index.html">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
-                            <path d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <path
+                                d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z"
+                                fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
                         </svg>
                         Home
                     </a>
                 </li>
                 <li class="nav-lost">
                     <a id="active" href="lost.html">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
-                            <path d="M128,160V144c30.93,0,56-21.49,56-48s-25.07-48-56-48S72,69.49,72,96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-                            <circle cx="128" cy="208" r="16"/>
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <path d="M128,160V144c30.93,0,56-21.49,56-48s-25.07-48-56-48S72,69.49,72,96" fill="none"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
+                            <circle cx="128" cy="208" r="16" />
                         </svg>
                         Lost
                     </a>
                 </li>
                 <li class="nav-found">
                     <a href="found.html">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
-                            <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-                            <line x1="168.57" y1="168.57" x2="224" y2="224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="16" />
+                            <line x1="168.57" y1="168.57" x2="224" y2="224" fill="none" stroke="currentColor"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
                         </svg>
                         Found
                     </a>
                 </li>
                 <li class="nav-login">
                     <a href="login.html" id="login-link">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
-                            <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-                            <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="16" />
+                            <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
                         </svg>
                         Login
                     </a>
@@ -76,6 +90,44 @@
         <section id="page-header">
             <h1>Lost Items</h1>
             <p>Browse items that have been reported as lost</p>
+        </section>
+
+        <section class="upload-form">
+            <h2>Report a Lost Item</h2>
+            <form id="lost-item-form">
+                <label>Item Name <input type="text" placeholder="e.g. Black North Face Backpack" aria-required="true" required></label>
+
+                <label>Category 
+                    <select name="category" id="category" aria-required="true" required>
+                        <option value="none" disabled selected>Select a Category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="id">ID/Keycard</option>
+                        <option value="keys">Keys</option>
+                        <option value="bags">Backpack/Bags</option>
+                        <option value="bottle">Water Bottle</option>
+                        <option value="jewelry">Jewelry</option>
+                        <option value="supplies">Books/Supplies</option>
+                        <option value="other">Other</option>
+                    </select>
+                </label>
+
+                <label>Date Lost <input type="date"></label>
+
+                <label>Last Seen Location <input type="text" placeholder="e.g. Library, Gym, Dining Hall"></label>
+                <!--Should this be dropdown or text input?-->
+                <!--TODO: Switch to dropdown with 'other' field that makes a text input appear-->
+
+                <label>Description <textarea placeholder="Anything else that helps identify it?" aria-required="true" required></textarea></label>
+
+                <label>Email: <input type="email" placeholder="e.g. your.email@domain.com" aria-required="true" required></label>
+
+                <label>Image Upload <input type="file" accept="image/*" aria-describedby="photo-hint"></label>
+                <p id="photo-hint" class="form-hint">Optional — a photo helps a lot!</p> <!-- This line was suggested by Claude-->
+                <!--TODO: Add a preview of the image after upload-->
+
+                <input type="submit" value="Submit">
+            </form>
         </section>
     </main>
 

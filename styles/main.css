@@ -209,7 +209,9 @@ div#description {
     min-width: 6.7ch;
     text-align: left;
     vertical-align: bottom;
-    color: var(--color-primary-dark);
+    color: var(--color-black);
+    text-transform: lowercase;
+    font-family: var(--font-display);
 }
 
 #typewriter::after {
@@ -337,11 +339,12 @@ section#call-to-action h2 {
     margin: 1rem;
     padding: 0.8rem 1.5rem;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden;   
     font-size: var(--font-size-base);
     text-decoration: none;
     color: white;
     transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    border: none;
 }
 
 .btn-primary {
