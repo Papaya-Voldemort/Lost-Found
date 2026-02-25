@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Verify Email - Traceback</title>
+    <meta name="description" content="Verify your Traceback account email">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/small.css">
+    <link rel="stylesheet" href="styles/medium.css">
+    <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/toast.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div id="logo-div">
+            <h1>Traceback</h1>
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
+        </div>
+        <nav>
+            <ul>
+                <li class="nav-home">
+                    <a href="index.html">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <path
+                                d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z"
+                                fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
+                        </svg>
+                        Home
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header scroll-animate">
+            <h1>Email Verification</h1>
+            <p id="verification-status">Verifying your email address...</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>Traceback</h3>
+                <p>Making the world a little less lost, one item at a time.</p>
+            </div>
+        </div>
+        <div id="footer-bottom">
+            <p>&copy; 2026 Traceback. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { account } from './js/auth.js';
+        import { showToast } from './js/toast.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+            const secret = urlParams.get('secret');
+            const statusText = document.getElementById('verification-status');
+
+            if (!userId || !secret) {
+                statusText.textContent = "Invalid verification link.";
+                showToast("Missing verification parameters.", "error");
+                return;
+            }
+
+            try {
+                await account.updateVerification({ userId, secret });
+                statusText.textContent = "Email verified successfully! Redirecting...";
+                showToast("Your email has been verified!", "success");
+                
+                setTimeout(() => {
+                    window.location.href = 'account.html';
+                }, 3000);
+            } catch (error) {
+                statusText.textContent = "Verification failed.";
+                showToast("Verification failed: " + error.message, "error");
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login - Lost & Found</title>
-    <meta name="description" content="Login to your Lost & Found account">
+    <title>Sign In - Traceback</title>
+    <meta name="description" content="Sign in to your Traceback account">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
@@ -14,58 +14,73 @@
     <link rel="stylesheet" href="styles/small.css">
     <link rel="stylesheet" href="styles/medium.css">
     <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/toast.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&family=Roboto:wght@400;500&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
     <header>
         <div id="logo-div">
-            <h1>Lost & Found</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Lost and found logo" width="350" height="185">
+            <h1>Traceback</h1>
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
         </div>
         <nav>
             <ul>
                 <li class="nav-home">
                     <a href="index.html">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
-                            <path d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <path
+                                d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z"
+                                fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
                         </svg>
                         Home
                     </a>
                 </li>
                 <li class="nav-lost">
                     <a href="lost.html">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
-                            <path d="M128,160V144c30.93,0,56-21.49,56-48s-25.07-48-56-48S72,69.49,72,96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-                            <circle cx="128" cy="208" r="16"/>
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <path d="M128,160V144c30.93,0,56-21.49,56-48s-25.07-48-56-48S72,69.49,72,96" fill="none"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
+                            <circle cx="128" cy="208" r="16" />
                         </svg>
                         Lost
                     </a>
                 </li>
                 <li class="nav-found">
                     <a href="found.html">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
-                            <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-                            <line x1="168.57" y1="168.57" x2="224" y2="224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="16" />
+                            <line x1="168.57" y1="168.57" x2="224" y2="224" fill="none" stroke="currentColor"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
                         </svg>
                         Found
                     </a>
                 </li>
                 <li class="nav-login">
-                    <a id="login-link" class="active" href="login.html">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
-                            <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-                            <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                    <a id="active" href="login.html" id="login-link" class="active">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="16" />
+                            <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
                         </svg>
-                        Login
+                        Sign In
                     </a>
                 </li>
             </ul>
@@ -73,21 +88,54 @@
     </header>
 
     <main>
-        <section id="page-header">
-            <h1>Login</h1>
-            <p>Sign in to your account</p>
+        <section class="page-header scroll-animate">
+            <h1>Sign In</h1>
+            <p>Welcome back to Traceback</p>
+        </section>
+
+        <section class="upload-form scroll-animate">
+            <button class="google-btn">
+                <svg class="google-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+        <path fill="none" d="M0 0h48v48H0z"></path>
+      </svg>
+                Sign in with Google
+            </button>
+            
+            <div class="or-divider">
+                <span>Or</span>
+            </div>
+
+            <form id="login-form" class="item-form" action="#" method="POST">
+                <label>
+                    <span>Email Address <span class="required-asterisk">*</span></span>
+                    <input type="email" id="login-email" name="email" placeholder="e.g. your.email@domain.com" required>
+                </label>
+                
+                <label>
+                    <span>Password <span class="required-asterisk">*</span></span>
+                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                </label>
+
+                <input type="submit" value="Sign In" class="btn-primary full-width">
+            </form>
+            
+            <a href="signup.html" class="auth-link">Don't have an account? Sign up</a>
         </section>
     </main>
 
     <footer>
         <div class="footer-container">
             <div class="footer-brand">
-                <h3>Lost & Found</h3>
+                <h3>Traceback</h3>
                 <p>Making the world a little less lost, one item at a time.</p>
             </div>
         </div>
         <div id="footer-bottom">
-            <p>&copy; 2026 Lost & Found. All rights reserved.</p>
+            <p>&copy; 2026 Traceback. All rights reserved.</p>
         </div>
     </footer>
 </body>

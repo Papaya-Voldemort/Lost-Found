@@ -1,0 +1,14 @@
+{
+  "name": "traceback-setup",
+  "version": "1.0.0",
+  "description": "Setup script for Appwrite backend",
+  "main": "setup-appwrite.js",
+  "type": "module",
+  "scripts": {
+    "setup": "node setup-appwrite.js"
+  },
+  "dependencies": {
+    "node-appwrite": "^14.1.0",
+    "dotenv": "^16.4.5"
+  }
+}

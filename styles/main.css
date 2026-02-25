@@ -1,11 +1,10 @@
-/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS. */
+﻿/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS. */
 html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     line-height: 1.5;
 }
 
-/* Apply a natural box layout model to all elements */
 * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -13,7 +12,7 @@ html {
 }
 
 :root {
-    /* Content Variables */
+    /* Color Variables */
     --color-primary: #5C9EAD;
     --color-primary-dark: #326273;
 
@@ -26,8 +25,6 @@ html {
     --color-light-gray: #d9d9d9;
 
     --color-background: #FFFFFF;
-
-    --color-overlay: rgba(64, 196, 240, 0.403);
 
     --color-surface: #EEEEEE;
 
@@ -212,14 +209,15 @@ div#description {
     align-items: center;
     width: 100%;
     font-size: 1rem;
+    color: var(--color-light-gray);
 }
 
 #typewriter {
     display: inline-block;
-    min-width: 6.7ch;
+    min-width: 6.7ch; /* Magic number to prevent layout shift when typing */
     text-align: left;
     vertical-align: bottom;
-    color: var(--color-black);
+    color: var(--color-white);
     text-transform: lowercase;
     font-family: var(--font-display);
 }
@@ -251,7 +249,8 @@ div#overlay {
     z-index: 2;
     width: 100%;
     height: 100%;
-    background-color: var(--color-overlay);
+    background-color: var(--color-dark-gray);
+    opacity: 0.5;
 }
 
 /* ==================== How It Works Section ==================== */
@@ -394,7 +393,7 @@ section#call-to-action h2 {
     opacity: 0.1;
 }
 
-/* ==================== Lost &  Section ==================== */
+/* ==================== Lost Item Section ==================== */
 
 .page-header {
     display: block;
@@ -425,7 +424,8 @@ section#call-to-action h2 {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     max-width: 80vw;
     padding: 1rem;
-    border-top: 4px solid var(--color-primary); /*Yeah, claude sugjested it*/
+    border-top: 4px solid var(--color-primary);
+
 }
 
 .item-form {
@@ -649,4 +649,96 @@ footer {
         transform: none;
         transition: none;
     }
+}
+
+/* ==================== Login Styles ==================== */
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+    background-color: #FFFFFF;
+    color: #1f1f1f;
+    border: 1px solid #747775;
+    border-radius: 20px;
+    padding: 0.6rem 1rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
+    margin: 1rem auto;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.google-btn:hover {
+    background-color: #F8F9FA; /* Google's grey hover */
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    border-color: #dadce0;
+}
+
+.google-btn:active {
+    background-color: #f1f3f4;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+}
+
+/* Required Fields */
+.required-asterisk {
+    color: #d93025;
+    margin-left: 2px;
+}
+
+.or-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    color: var(--color-dark-gray);
+}
+
+.or-divider::before,
+.or-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--color-light-gray);
+}
+
+.or-divider span {
+    padding: 0 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.auth-link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+.item-form {
+    gap: 1.5rem;
+}
+
+.upload-form {
+    padding: 2rem 1rem;
 }
