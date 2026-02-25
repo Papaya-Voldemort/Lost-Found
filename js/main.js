@@ -66,3 +66,80 @@ document.addEventListener('DOMContentLoaded', () => {
     const animatedElements = document.querySelectorAll('.scroll-animate');
     animatedElements.forEach(el => observer.observe(el));
 });
+
+/* ============================================
+   OTHER DROP DOWN
+   ============================================ */
+
+document.getElementById('location').addEventListener('change', function () {
+    const otherLabel = document.getElementById('location-other-label');
+    otherLabel.style.display = this.value === 'other' ? 'flex' : 'none';
+});
+
+/* ============================================
+   TAGS ON FORM
+   ============================================ */
+
+const tagInput = document.getElementById('tag-input');
+const tagPills = document.getElementById('tag-pills');
+const tagsHidden = document.getElementById('tags-hidden');
+let tags = [];
+
+tagInput.addEventListener('keydown', function (e) {
+    // Add tag on Enter or comma
+    if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const val = this.value.trim().replace(',', '');
+        if (val && !tags.includes(val)) {
+            tags.push(val);
+            renderTags();
+        }
+        this.value = '';
+    }
+});
+
+function renderTags() {
+    tagPills.innerHTML = '';
+    tags.forEach(tag => {
+        const pill = document.createElement('span');
+        pill.className = 'tag-pill';
+        pill.setAttribute('role', 'listitem');
+
+        const text = document.createTextNode(tag + ' ');
+        const btn = document.createElement('button');
+        btn.textContent = '×';
+        btn.setAttribute('aria-label', `Remove tag ${tag}`);
+        btn.addEventListener('click', () => {
+            tags = tags.filter(t => t !== tag);
+            renderTags();
+        });
+
+        pill.appendChild(text);
+        pill.appendChild(btn);
+        tagPills.appendChild(pill);
+    });
+    tagsHidden.value = tags.join(',');
+}
+
+/* ============================================
+   Image preview
+   ============================================ */
+
+const imageUpload = document.getElementById('image-upload');
+const previewContainer = document.getElementById('image-preview-container');
+const imagePreview = document.getElementById('image-preview');
+const imageRemove = document.getElementById('image-remove');
+
+imageUpload.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+        imagePreview.src = URL.createObjectURL(file);
+        previewContainer.style.display = 'block';
+    }
+});
+
+imageRemove.addEventListener('click', function () {
+    imageUpload.value = '';         // clears the file input
+    imagePreview.src = '';
+    previewContainer.style.display = 'none';
+});

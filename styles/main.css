@@ -486,6 +486,77 @@ section#call-to-action h2 {
     margin: 0;
 }
 
+#tag-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.tag-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.7rem;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-family: var(--font-body);
+}
+
+.tag-pill button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+}
+
+/* ==================== Image Upload Preview ==================== */
+
+#image-preview-container {
+    display: none;
+    position: relative;
+    width: fit-content;
+    margin-top: 0.5rem;
+}
+
+#image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    display: block;
+}
+
+#image-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: rgba(0, 0, 0, 0.55);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: background-color 0.2s ease;
+}
+
+#image-remove:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.form-hint {
+    font-size: var(--font-size-sm);
+    color: var(--color-dark-gray);
+    margin-top: 0.25rem;
+}
+
 
 /* ==================== Footer ==================== */
 

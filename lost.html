@@ -87,12 +87,12 @@
     </header>
 
     <main>
-        <section class="page-header">
+        <section class="page-header scroll-animate">
             <h1>Lost Items</h1>
             <!-- <p>Browse items that have been reported as lost</p> -->
         </section>
 
-        <section class="upload-form">
+        <section class="upload-form scroll-animate">
             <h2>Report a Lost Item</h2>
             <div id="signed-in-lost-item-div">
                 <form class="item-form">
@@ -116,23 +116,56 @@
 
                     <label>Date Lost <input type="date"></label>
 
-                    <label>Last Seen Location <input type="text" placeholder="e.g. Library, Gym, Dining Hall"></label>
-                    <!--TODO: Switch to dropdown with 'other' field that makes a text input appear-->
+                    <label>Last Seen Location
+                        <select name="location" id="location">
+                            <option value="none" disabled selected>Select a Location</option>
+                            <option value="library">Library</option>
+                            <option value="gym">Gym</option>
+                            <option value="cafeteria">Cafeteria</option>
+                            <option value="hallway">Main Hallway</option>
+                            <option value="classroom">Classroom</option>
+                            <option value="parking">Parking Lot</option>
+                            <option value="bathroom">Bathroom</option>
+                            <option value="office">Front Office</option>
+                            <option value="other">Other...</option>
+                        </select>
+                    </label>
+                    <!-- Hidden until Other is selected -->
+                    <label id="location-other-label" class="full-width" style="display:none;">
+                        Describe Location
+                        <input type="text" id="location-other"
+                            placeholder="e.g. Mr. Anderson's Room, near the water fountain">
+                    </label>
+
+                    <div class="full-width" id="tags-container">
+                        <label for="tag-input">Tags
+                            <input type="text" id="tag-input" placeholder="e.g. red, Nike, zipper...">
+                        </label>
+                        <div id="tag-pills" aria-label="Added tags" role="list"></div>
+                        <!-- Hidden input stores the actual tag data for form submission -->
+                        <input type="hidden" name="tags" id="tags-hidden">
+                    </div>
 
                     <!-- TODO: Add tags field with pill tags you can add/remove for the algorithm -->
 
                     <label class="full-width">Description <textarea placeholder="Anything else that helps identify it?"
                             aria-required="true" required></textarea></label>
 
-                    <label class="full-width">Email: <input type="email" placeholder="e.g. your.email@domain.com" aria-required="true"
-                            required></label>
+                    <label class="full-width">Email: <input type="email" placeholder="e.g. your.email@domain.com"
+                            aria-required="true" required></label>
                     <!-- This form is obsolete because only signed in users can post lost and found items 
                  If they are signed in we have there email already Remove when making back end-->
-                    <div class="full-width">
-                        <label>Image Upload <input type="file" accept="image/*" aria-describedby="photo-hint"></label>
+                    <div class="full-width image-upload-section">
+                        <label>Image Upload
+                            <input type="file" accept="image/*" id="image-upload" aria-describedby="photo-hint">
+                        </label>
                         <p id="photo-hint" class="form-hint">Optional — a photo helps a lot!</p>
-                    </div> <!-- In a div for styling purposes-->
-                    <!--TODO: Add a preview of the image after upload-->
+
+                        <div id="image-preview-container">
+                            <img id="image-preview" src="" alt="Preview of uploaded image">
+                            <button id="image-remove" aria-label="Remove uploaded image">×</button>
+                        </div>
+                    </div>
 
                     <input type="submit" value="Submit" class="btn-primary full-width">
                 </form>
