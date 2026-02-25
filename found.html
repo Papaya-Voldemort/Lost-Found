@@ -73,9 +73,89 @@
     </header>
 
     <main>
-        <section id="page-header">
+        <section class="page-header scroll-animate">
             <h1>Found Items</h1>
-            <p>Browse items that have been found and reported</p>
+            <!-- Found items reporting section-->
+        </section>
+
+        <section class="upload-form scroll-animate">
+            <h2>Report a Found Item</h2>
+            <div id="signed-in-found-item-div">
+                <form class="item-form">
+                    <label>Item Name <input type="text" placeholder="e.g. Black North Face Backpack"
+                            aria-required="true" required></label>
+
+                    <label>Category
+                        <select name="category" id="category" aria-required="true" required>
+                            <option value="none" disabled selected>Select a Category</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="id">ID/Keycard</option>
+                            <option value="keys">Keys</option>
+                            <option value="bags">Backpack/Bags</option>
+                            <option value="bottle">Water Bottle</option>
+                            <option value="jewelry">Jewelry</option>
+                            <option value="supplies">Books/Supplies</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </label>
+
+                    <label>Date Found <input type="date"></label>
+
+                    <label>Location Found
+                        <select name="location" id="location">
+                            <option value="none" disabled selected>Select a Location</option>
+                            <option value="library">Library</option>
+                            <option value="gym">Gym</option>
+                            <option value="cafeteria">Cafeteria</option>
+                            <option value="hallway">Main Hallway</option>
+                            <option value="classroom">Classroom</option>
+                            <option value="parking">Parking Lot</option>
+                            <option value="bathroom">Bathroom</option>
+                            <option value="office">Front Office</option>
+                            <option value="other">Other...</option>
+                        </select>
+                    </label>
+                    <!-- Hidden until Other is selected -->
+                    <label id="location-other-label" class="full-width" style="display:none;">
+                        Describe Location
+                        <input type="text" id="location-other"
+                            placeholder="e.g. Mr. Anderson's Room, near the water fountain">
+                    </label>
+
+                    <div class="full-width" id="tags-container">
+                        <label for="tag-input">Tags
+                            <input type="text" id="tag-input" placeholder="e.g. red, Nike, zipper...">
+                        </label>
+                        <div id="tag-pills" aria-label="Added tags" role="list"></div>
+                        <input type="hidden" name="tags" id="tags-hidden">
+                    </div>
+
+                    <label class="full-width">Description <textarea placeholder="Anything else that helps identify it?"
+                            aria-required="true" required></textarea></label>
+
+                    <label class="full-width">Email: <input type="email" placeholder="e.g. your.email@domain.com"
+                            aria-required="true" required></label>
+                    
+                    <div class="full-width image-upload-section">
+                        <label>Image Upload
+                            <input type="file" accept="image/*" id="image-upload" aria-describedby="photo-hint">
+                        </label>
+                        <p id="photo-hint" class="form-hint">Optional — a photo helps a lot!</p>
+
+                        <div id="image-preview-container">
+                            <img id="image-preview" src="" alt="Preview of uploaded image">
+                            <button id="image-remove" aria-label="Remove uploaded image">×</button>
+                        </div>
+                    </div>
+
+                    <input type="submit" value="Submit" class="btn-primary full-width">
+                </form>
+            </div>
+            <div id="signed-out-found-item-div">
+                <h3>Sign in to submit found items.</h3>
+                <a href="account.html" class="btn-primary">Sign in Now</a>
+            </div>
         </section>
     </main>
 
