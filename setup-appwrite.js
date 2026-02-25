@@ -1,3 +1,6 @@
+/* ==================== APPWRITE SETUP SCRIPT ====================*/
+// Written by GitHub Copilot
+
 import { Client, Databases, Storage, ID, Permission, Role } from 'node-appwrite';
 import 'dotenv/config';
 
@@ -104,7 +107,7 @@ async function setup() {
                 Permission.update(Role.users()),
                 Permission.delete(Role.users()),
             ],
-            false, // File-level security (set to false for simplicity, using bucket-level for now)
+            false, // File-level security
             true,  // Enabled
             undefined, // Max size
             ['jpg', 'png', 'webp', 'jpeg', 'heic'], // Allowed extensions
