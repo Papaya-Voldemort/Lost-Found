@@ -32,10 +32,8 @@
     }
 
     nav li {
+        /* Removed the border cause it was ugly sorry*/
         width: calc(100% / 3);
-        border-top: 2px solid var(--color-dark-gray);
-        border-left: 1px solid var(--color-dark-gray);
-        border-right: 1px solid var(--color-dark-gray);
         border-radius: 8px 8px 0 0;
     }
 
