@@ -174,8 +174,10 @@ if (imageUpload && previewContainer && imagePreview && imageRemove) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Check if user is logged in
+    let isLoggedIn = false;
     try {
         const user = await account.get();
+        isLoggedIn = true;
         const loginLink = document.getElementById('login-link');
         if (loginLink) {
             loginLink.href = 'account.html';
@@ -189,10 +191,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
         }
     } catch (error) {
-        // User is not logged in
+        // User is not logged in - this is expected, don't log error
+        isLoggedIn = false;
         if (window.location.pathname.endsWith('account.html')) {
             window.location.href = 'login.html';
         }
+    }
+
+    // Handle form visibility on lost and found pages
+    const signedInLostDiv = document.getElementById('signed-in-lost-item-div');
+    const signedOutLostDiv = document.getElementById('signed-out-lost-item-div');
+    const signedInFoundDiv = document.getElementById('signed-in-found-item-div');
+    const signedOutFoundDiv = document.getElementById('signed-out-found-item-div');
+
+    // Set initial visibility based on auth state
+    if (signedInLostDiv && signedOutLostDiv) {
+        signedInLostDiv.style.display = isLoggedIn ? 'block' : 'none';
+        signedOutLostDiv.style.display = isLoggedIn ? 'none' : 'block';
+    }
+    if (signedInFoundDiv && signedOutFoundDiv) {
+        signedInFoundDiv.style.display = isLoggedIn ? 'block' : 'none';
+        signedOutFoundDiv.style.display = isLoggedIn ? 'none' : 'block';
     }
 
     // Handle Signup

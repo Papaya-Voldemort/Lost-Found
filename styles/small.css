@@ -113,7 +113,8 @@
     div#description {
         width: 100%;
         margin-left: 0;
-        font-size: 0.75rem; /* Smaller font size to fit on one line on mobile */
+        font-size: 0.75rem;
+        /* Smaller font size to fit on one line on mobile */
     }
 
     .steps-container {

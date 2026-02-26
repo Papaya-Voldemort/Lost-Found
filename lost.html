@@ -175,6 +175,30 @@
                 <a href="account.html" class="btn-primary">Sign in Now</a>
             </div>
         </section><!-- Make sure to show a different screen to not signed in users like a div saying to sign in -->
+        <section class="search-bar scroll-animate">
+            <h1>Search Lost Items</h1>
+            <form id="search-form" class="item-form">
+                <label class="full-width">Item Name<input type="text" id="search-input" placeholder="Search by item name..."></label>
+                <label class="full-width">Item Tags<input type="text" id="search-tags-input" placeholder="Search by tags..."></label>
+                <!-- Maybe upgrade this? -->
+
+                <div class="secondary-search-items">
+                    <label>Location Lost<input type="text" id="location" placeholder="Location lost..."></label>
+                    <!-- Mabye add options like a drop down but also with flexable type using database entires? -->
+                    <label>Date From<input type="date" id="date-from"></label>
+                    <!-- Force the second date to be after the first -->
+                    <label>Date To<input type="date" id="date-to"></label> <!-- Update label text on these ones-->
+                    <label> Sort
+                        <select name="sort" id="sort">
+                            <option>Oldest First</option>
+                            <option>Newest First</option>
+                            <!-- Add other sort options maybe? -->
+                        </select>
+                    </label>
+                </div>
+
+            </form>
+        </section>
 
     </main>
 
