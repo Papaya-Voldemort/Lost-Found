@@ -30,7 +30,7 @@
         <nav>
             <ul>
                 <li class="nav-home">
-                    <a href="index.html">
+                    <a href="/">
                         <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
@@ -87,7 +87,7 @@
                 showToast("Your email has been verified!", "success");
                 
                 setTimeout(() => {
-                    window.location.href = 'account.html';
+                    window.location.href = 'account';
                 }, 3000);
             } catch (error) {
                 statusText.textContent = "Verification failed.";
