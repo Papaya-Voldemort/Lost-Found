@@ -984,3 +984,82 @@ footer {
     justify-content: center;
     margin-top: var(--space-xl);
 }
+
+/* ==================== USER SETTINGS SECTION ==================== */
+
+.user-settings {
+    margin-bottom: var(--space-2xl);
+    background-color: var(--color-background);
+}
+
+.user-settings .container {
+    padding: 0 var(--space-md);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-lg);
+}
+
+.settings-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: 8px;
+    padding: var(--space-lg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.settings-card h3 {
+    margin-top: 0;
+    margin-bottom: var(--space-md);
+    color: var(--color-primary-dark);
+    font-size: 1.25rem;
+    border-bottom: 2px solid var(--color-surface);
+    padding-bottom: var(--space-sm);
+}
+
+.settings-card form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.settings-card label {
+    font-weight: 500;
+    color: var(--color-black);
+    font-size: 0.95rem;
+}
+
+.settings-card input {
+    padding: 10px;
+    border: 1px solid var(--color-dark-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.settings-card input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(92, 158, 173, 0.2);
+}
+
+.settings-card button {
+    margin-top: var(--space-sm);
+    align-self: flex-start;
+    padding: 10px 20px;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.settings-card button:hover {
+    background-color: var(--color-primary-dark);
+}

@@ -26,6 +26,10 @@ function renderUserProfile(user) {
     document.getElementById('user-name').textContent = user.name;
     document.getElementById('user-email').textContent = user.email;
     
+    // Pre-fill settings form
+    const nameInput = document.getElementById('new-name');
+    if (nameInput) nameInput.value = user.name;
+    
     const verifiedBadge = document.getElementById('user-verified');
     if (user.emailVerification) {
         verifiedBadge.textContent = 'Verified User';
@@ -35,6 +39,50 @@ function renderUserProfile(user) {
         verifiedBadge.classList.add('unverified');
     }
 }
+
+// Update Profile Handler
+document.getElementById('update-profile-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newName = document.getElementById('new-name').value;
+    
+    try {
+        await account.updateName(newName);
+        showToast('Profile updated successfully', 'success');
+        // Update local state and UI
+        currentUser.name = newName;
+        renderUserProfile(currentUser);
+    } catch (error) {
+        console.error('Update failed:', error);
+        showToast(error.message || 'Failed to update profile', 'error');
+    }
+});
+
+// Change Password Handler
+document.getElementById('change-password-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    
+    if (newPassword !== confirmPassword) {
+        showToast('Passwords do not match', 'error');
+        return;
+    }
+    
+    // Check length just in case HTML validation is bypassed
+    if (newPassword.length < 8) {
+        showToast('Password must be at least 8 characters', 'error');
+        return;
+    }
+
+    try {
+        await account.updatePassword(newPassword);
+        showToast('Password updated successfully', 'success');
+        e.target.reset();
+    } catch (error) {
+        console.error('Password update failed:', error);
+        showToast(error.message || 'Failed to update password', 'error');
+    }
+});
 
 // Logout Handler
 document.getElementById('logout-btn')?.addEventListener('click', async () => {

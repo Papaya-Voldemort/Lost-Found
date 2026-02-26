@@ -93,6 +93,40 @@
             </div>
         </section>
 
+        <section class="user-settings">
+            <div class="container">
+                <header class="section-header">
+                    <h2>Account Settings</h2>
+                </header>
+
+                <div class="settings-grid">
+                    <!-- Update Name -->
+                    <div class="settings-card">
+                        <h3>Update Profile</h3>
+                        <form id="update-profile-form">
+                            <label for="new-name">Display Name</label>
+                            <input type="text" id="new-name" required placeholder="Enter new name">
+                            <button type="submit" class="btn-secondary">Save Changes</button>
+                        </form>
+                    </div>
+
+                    <!-- Change Password -->
+                    <div class="settings-card">
+                        <h3>Change Password</h3>
+                        <form id="change-password-form">
+                            <label for="new-password">New Password</label>
+                            <input type="password" id="new-password" required minlength="8" placeholder="At least 8 characters">
+                            
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" required minlength="8" placeholder="Confirm new password">
+                            
+                            <button type="submit" class="btn-secondary">Update Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="user-listings">
             <div class="container">
                 <header class="section-header">
