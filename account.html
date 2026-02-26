@@ -58,12 +58,11 @@
                         Found
                     </a>
                 </li>
-                <li class="nav-login">
-                    <a id="login-link" class="active" href="account">
+                <li class="nav-account current">
+                    <a href="account">
                         <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                            <rect width="256" height="256" fill="none"/>
                             <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-                            <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                            <path d="M30.9,206.6a112,112,0,0,1,194.2,0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
                         </svg>
                         Account
                     </a>
@@ -72,13 +71,50 @@
         </nav>
     </header>
 
-    <main>
-        <section id="page-header">
-            <h1>My Account</h1>
-            <p>Manage your profile and posted items</p>
-            <button id="logout-btn" class="btn-primary" style="margin-top: 20px; background-color: #dc3545;">Sign Out</button>
+    <main id="account-main">
+        <section class="user-profile">
+            <div class="container">
+                <div class="profile-header">
+                    <div class="user-avatar-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                            <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                            <path d="M30.9,206.6a112,112,0,0,1,194.2,0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                        </svg>
+                    </div>
+                    <div class="user-info">
+                        <h2 id="user-name">Loading Profile...</h2>
+                        <p id="user-email">please wait</p>
+                        <span id="user-verified" class="badge">Checking status...</span>
+                    </div>
+                    <div class="user-actions">
+                        <button id="logout-btn" class="btn-primary" style="background-color: var(--color-error, #dc3545);">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="user-listings">
+            <div class="container">
+                <header class="section-header">
+                    <h2>My Listings</h2>
+                    <a href="lost" class="btn-primary sm">Report New Lost Item</a>
+                </header>
+                
+                <div id="listings-grid" class="listings-grid">
+                    <!-- Listings will be injected here -->
+                </div>
+
+                <div class="listings-footer">
+                    <p id="no-posts-msg" class="empty-state" style="display: none;">
+                        You haven't posted any items yet.
+                    </p>
+                    <button id="load-more-btn" class="btn-secondary" style="display: none;">Load More</button>
+                </div>
+            </div>
         </section>
     </main>
+
+    <script type="module" src="js/account.js"></script>
 
     <footer>
         <div class="footer-container">
