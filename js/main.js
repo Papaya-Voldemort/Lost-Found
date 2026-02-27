@@ -2,6 +2,8 @@ import { account, ID } from './auth.js';
 import { showToast } from './toast.js';
 import { handleItemSubmission, fetchItems, setupSearch } from './items.js';
 
+document.documentElement.classList.add('js');
+
 /* ============================================
    TYPEWRITER EFFECT
    ============================================ */
@@ -48,14 +50,25 @@ function typeEffect() {
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('motion-ready');
+
     // Start typewriter effect only after DOM is ready
     typeEffect();
-    
+    const animatedElements = document.querySelectorAll('.scroll-animate');
+    if (!animatedElements.length) {
+        return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+        animatedElements.forEach((el) => el.classList.add('is-visible'));
+        return;
+    }
+
     // Scroll animation observer
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.15 
+        threshold: 0.15
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -67,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    const animatedElements = document.querySelectorAll('.scroll-animate');
     animatedElements.forEach(el => observer.observe(el));
 });
 
@@ -75,14 +87,19 @@ document.addEventListener('DOMContentLoaded', () => {
    OTHER DROP DOWN
    ============================================ */
 
-const locationSelect = document.getElementById('location');
+const locationSelect = document.querySelector('#lost-item-form #location, #found-item-form #location');
 if (locationSelect) {
-    locationSelect.addEventListener('change', function () {
+    const toggleOtherLocation = () => {
         const otherLabel = document.getElementById('location-other-label');
-        if (otherLabel) {
-            otherLabel.style.display = this.value === 'other' ? 'flex' : 'none';
+        if (!otherLabel) {
+            return;
         }
-    }); 
+
+        otherLabel.classList.toggle('is-visible', locationSelect.value === 'other');
+    };
+
+    locationSelect.addEventListener('change', toggleOtherLocation);
+    toggleOtherLocation();
 }
 
 /* ============================================

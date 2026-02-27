@@ -4,6 +4,7 @@ import { showToast } from './toast.js';
 const DB_ID = 'traceback_db';
 const COLLECTION_ID = 'items';
 const BUCKET_ID = 'item_images';
+const itemCache = new Map();
 
 // Handle Item Submission
 export async function handleItemSubmission(formId, itemType) {
@@ -133,21 +134,35 @@ export async function fetchItems(itemType, queries = []) {
             [...defaultQueries, ...queries]
         );
 
+        itemCache.set(itemType, response.documents);
+
         if (response.documents.length === 0) {
             feedContainer.innerHTML = '<p class="no-items">No items found.</p>';
             return;
         }
 
-        feedContainer.innerHTML = '';
-        response.documents.forEach(item => {
-            const card = createItemCard(item);
-            feedContainer.appendChild(card);
-        });
+        renderItems(response.documents);
 
     } catch (error) {
         console.error('Error fetching items:', error);
         feedContainer.innerHTML = '<p class="error-message">Failed to load items. Please try again later.</p>';
     }
+}
+
+function renderItems(items) {
+    const feedContainer = document.getElementById('items-feed');
+    if (!feedContainer) return;
+
+    if (!items.length) {
+        feedContainer.innerHTML = '<p class="no-items">No items found.</p>';
+        return;
+    }
+
+    feedContainer.innerHTML = '';
+    items.forEach(item => {
+        const card = createItemCard(item);
+        feedContainer.appendChild(card);
+    });
 }
 
 function createItemCard(item) {
@@ -195,54 +210,110 @@ function createItemCard(item) {
     return card;
 }
 
+function normalizeSearchValue(value) {
+    return (value || '').trim().toLowerCase();
+}
+
+function matchesText(haystack, needle) {
+    if (!needle) return true;
+    return normalizeSearchValue(haystack).includes(needle);
+}
+
+function filterItems(items, filters) {
+    const { searchInput, tags, locationInput, dateFromInput, dateToInput, sortSelect } = filters;
+    const dateFrom = dateFromInput ? new Date(dateFromInput) : null;
+    const dateTo = dateToInput ? new Date(dateToInput) : null;
+
+    if (dateTo) {
+        dateTo.setHours(23, 59, 59, 999);
+    }
+
+    const filteredItems = items.filter((item) => {
+        const itemDate = new Date(item.date);
+        const itemTags = Array.isArray(item.tags) ? item.tags.map(tag => normalizeSearchValue(tag)) : [];
+
+        if (!matchesText(item.title, searchInput)) {
+            return false;
+        }
+
+        if (!matchesText(item.location, locationInput)) {
+            return false;
+        }
+
+        if (tags.length > 0 && !tags.every(tag => itemTags.some(itemTag => itemTag.includes(tag)))) {
+            return false;
+        }
+
+        if (dateFrom && itemDate < dateFrom) {
+            return false;
+        }
+
+        if (dateTo && itemDate > dateTo) {
+            return false;
+        }
+
+        return true;
+    });
+
+    filteredItems.sort((a, b) => {
+        const aDate = new Date(a.date).getTime();
+        const bDate = new Date(b.date).getTime();
+        return sortSelect === 'Oldest First' ? aDate - bDate : bDate - aDate;
+    });
+
+    return filteredItems;
+}
+
 // Handle Search
 export function setupSearch(itemType) {
     const searchForm = document.getElementById('search-form');
     if (!searchForm) return;
+
+    let debounceId = null;
 
     searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
         executeSearch(itemType);
     });
 
-    // Optional: Add debounced input listeners for real-time search
     const inputs = searchForm.querySelectorAll('input, select');
     inputs.forEach(input => {
-        input.addEventListener('change', () => executeSearch(itemType));
+        const eventName = input.tagName === 'SELECT' ? 'change' : 'input';
+        input.addEventListener(eventName, () => {
+            window.clearTimeout(debounceId);
+            debounceId = window.setTimeout(() => executeSearch(itemType), 180);
+        });
+    });
+
+    searchForm.addEventListener('reset', () => {
+        window.clearTimeout(debounceId);
+        window.requestAnimationFrame(() => executeSearch(itemType));
     });
 }
 
-function executeSearch(itemType) {
-    const searchInput = document.getElementById('search-input')?.value;
+async function executeSearch(itemType) {
+    const searchInput = normalizeSearchValue(document.getElementById('search-input')?.value);
     const tagsInput = document.getElementById('search-tags-input')?.value;
-    const locationInput = document.getElementById('location')?.value;
+    const locationInput = normalizeSearchValue(document.getElementById('search-location')?.value);
+    const dateFromInput = document.getElementById('date-from')?.value;
+    const dateToInput = document.getElementById('date-to')?.value;
     const sortSelect = document.getElementById('sort')?.value;
+    const tags = tagsInput
+        ? tagsInput.split(',').map(t => normalizeSearchValue(t)).filter(Boolean)
+        : [];
 
-    const queries = [];
-
-    if (searchInput) {
-        // Appwrite requires a full-text index for search, assuming 'title' has one or we use equal/startsWith
-        // For simplicity, we might use startsWith or equal if full-text isn't set up, but let's assume search is available
-        queries.push(Query.search('title', searchInput)); 
+    let items = itemCache.get(itemType);
+    if (!items) {
+        await fetchItems(itemType);
+        items = itemCache.get(itemType) || [];
     }
 
-    if (tagsInput) {
-        const tags = tagsInput.split(',').map(t => t.trim()).filter(t => t);
-        if (tags.length > 0) {
-            // Appwrite array contains
-            tags.forEach(tag => queries.push(Query.contains('tags', tag)));
-        }
-    }
-
-    if (locationInput && locationInput !== 'none') {
-        queries.push(Query.search('location', locationInput));
-    }
-
-    if (sortSelect === 'Oldest First') {
-        queries.push(Query.orderAsc('date'));
-    } else {
-        queries.push(Query.orderDesc('date'));
-    }
-
-    fetchItems(itemType, queries);
+    renderItems(filterItems(items, {
+        searchInput,
+        tags,
+        locationInput,
+        dateFromInput,
+        dateToInput,
+        sortSelect
+    }));
 }

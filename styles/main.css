@@ -420,15 +420,6 @@ section#call-to-action h2 {
     font-size: var(--font-size-3xl);
 }
 
-/* If the user is signed in do this */
-#signed-out-lost-item-div {
-    display: none;
-}
-
-#signed-in-lost-item-div {
-    display: flex;
-}
-
 .upload-form {
     margin-left: auto;
     margin-right: auto;
@@ -456,6 +447,10 @@ section#call-to-action h2 {
     box-sizing: border-box;
 }
 
+.item-form > * {
+    min-width: 0;
+}
+
 .item-form label {
     display: flex;
     flex-direction: column;
@@ -463,15 +458,53 @@ section#call-to-action h2 {
     margin-bottom: 0.2rem;
 }
 
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.form-field label,
+.item-form > label {
+    color: inherit;
+}
+
 .item-form input,
 .item-form select,
 .item-form textarea {
+    width: 100%;
+    min-width: 0;
     margin-top: 0.3rem;
-    padding: 0.5rem;
+    padding: 0.6rem;
     font-size: 1rem;
     border-radius: 6px;
     border: 1px solid var(--color-light-gray);
     background: var(--color-background);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.item-form input:hover,
+.item-form select:hover,
+.item-form textarea:hover {
+    border-color: #b8c6cb;
+}
+
+.item-form input:focus,
+.item-form select:focus,
+.item-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(92, 158, 173, 0.14);
+}
+
+.item-form textarea {
+    min-height: 10rem;
+    resize: vertical;
+}
+
+.item-form input::placeholder,
+.item-form textarea::placeholder {
+    color: #8f989c;
 }
 
 .item-form input[type="submit"] {
@@ -491,6 +524,11 @@ section#call-to-action h2 {
     width: auto;
     min-width: 200px;
     align-self: center;
+}
+
+.item-form button[type="submit"],
+.item-form button[type="reset"] {
+    min-width: 0;
 }
 
 .item-form input:active {
@@ -573,6 +611,13 @@ section#call-to-action h2 {
     margin-top: 0.25rem;
 }
 
+.full-width {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+
 /* ==================== Search Form ==================== */
 
 .search-bar {
@@ -590,20 +635,62 @@ section#call-to-action h2 {
     max-width: 80vw;
 }
 
+.search-form {
+    gap: 1.1rem;
+}
+
+.upload-form .item-form > *,
+.search-form .form-field {
+    animation: formFieldRise 0.35s ease both;
+}
+
+.upload-form .item-form > *:nth-child(2),
+.search-form .form-field:nth-child(2) {
+    animation-delay: 0.06s;
+}
+
+.upload-form .item-form > *:nth-child(3),
+.search-form .secondary-search-items {
+    animation: formFieldRise 0.45s ease 0.12s both;
+}
+
 .secondary-search-items {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
     width: 100%;
     box-sizing: border-box;
-    justify-content: space-between;
 }
 
-.secondary-search-items label {
-    flex: 1 1 0;
-    min-width: 0;
+#tags-container,
+.image-upload-section,
+#location-other-label {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
 }
 
+#location-other-label {
+    display: none;
+}
+
+#location-other-label.is-visible {
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes formFieldRise {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 /* Fix the form items not lining up and filling the whole width */
 
 /* ==================== Footer ==================== */
@@ -652,15 +739,20 @@ footer {
    SCROLL-TRIGGERED ANIMATIONS
    ============================================ */
 
-/* Initial state - hidden and shifted */
+/* Initial state - visible by default so forms stay usable before JS finishes bootstrapping */
 .scroll-animate {
+    opacity: 1;
+    transform: none;
+}
+
+body.motion-ready .scroll-animate {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 /* Visible state - triggered by JavaScript */
-.scroll-animate.is-visible {
+body.motion-ready .scroll-animate.is-visible {
     opacity: 1;
     transform: translateY(0);
 }

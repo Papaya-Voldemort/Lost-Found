@@ -144,4 +144,9 @@
     .item-form textarea {
         min-height: 80px;
     }
+
+    .secondary-search-items {
+        grid-template-columns: 1fr;
+    }
+
 }

@@ -122,7 +122,19 @@
         max-width: 800px;
     }
 
-    .item-form .full-width {
+    .item-form > .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .search-form {
+        max-width: 920px;
+    }
+
+    .search-form > .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .search-form .secondary-search-items {
         grid-column: 1 / -1;
     }
 

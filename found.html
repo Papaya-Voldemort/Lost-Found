@@ -117,7 +117,7 @@
                     </select>
 
                     <!-- Hidden until Other is selected -->
-                    <div id="location-other-label" class="full-width" style="display:none;">
+                    <div id="location-other-label" class="full-width">
                         <label for="location-other">Describe Location</label>
                         <input type="text" id="location-other" name="location-other" placeholder="e.g. Mr. Anderson's Room, near the water fountain">
                     </div>
@@ -154,21 +154,42 @@
 
         <section class="search-bar scroll-animate">
             <h1>Search Found Items</h1>
-            <form id="search-form" class="item-form">
-                <label class="full-width">Item Name<input type="text" id="search-input" placeholder="Search by item name..."></label>
-                <label class="full-width">Item Tags<input type="text" id="search-tags-input" placeholder="Search by tags..."></label>
+            <form id="search-form" class="item-form search-form">
+                <div class="form-field full-width">
+                    <label for="search-input">Item Name</label>
+                    <input type="text" id="search-input" placeholder="Search by item name...">
+                </div>
 
-                <div class="secondary-search-items">
-                    <label>Location Found<input type="text" id="location" placeholder="Location found..."></label>
-                    <label>Date From<input type="date" id="date-from"></label>
-                    <label>Date To<input type="date" id="date-to"></label>
-                    <label> Sort
+                <div class="form-field full-width">
+                    <label for="search-tags-input">Item Tags</label>
+                    <input type="text" id="search-tags-input" placeholder="Search by tags...">
+                </div>
+
+                <div class="secondary-search-items full-width">
+                    <div class="form-field">
+                        <label for="search-location">Location Found</label>
+                        <input type="text" id="search-location" placeholder="Location found...">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="date-from">Date From</label>
+                        <input type="date" id="date-from">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="date-to">Date To</label>
+                        <input type="date" id="date-to">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="sort">Sort</label>
                         <select name="sort" id="sort">
                             <option>Oldest First</option>
                             <option>Newest First</option>
                         </select>
-                    </label>
+                    </div>
                 </div>
+
             </form>
         </section>
 
