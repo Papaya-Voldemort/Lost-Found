@@ -860,6 +860,7 @@ footer {
     margin-bottom: var(--space-xl);
     flex-wrap: wrap;
     gap: var(--space-md);
+    flex-direction:column;
 }
 
 .section-header h2 {
