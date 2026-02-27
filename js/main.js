@@ -1,5 +1,6 @@
 import { account, ID } from './auth.js';
 import { showToast } from './toast.js';
+import { handleItemSubmission, fetchItems, setupSearch } from './items.js';
 
 /* ============================================
    TYPEWRITER EFFECT
@@ -208,10 +209,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (signedInLostDiv && signedOutLostDiv) {
         signedInLostDiv.style.display = isLoggedIn ? 'block' : 'none';
         signedOutLostDiv.style.display = isLoggedIn ? 'none' : 'block';
+        
+        // Initialize items logic for lost page
+        if (isLoggedIn) {
+            handleItemSubmission('lost-item-form', 'lost');
+        }
+        fetchItems('lost');
+        setupSearch('lost');
     }
     if (signedInFoundDiv && signedOutFoundDiv) {
         signedInFoundDiv.style.display = isLoggedIn ? 'block' : 'none';
         signedOutFoundDiv.style.display = isLoggedIn ? 'none' : 'block';
+        
+        // Initialize items logic for found page
+        if (isLoggedIn) {
+            handleItemSubmission('found-item-form', 'found');
+        }
+        fetchItems('found');
+        setupSearch('found');
     }
 
     // Handle Signup
@@ -332,7 +347,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 await account.deleteSession('current');
                 window.location.href = 'index.html';
             } catch (error) {
-                alert("Logout failed: " + error.message);
+                showToast("Logout failed: " + error.message, "error");
             }
         });
     }

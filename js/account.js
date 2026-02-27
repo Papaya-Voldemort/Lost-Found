@@ -155,7 +155,9 @@ function createListingCard(doc) {
     // Handle Image
     let imageUrl = 'images/placeholder-item.svg'; // Default placeholder
     if (doc.imageId) {
-        imageUrl = storage.getFilePreview(BUCKET_ID, doc.imageId).href;
+        // Appwrite SDK storage.getFilePreview returns a string (URL)
+        // Removed .href which was causing undefined
+        imageUrl = storage.getFilePreview(BUCKET_ID, doc.imageId);
     }
 
     // Format Date
@@ -163,11 +165,11 @@ function createListingCard(doc) {
 
     card.innerHTML = `
         <div class="card-image">
-            <img src="${imageUrl}" alt="${doc.name}" loading="lazy">
+            <img src="${imageUrl}" alt="${doc.title}" loading="lazy">
             <span class="status-badge ${doc.type}">${doc.type}</span>
         </div>
         <div class="card-content">
-            <h3>${doc.name}</h3>
+            <h3>${doc.title}</h3>
             <p class="meta">
                 <span>📅 ${date}</span>
                 <span>📍 ${doc.location}</span>
@@ -190,7 +192,22 @@ async function handleDelete(docId) {
     if (!confirm('Are you sure you want to delete this listing? This action cannot be undone.')) return;
 
     try {
+        // First retrieve the document to find the imageId
+        const doc = await databases.getDocument(DB_ID, COLLECTION_ID, docId);
+        
+        // 1. Delete associated image file if it exists
+        if (doc.imageId) {
+            try {
+                await storage.deleteFile(BUCKET_ID, doc.imageId);
+            } catch (err) {
+                console.warn('Failed to delete associated image:', err);
+                // Continue with document deletion even if image fails
+            }
+        }
+
+        // 2. Delete the original document
         await databases.deleteDocument(DB_ID, COLLECTION_ID, docId);
+
         showToast('Listing deleted', 'success');
         // Refresh the list
         fetchUserListings(false);

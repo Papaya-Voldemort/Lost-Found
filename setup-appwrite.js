@@ -56,7 +56,8 @@ async function setup() {
             [
                 Permission.read(Role.any()),
                 Permission.create(Role.users()),
-            ]
+            ],
+            true // Enable Document Security
         );
     }
 

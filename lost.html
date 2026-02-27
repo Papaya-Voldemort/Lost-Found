@@ -31,7 +31,7 @@
             <ul>
                 <li class="nav-home">
                     <a href="/">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
                             <path
@@ -44,7 +44,7 @@
                 </li>
                 <li class="nav-lost">
                     <a id="active" href="lost">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
                             <path d="M128,160V144c30.93,0,56-21.49,56-48s-25.07-48-56-48S72,69.49,72,96" fill="none"
@@ -57,7 +57,7 @@
                 </li>
                 <li class="nav-found">
                     <a href="found">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
                             <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round"
@@ -70,7 +70,7 @@
                 </li>
                 <li class="nav-login">
                     <a href="login" id="login-link">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
                             <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round"
@@ -95,71 +95,62 @@
         <section class="upload-form scroll-animate">
             <h2>Report a Lost Item</h2>
             <div id="signed-in-lost-item-div">
-                <form class="item-form">
-                    <label>Item Name <input type="text" placeholder="e.g. Black North Face Backpack"
-                            aria-required="true" required></label>
+                <form class="item-form" id="lost-item-form">
+                    <label for="item-name">Item Name</label>
+                    <input type="text" id="item-name" name="title" placeholder="e.g. Black North Face Backpack" aria-required="true" required>
 
-                    <label>Category
-                        <select name="category" id="category" aria-required="true" required>
-                            <option value="none" disabled selected>Select a Category</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="id">ID/Keycard</option>
-                            <option value="keys">Keys</option>
-                            <option value="bags">Backpack/Bags</option>
-                            <option value="bottle">Water Bottle</option>
-                            <option value="jewelry">Jewelry</option>
-                            <option value="supplies">Books/Supplies</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </label>
+                    <label for="category">Category</label>
+                    <select name="category" id="category" aria-required="true" required>
+                        <option value="none" disabled selected>Select a Category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="id">ID/Keycard</option>
+                        <option value="keys">Keys</option>
+                        <option value="bags">Backpack/Bags</option>
+                        <option value="bottle">Water Bottle</option>
+                        <option value="jewelry">Jewelry</option>
+                        <option value="supplies">Books/Supplies</option>
+                        <option value="other">Other</option>
+                    </select>
 
-                    <label>Date Lost <input type="date"></label>
+                    <label for="date-lost">Date Lost</label>
+                    <input type="date" id="date-lost" name="date" required>
 
-                    <label>Last Seen Location
-                        <select name="location" id="location">
-                            <option value="none" disabled selected>Select a Location</option>
-                            <option value="library">Library</option>
-                            <option value="gym">Gym</option>
-                            <option value="cafeteria">Cafeteria</option>
-                            <option value="hallway">Main Hallway</option>
-                            <option value="classroom">Classroom</option>
-                            <option value="parking">Parking Lot</option>
-                            <option value="bathroom">Bathroom</option>
-                            <option value="office">Front Office</option>
-                            <option value="other">Other...</option>
-                        </select>
-                    </label>
+                    <label for="location">Last Seen Location</label>
+                    <select name="location" id="location" required>
+                        <option value="none" disabled selected>Select a Location</option>
+                        <option value="library">Library</option>
+                        <option value="gym">Gym</option>
+                        <option value="cafeteria">Cafeteria</option>
+                        <option value="hallway">Main Hallway</option>
+                        <option value="classroom">Classroom</option>
+                        <option value="parking">Parking Lot</option>
+                        <option value="bathroom">Bathroom</option>
+                        <option value="office">Front Office</option>
+                        <option value="other">Other...</option>
+                    </select>
+
                     <!-- Hidden until Other is selected -->
-                    <label id="location-other-label" class="full-width" style="display:none;">
-                        Describe Location
-                        <input type="text" id="location-other"
-                            placeholder="e.g. Mr. Anderson's Room, near the water fountain">
-                    </label>
+                    <div id="location-other-label" class="full-width" style="display:none;">
+                        <label for="location-other">Describe Location</label>
+                        <input type="text" id="location-other" name="location-other" placeholder="e.g. Mr. Anderson's Room, near the water fountain">
+                    </div>
 
                     <div class="full-width" id="tags-container">
-                        <label for="tag-input">Tags
-                            <input type="text" id="tag-input" placeholder="e.g. red, Nike, zipper...">
-                        </label>
+                        <label for="tag-input">Tags</label>
+                        <input type="text" id="tag-input" placeholder="e.g. red, Nike, zipper...">
                         <div id="tag-pills" aria-label="Added tags" role="list"></div>
                         <!-- Hidden input stores the actual tag data for form submission -->
                         <input type="hidden" name="tags" id="tags-hidden">
                     </div>
 
-                    <!-- TODO: Add tags field with pill tags you can add/remove for the algorithm -->
+                    <label for="description" class="full-width">Description</label>
+                    <textarea id="description" name="description" class="full-width" placeholder="Anything else that helps identify it?" aria-required="true" required></textarea>
 
-                    <label class="full-width">Description <textarea placeholder="Anything else that helps identify it?"
-                            aria-required="true" required></textarea></label>
-
-                    <label class="full-width">Email: <input type="email" placeholder="e.g. your.email@domain.com"
-                            aria-required="true" required></label>
-                    <!-- This form is obsolete because only signed in users can post lost and found items 
-                 If they are signed in we have there email already Remove when making back end-->
                     <div class="full-width image-upload-section">
-                        <label>Image Upload
-                            <input type="file" accept="image/*" id="image-upload" aria-describedby="photo-hint">
-                        </label>
-                        <p id="photo-hint" class="form-hint">Optional — a photo helps a lot!</p>
+                        <label for="image-upload">Image Upload</label>
+                        <input type="file" accept="image/*" id="image-upload" aria-describedby="photo-hint" required>
+                        <p id="photo-hint" class="form-hint">A photo is required to help identify the item.</p>
 
                         <div id="image-preview-container">
                             <img id="image-preview" src="" alt="Preview of uploaded image">
@@ -167,7 +158,7 @@
                         </div>
                     </div>
 
-                    <input type="submit" value="Submit" class="btn-primary full-width">
+                    <button type="submit" id="submit-btn" class="btn-primary full-width">Submit</button>
                 </form>
             </div>
             <div id="signed-out-lost-item-div">
@@ -198,6 +189,12 @@
                 </div>
 
             </form>
+        </section>
+
+        <section class="items-feed-section scroll-animate">
+            <div id="items-feed" class="items-grid">
+                <!-- Items will be dynamically injected here -->
+            </div>
         </section>
 
     </main>
