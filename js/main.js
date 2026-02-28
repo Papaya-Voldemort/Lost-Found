@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 // Send verification email
                 try {
-                    await account.createVerification({ url: window.location.origin + '/verify.html' });
+                    await account.createVerification(window.location.origin + '/verify.html');
                     showToast("Account created! Please check your email to verify your account.", "success");
                     
                     // Redirect after a short delay so they can read the toast
