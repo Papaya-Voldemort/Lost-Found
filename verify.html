@@ -82,7 +82,7 @@
             }
 
             try {
-                await account.updateVerification({ userId, secret });
+                await account.updateVerification(userId, secret);
                 statusText.textContent = "Email verified successfully! Redirecting...";
                 showToast("Your email has been verified!", "success");
                 
