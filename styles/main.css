@@ -593,14 +593,15 @@ section#call-to-action h2 {
 .secondary-search-items {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    gap: 1rem;
     width: 100%;
     box-sizing: border-box;
     justify-content: space-between;
 }
 
 .secondary-search-items label {
-    flex: 1 1 0;
+    flex: 1 1 120px;
     min-width: 0;
 }
 
