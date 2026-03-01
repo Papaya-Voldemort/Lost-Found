@@ -3,6 +3,21 @@ import { showToast } from './toast.js';
 import { handleItemSubmission, fetchItems, setupSearch } from './items.js';
 
 /* ============================================
+   DARK / LIGHT MODE TOGGLE
+   ============================================ */
+
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        // Update theme-color meta tag
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', isDark ? '#121212' : '#326273');
+    });
+}
+
+/* ============================================
    TYPEWRITER EFFECT
    ============================================ */
 
@@ -150,10 +165,14 @@ const imagePreview = document.getElementById('image-preview');
 const imageRemove = document.getElementById('image-remove');
 
 if (imageUpload && previewContainer && imagePreview && imageRemove) {
+    let currentObjectUrl = null;
+
     imageUpload.addEventListener('change', function () {
         const file = this.files[0];
         if (file) {
-            imagePreview.src = URL.createObjectURL(file);
+            if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
+            currentObjectUrl = URL.createObjectURL(file);
+            imagePreview.src = currentObjectUrl;
             previewContainer.style.display = 'block';
         }
     });
@@ -161,19 +180,126 @@ if (imageUpload && previewContainer && imagePreview && imageRemove) {
     imageRemove.addEventListener('click', function (e) {
         e.preventDefault(); // prevent form submit
         imageUpload.value = '';         // clears the file input
+        if (currentObjectUrl) {
+            URL.revokeObjectURL(currentObjectUrl);
+            currentObjectUrl = null;
+        }
         imagePreview.src = '';
         previewContainer.style.display = 'none';
-        
-        // Also revoke object URL to free memory if possible, 
-        // though we'd need to store the url to do that.
     });
 }
+
+/* ============================================
+   LIVE FIELD VALIDATION
+   ============================================ */
+
+// Add .touched class on blur so CSS validation styles activate
+document.querySelectorAll('.item-form input, .item-form select, .item-form textarea, .settings-card input').forEach(field => {
+    // Skip hidden inputs, search fields, and buttons
+    if (field.type === 'hidden' || field.type === 'submit' || field.closest('.search-bar')) return;
+
+    field.addEventListener('blur', () => {
+        field.classList.add('touched');
+
+        // Special handling for <select> with "none" as disabled placeholder
+        if (field.tagName === 'SELECT') {
+            field.classList.toggle('invalid-selection', field.value === 'none');
+        }
+    });
+
+    // Also validate on change for selects (user picks an option)
+    if (field.tagName === 'SELECT') {
+        field.addEventListener('change', () => {
+            field.classList.add('touched');
+            field.classList.toggle('invalid-selection', field.value === 'none');
+        });
+    }
+});
+
+/* ============================================
+   PASSWORD VISIBILITY TOGGLE
+   ============================================ */
+
+document.querySelectorAll('.toggle-password').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const wrapper = btn.closest('.password-wrapper');
+        const input = wrapper.querySelector('input');
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        btn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+        btn.classList.toggle('showing', !isPassword);
+    });
+});
+
+/* ============================================
+   PASSWORD SPACE STRIPPING
+   ============================================ */
+
+document.querySelectorAll('input[type="password"]').forEach(field => {
+    field.addEventListener('input', () => {
+        const pos = field.selectionStart;
+        const cleaned = field.value.replace(/\s/g, '');
+        if (cleaned !== field.value) {
+            const diff = field.value.length - cleaned.length;
+            field.value = cleaned;
+            field.setSelectionRange(pos - diff, pos - diff);
+        }
+    });
+});
+
+/* ============================================
+   PASSWORD STRENGTH METER
+   ============================================ */
+
+function initStrengthMeter(inputId, containerId) {
+    const input = document.getElementById(inputId);
+    const container = document.getElementById(containerId);
+    if (!input || !container) return;
+
+    const fill = container.querySelector('.strength-fill');
+    const text = container.querySelector('.strength-text');
+
+    input.addEventListener('input', () => {
+        const val = input.value;
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (val.length >= 12) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        const levels = [
+            { label: '', color: 'transparent', width: '0%' },
+            { label: 'Weak', color: '#dc3545', width: '20%' },
+            { label: 'Fair', color: '#fd7e14', width: '40%' },
+            { label: 'Good', color: '#ffc107', width: '60%' },
+            { label: 'Strong', color: '#28a745', width: '80%' },
+            { label: 'Very Strong', color: '#20c997', width: '100%' },
+        ];
+
+        const level = levels[score];
+        fill.style.width = level.width;
+        fill.style.backgroundColor = level.color;
+        text.textContent = val.length > 0 ? level.label : '';
+        text.style.color = level.color;
+    });
+}
+
+initStrengthMeter('signup-password', 'password-strength');
+initStrengthMeter('new-password', 'password-strength-account');
 
 /* ============================================
    APPWRITE AUTHENTICATION
    ============================================ */
 
-document.addEventListener('DOMContentLoaded', async () => {
+// Auth check runs inside the existing DOMContentLoaded above — moved there.
+// This block is kept as an IIFE to avoid blocking the initial paint.
+(async () => {
+    // Wait for DOM
+    if (document.readyState === 'loading') {
+        await new Promise(r => document.addEventListener('DOMContentLoaded', r, { once: true }));
+    }
+
     // Check if user is logged in
     let isLoggedIn = false;
     try {
@@ -181,7 +307,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         isLoggedIn = true;
         const loginLink = document.getElementById('login-link');
         if (loginLink) {
-            loginLink.href = 'account.html';
+            loginLink.href = 'account';
             loginLink.innerHTML = `
                 <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                     <rect width="256" height="256" fill="none"/>
@@ -194,8 +320,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         // User is not logged in - this is expected, don't log error
         isLoggedIn = false;
-        if (window.location.pathname.endsWith('account.html')) {
-            window.location.href = 'login.html';
+        if (window.location.pathname.endsWith('account') || window.location.pathname.endsWith('account.html')) {
+            window.location.href = 'login';
         }
     }
 
@@ -238,6 +364,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm-password').value;
             const username = document.getElementById('signup-name').value;
+            const submitBtn = signupForm.querySelector('input[type="submit"]');
 
             if (password !== confirmPassword) {
                 showToast("Passwords do not match!", "error");
@@ -250,6 +377,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showToast("Username must be 3-20 characters and contain only letters, numbers, and underscores.", "error");
                 return;
             }
+
+            submitBtn.disabled = true;
+            submitBtn.value = 'Creating account…';
 
             try {
                 try {
@@ -266,22 +396,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 // Send verification email
                 try {
-                    await account.createVerification(window.location.origin + '/verify.html');
+                    await account.createVerification(window.location.origin + '/verify');
                     showToast("Account created! Please check your email to verify your account.", "success");
                     
                     // Redirect after a short delay so they can read the toast
                     setTimeout(() => {
-                        window.location.href = 'account.html';
+                        window.location.href = 'account';
                     }, 3000);
                 } catch (verifyError) {
                     showToast("Account created, but failed to send verification email.", "error");
                     setTimeout(() => {
-                        window.location.href = 'account.html';
+                        window.location.href = 'account';
                     }, 3000);
                 }
                 
             } catch (error) {
                 showToast("Signup failed: " + error.message, "error");
+                submitBtn.disabled = false;
+                submitBtn.value = 'Sign Up';
             }
         });
     }
@@ -293,6 +425,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
+            const submitBtn = loginForm.querySelector('input[type="submit"]');
+
+            submitBtn.disabled = true;
+            submitBtn.value = 'Signing in…';
 
             try {
                 // If user is already logged in, delete current session
@@ -304,8 +440,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
                 await account.createEmailPasswordSession(email, password);
-                window.location.href = 'account.html';
+                window.location.href = 'account';
             } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.value = 'Sign In';
                 if (error.code === 401) {
                     showToast("Invalid credentials. If you registered with Google, please use the 'Sign in with Google' button.", "error");
                 } else {
@@ -321,20 +459,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         btn.addEventListener('click', async (e) => {
             e.preventDefault();
             
-            // If user is already logged in, delete current session
             try {
-                await account.get();
-                await account.deleteSession('current');
-            } catch (err) {
-                // Not logged in, proceed
-            }
+                // If user is already logged in, delete current session
+                try {
+                    await account.get();
+                    await account.deleteSession('current');
+                } catch (err) {
+                    // Not logged in, proceed
+                }
 
-            // Appwrite OAuth2
-            account.createOAuth2Session(
-                'google',
-                window.location.origin + '/account.html',
-                window.location.origin + '/login.html'
-            );
+                // Appwrite OAuth2
+                account.createOAuth2Session(
+                    'google',
+                    window.location.origin + '/account',
+                    window.location.origin + '/login'
+                );
+            } catch (error) {
+                showToast("Google sign-in failed. Please try again.", "error");
+            }
         });
     });
 
@@ -345,10 +487,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             try {
                 await account.deleteSession('current');
-                window.location.href = 'index.html';
+                window.location.href = '/';
             } catch (error) {
                 showToast("Logout failed: " + error.message, "error");
             }
         });
     }
-});
+
+    // Set max date on date inputs to today
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    const today = new Date().toISOString().split('T')[0];
+    dateInputs.forEach(input => {
+        input.setAttribute('max', today);
+    });
+
+    // Date From / Date To validation
+    const dateFrom = document.getElementById('date-from');
+    const dateTo = document.getElementById('date-to');
+    if (dateFrom && dateTo) {
+        dateFrom.addEventListener('change', () => {
+            dateTo.min = dateFrom.value;
+        });
+        dateTo.addEventListener('change', () => {
+            dateFrom.max = dateTo.value;
+        });
+    }
+})();

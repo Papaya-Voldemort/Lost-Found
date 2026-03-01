@@ -3,6 +3,7 @@ html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     line-height: 1.5;
+    scroll-behavior: smooth;
 }
 
 * {
@@ -38,6 +39,13 @@ html {
     --color-background: #FFFFFF;
 
     --color-surface: #EEEEEE;
+
+    --color-error: #dc3545;
+
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
 
     /* Font Variables */
     --font-display: 'Poppins', sans-serif;
@@ -133,7 +141,18 @@ nav a:active .nav-icon {
 
 main {
     margin-left: 0;
-    min-height: 150vh;
+    animation: pageIn 0.4s ease-out;
+}
+
+@keyframes pageIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 section#hero {
@@ -154,7 +173,7 @@ section#hero video#hero-video {
     z-index: 1;
     width: 100%;
     height: 60vh;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     object-fit: cover;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
@@ -177,7 +196,7 @@ section#hero h1 {
     left: 50%;
     max-width: 90%;
     padding: 2.5rem;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.3);
     text-align: center;
     background-color: rgba(255, 255, 255, 0.85);
@@ -265,8 +284,7 @@ div#overlay {
     z-index: 2;
     width: 100%;
     height: 100%;
-    background-color: var(--color-dark-gray);
-    opacity: 0.5;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.3));
 }
 
 /* ==================== How It Works Section ==================== */
@@ -294,12 +312,20 @@ section#how-it-works h2 {
 
 .step-card {
     width: 30%;
-    padding: 1rem;
-    border-radius: 8px;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-primary);
     text-align: center;
     font-family: var(--font-display);
     font-weight: 500;
-    background-color: var(--color-light-gray);
+    background-color: var(--color-white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 .step-card h3 {
@@ -313,8 +339,17 @@ section#how-it-works h2 {
 }
 
 .step-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
     margin-bottom: 1rem;
-    font-size: 2rem;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-white);
+    background-color: var(--color-primary);
 }
 
 /* ==================== Impact Stats Section ==================== */
@@ -338,16 +373,23 @@ section#impact-stats {
 }
 
 .stat-number {
-    font-size: 1.5rem;
-    font-weight: 500;
+    display: block;
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    font-weight: 700;
+    font-family: var(--font-display);
 }
 
 /* ==================== CTA Section ==================== */
 
 section#call-to-action {
-    padding: 2rem;
+    padding: var(--space-3xl) var(--space-xl);
     text-align: center;
-    background-color: var(--color-light-gray);
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    color: var(--color-white);
+}
+
+section#call-to-action p {
+    color: rgba(255, 255, 255, 0.85);
 }
 
 section#call-to-action h2 {
@@ -364,11 +406,12 @@ section#call-to-action h2 {
     display: inline-block;
     margin: 1rem;
     padding: 0.8rem 1.5rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     font-size: var(--font-size-base);
     text-decoration: none;
     color: white;
+    cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     border: none;
 }
@@ -409,6 +452,96 @@ section#call-to-action h2 {
     opacity: 0.1;
 }
 
+/* Danger Button */
+.btn-danger {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    margin: 1rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    font-size: var(--font-size-base);
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    background-color: var(--color-error);
+    border: none;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.35);
+    background-color: #c82333;
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Small button variant */
+.sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    margin: 0.25rem;
+}
+
+/* ==================== Focus Styles ==================== */
+
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-danger:focus-visible {
+    outline: 2px solid var(--color-primary-dark);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(92, 158, 173, 0.3);
+}
+
+/* ==================== Live Field Validation ==================== */
+
+.item-form input.touched:valid,
+.item-form select.touched:valid,
+.item-form textarea.touched:valid,
+.settings-card input.touched:valid {
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.15);
+}
+
+.item-form input.touched:invalid,
+.item-form select.touched:invalid,
+.item-form textarea.touched:invalid,
+.settings-card input.touched:invalid {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.15);
+}
+
+/* Don't validate search fields or optional fields */
+.search-bar input.touched,
+.search-bar select.touched,
+input[type="hidden"].touched,
+input:not([required]).touched:invalid {
+    border-color: var(--color-light-gray);
+    box-shadow: none;
+}
+
+/* Category select with value "none" treated as invalid via JS class */
+.item-form select.touched.invalid-selection {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.15);
+}
+
+.item-form select.touched:not(.invalid-selection):valid {
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.15);
+}
+
 /* ==================== Lost Item Section ==================== */
 
 .page-header {
@@ -436,7 +569,7 @@ section#call-to-action h2 {
     display: flex;
     flex-direction: column;
     text-align: center;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background-color: var(--color-surface);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     max-width: 80vw;
@@ -469,9 +602,18 @@ section#call-to-action h2 {
     margin-top: 0.3rem;
     padding: 0.5rem;
     font-size: 1rem;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--color-light-gray);
     background: var(--color-background);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item-form input:focus,
+.item-form select:focus,
+.item-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(92, 158, 173, 0.2);
 }
 
 .item-form input[type="submit"] {
@@ -480,11 +622,12 @@ section#call-to-action h2 {
     display: inline-block;
     margin: 1rem;
     padding: 0.8rem 1.5rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     font-size: var(--font-size-base);
     text-decoration: none;
     color: white;
+    cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     border: none;
     background-color: var(--color-primary);
@@ -543,7 +686,7 @@ section#call-to-action h2 {
 #image-preview {
     max-width: 100%;
     max-height: 200px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     display: block;
 }
 
@@ -581,13 +724,12 @@ section#call-to-action h2 {
     display: flex;
     flex-direction: column;
     text-align: center;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     background-color: var(--color-surface);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     max-width: 80vw;
     padding: 1rem;
     border-top: 4px solid var(--color-primary);
-    max-width: 80vw;
 }
 
 .secondary-search-items {
@@ -702,6 +844,115 @@ footer {
 
 /* ==================== Login Styles ==================== */
 /* Shoutout Google for this one */
+
+/* Password Wrapper */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 0.3rem;
+}
+
+.password-wrapper input {
+    flex: 1;
+    padding-right: 2.5rem;
+    margin-top: 0 !important;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--color-dark-gray);
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password:hover {
+    color: var(--color-primary-dark);
+}
+
+.toggle-password.showing .eye-icon {
+    opacity: 0.5;
+}
+
+/* Password Strength Meter */
+.password-strength {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+}
+
+.strength-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--color-light-gray);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 5rem;
+    text-align: right;
+}
+
+/* Forgot Password Link */
+.forgot-password-link {
+    display: inline-block;
+    font-size: var(--font-size-sm);
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    margin-top: -0.5rem;
+    align-self: flex-end;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Search Actions */
+.search-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.search-actions .btn-primary,
+.search-actions .btn-secondary {
+    margin: 0;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    height: auto;
+    min-height: 0;
+}
+
+.btn-reset {
+    background-color: transparent;
+    color: var(--color-dark-gray);
+    border: 1px solid var(--color-dark-gray);
+}
+
+.btn-reset:hover {
+    background-color: var(--color-dark-gray);
+    color: var(--color-white);
+}
 
 .google-btn {
     display: flex;
@@ -885,7 +1136,7 @@ footer {
 .listing-card {
     background: var(--color-white);
     border: 1px solid var(--color-light-gray);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
@@ -901,12 +1152,18 @@ footer {
     position: relative;
     height: 200px;
     background-color: var(--color-surface);
+    overflow: hidden;
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.listing-card:hover .card-image img {
+    transform: scale(1.05);
 }
 
 .status-badge {
@@ -982,7 +1239,7 @@ footer {
     color: var(--color-dark-gray);
     padding: var(--space-xl);
     background: var(--color-surface);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin-top: var(--space-lg);
 }
 
@@ -1022,7 +1279,7 @@ footer {
 .item-card {
     background: var(--color-white);
     border: 1px solid var(--color-light-gray);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
@@ -1038,12 +1295,18 @@ footer {
     position: relative;
     height: 200px;
     background-color: var(--color-surface);
+    overflow: hidden;
 }
 
 .item-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.item-card:hover .item-image {
+    transform: scale(1.05);
 }
 
 .item-details {
@@ -1114,7 +1377,7 @@ footer {
 .settings-card {
     background: var(--color-white);
     border: 1px solid var(--color-light-gray);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     padding: var(--space-lg);
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
@@ -1143,9 +1406,10 @@ footer {
 .settings-card input {
     padding: 10px;
     border: 1px solid var(--color-dark-gray);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     font-size: 1rem;
     width: 100%;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .settings-card input:focus {
@@ -1161,7 +1425,7 @@ footer {
     background-color: var(--color-primary);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.2s;
@@ -1169,4 +1433,219 @@ footer {
 
 .settings-card button:hover {
     background-color: var(--color-primary-dark);
+}
+
+/* Override for toggle-password inside settings-card */
+.settings-card .toggle-password {
+    position: absolute;
+    right: 8px;
+    margin-top: 0;
+    align-self: auto;
+    padding: 4px;
+    background: none;
+    border: none;
+    color: var(--color-dark-gray);
+    font-weight: normal;
+    border-radius: 0;
+}
+
+.settings-card .toggle-password:hover {
+    background: none;
+    color: var(--color-primary-dark);
+}
+
+/* ==================== Skeleton Loading ==================== */
+
+.skeleton-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.skeleton-image,
+.skeleton-line {
+    background: linear-gradient(90deg, var(--color-surface) 25%, #e8e8e8 50%, var(--color-surface) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-image {
+    height: 200px;
+    width: 100%;
+}
+
+.skeleton-line {
+    height: 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 1.5rem;
+}
+
+.skeleton-line.short {
+    width: 40%;
+}
+
+.skeleton-line.medium {
+    width: 70%;
+}
+
+@keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ==================== Dark Mode ==================== */
+
+html.dark-mode {
+    --color-background: #121212;
+    --color-surface: #1e1e1e;
+    --color-white: #e0e0e0;
+    --color-black: #f0f0f0;
+    --color-light-gray: #333333;
+    --color-dark-gray: #a0a0a0;
+}
+
+html.dark-mode body {
+    color: var(--color-white);
+}
+
+html.dark-mode .item-card,
+html.dark-mode .listing-card,
+html.dark-mode .settings-card {
+    background: var(--color-surface);
+    border-color: var(--color-light-gray);
+}
+
+html.dark-mode .upload-form,
+html.dark-mode .search-bar {
+    background-color: var(--color-surface);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .google-btn {
+    background-color: var(--color-surface);
+    color: var(--color-white);
+    border-color: var(--color-light-gray);
+}
+
+html.dark-mode .google-btn:hover {
+    background-color: #2a2a2a;
+}
+
+html.dark-mode .step-card {
+    background-color: var(--color-surface);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .hero-card {
+    background-color: rgba(18, 18, 18, 0.92);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+html.dark-mode .item-form input,
+html.dark-mode .item-form select,
+html.dark-mode .item-form textarea {
+    background: var(--color-background);
+    border-color: var(--color-light-gray);
+    color: var(--color-white);
+}
+
+html.dark-mode .settings-card input {
+    background: var(--color-background);
+    border-color: var(--color-light-gray);
+    color: var(--color-white);
+}
+
+html.dark-mode .toggle-password {
+    color: var(--color-dark-gray);
+}
+
+html.dark-mode .toggle-password:hover {
+    color: var(--color-white);
+}
+
+html.dark-mode .strength-bar {
+    background: var(--color-light-gray);
+}
+
+html.dark-mode .forgot-password-link {
+    color: var(--color-primary);
+}
+
+html.dark-mode .empty-state {
+    background: var(--color-surface);
+}
+
+html.dark-mode .skeleton-image,
+html.dark-mode .skeleton-line {
+    background: linear-gradient(90deg, var(--color-surface) 25%, #2a2a2a 50%, var(--color-surface) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+/* ==================== Theme Toggle ==================== */
+
+.theme-toggle {
+    background: none;
+    border: 2px solid var(--color-dark-gray);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-toggle:hover {
+    border-color: var(--color-primary);
+    transform: scale(1.1);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.theme-toggle .icon-sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+.theme-toggle .icon-moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+}
+
+html.dark-mode .theme-toggle .icon-sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+}
+
+html.dark-mode .theme-toggle .icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+html.dark-mode .theme-toggle {
+    border-color: var(--color-dark-gray);
+}
+
+html.dark-mode .theme-toggle:hover {
+    border-color: var(--color-primary);
+}
+
+#footer-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+    flex-wrap: wrap;
 }

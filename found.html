@@ -7,13 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Found Items - Traceback</title>
     <meta name="description" content="Browse found items reported by our community">
+    <meta name="theme-color" content="#326273">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');</script>
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/small.css">
     <link rel="stylesheet" href="styles/medium.css">
     <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/toast.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -49,7 +52,7 @@
                     </a>
                 </li>
                 <li class="nav-found">
-                    <a id="active" href="found">
+                    <a class="current" href="found">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -148,18 +151,18 @@
             </div>
             <div id="signed-out-found-item-div">
                 <h3>Sign in to submit found items.</h3>
-                <a href="account" class="btn-primary">Sign in Now</a>
+                <a href="login" class="btn-primary">Sign in Now</a>
             </div>
         </section>
 
         <section class="search-bar scroll-animate">
-            <h1>Search Found Items</h1>
+            <h2>Search Found Items</h2>
             <form id="search-form" class="item-form">
                 <label class="full-width">Item Name<input type="text" id="search-input" placeholder="Search by item name..."></label>
                 <label class="full-width">Item Tags<input type="text" id="search-tags-input" placeholder="Search by tags..."></label>
 
                 <div class="secondary-search-items">
-                    <label>Location Found<input type="text" id="location" placeholder="Location found..."></label>
+                    <label>Location Found<input type="text" id="search-location" placeholder="Location found..."></label>
                     <label>Date From<input type="date" id="date-from"></label>
                     <label>Date To<input type="date" id="date-to"></label>
                     <label> Sort
@@ -168,6 +171,11 @@
                             <option>Newest First</option>
                         </select>
                     </label>
+                </div>
+
+                <div class="search-actions">
+                    <button type="submit" class="btn-primary">Search</button>
+                    <button type="button" class="btn-secondary btn-reset">Reset Filters</button>
                 </div>
             </form>
         </section>
@@ -188,6 +196,10 @@
         </div>
         <div id="footer-bottom">
             <p>&copy; 2026 Traceback. All rights reserved.</p>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
         </div>
     </footer>
 </body>

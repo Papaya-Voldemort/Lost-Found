@@ -17,7 +17,7 @@ async function initAccount() {
         await fetchUserListings();
     } catch (error) {
         console.error('User not logged in or session expired:', error);
-        window.location.href = '/login.html';
+        window.location.href = '/login';
     }
 }
 
@@ -37,6 +37,9 @@ function renderUserProfile(user) {
     } else {
         verifiedBadge.textContent = 'Unverified Email';
         verifiedBadge.classList.add('unverified');
+        // Show resend verification button
+        const resendBtn = document.getElementById('resend-verification');
+        if (resendBtn) resendBtn.style.display = 'inline-block';
     }
 }
 
@@ -60,6 +63,7 @@ document.getElementById('update-profile-form')?.addEventListener('submit', async
 // Change Password Handler
 document.getElementById('change-password-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const oldPassword = document.getElementById('old-password').value;
     const newPassword = document.getElementById('new-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
     
@@ -74,10 +78,21 @@ document.getElementById('change-password-form')?.addEventListener('submit', asyn
         return;
     }
 
+    // Block spaces
+    if (/\s/.test(newPassword)) {
+        showToast('Password cannot contain spaces', 'error');
+        return;
+    }
+
     try {
-        await account.updatePassword(newPassword);
+        await account.updatePassword(newPassword, oldPassword);
         showToast('Password updated successfully', 'success');
         e.target.reset();
+        // Reset strength meter if present
+        const fill = document.querySelector('#password-strength-account .strength-fill');
+        const text = document.querySelector('#password-strength-account .strength-text');
+        if (fill) { fill.style.width = '0%'; fill.style.backgroundColor = 'transparent'; }
+        if (text) { text.textContent = ''; }
     } catch (error) {
         console.error('Password update failed:', error);
         showToast(error.message || 'Failed to update password', 'error');
@@ -155,34 +170,49 @@ function createListingCard(doc) {
     // Handle Image
     let imageUrl = 'images/placeholder-item.svg'; // Default placeholder
     if (doc.imageId) {
-        // Appwrite SDK storage.getFilePreview returns a string (URL)
-        // Removed .href which was causing undefined
         imageUrl = storage.getFilePreview(BUCKET_ID, doc.imageId);
     }
 
     // Format Date
     const date = new Date(doc.$createdAt).toLocaleDateString();
 
-    card.innerHTML = `
-        <div class="card-image">
-            <img src="${imageUrl}" alt="${doc.title}" loading="lazy">
-            <span class="status-badge ${doc.type}">${doc.type}</span>
-        </div>
-        <div class="card-content">
-            <h3>${doc.title}</h3>
-            <p class="meta">
-                <span>📅 ${date}</span>
-                <span>📍 ${doc.location}</span>
-            </p>
-            <div class="actions">
-                <button class="btn-delete" data-id="${doc.$id}">Delete</button>
-            </div>
-        </div>
-    `;
+    // Build card with safe DOM APIs to prevent XSS
+    const cardImage = document.createElement('div');
+    cardImage.className = 'card-image';
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = doc.title;
+    img.loading = 'lazy';
+    const badge = document.createElement('span');
+    badge.className = `status-badge ${doc.type}`;
+    badge.textContent = doc.type;
+    cardImage.append(img, badge);
 
-    // Add event listeners for actions
-    const deleteBtn = card.querySelector('.btn-delete');
+    const cardContent = document.createElement('div');
+    cardContent.className = 'card-content';
+
+    const h3 = document.createElement('h3');
+    h3.textContent = doc.title;
+
+    const meta = document.createElement('p');
+    meta.className = 'meta';
+    const dateSpan = document.createElement('span');
+    dateSpan.textContent = `📅 ${date}`;
+    const locSpan = document.createElement('span');
+    locSpan.textContent = `📍 ${doc.location}`;
+    meta.append(dateSpan, locSpan);
+
+    const actions = document.createElement('div');
+    actions.className = 'actions';
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-delete';
+    deleteBtn.dataset.id = doc.$id;
+    deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', () => handleDelete(doc.$id));
+    actions.appendChild(deleteBtn);
+
+    cardContent.append(h3, meta, actions);
+    card.append(cardImage, cardContent);
 
     return card;
 }
@@ -216,6 +246,22 @@ async function handleDelete(docId) {
         showToast('Failed to delete listing', 'error');
     }
 }
+
+// Resend Verification Email
+document.getElementById('resend-verification')?.addEventListener('click', async () => {
+    const btn = document.getElementById('resend-verification');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+        await account.createVerification(window.location.origin + '/verify');
+        showToast('Verification email sent! Check your inbox.', 'success');
+        btn.textContent = 'Email Sent';
+    } catch (error) {
+        showToast(error.message || 'Failed to send verification email', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Resend Verification Email';
+    }
+});
 
 // Load More Button Listener
 document.getElementById('load-more-btn')?.addEventListener('click', () => {

@@ -47,6 +47,11 @@ export async function handleItemSubmission(formId, itemType) {
             // 3. Gather Form Data
             const title = form.querySelector('#item-name').value;
             const category = form.querySelector('#category').value;
+            
+            if (category === 'none') {
+                throw new Error('Please select a category.');
+            }
+
             const dateInput = form.querySelector('input[type="date"]').value;
             const locationSelect = form.querySelector('#location').value;
             const locationOther = form.querySelector('#location-other').value;
@@ -168,31 +173,63 @@ function createItemCard(item) {
     const dateObj = new Date(item.date);
     const formattedDate = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 
-    // Create tags HTML
-    const tagsHtml = item.tags && item.tags.length > 0 
-        ? `<div class="item-tags">${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>`
-        : '';
+    // Build card with safe DOM APIs to prevent XSS
+    const imageContainer = document.createElement('div');
+    imageContainer.className = 'item-image-container';
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = `Photo of ${item.title}`;
+    img.className = 'item-image';
+    img.loading = 'lazy';
+    imageContainer.appendChild(img);
 
-    card.innerHTML = `
-        <div class="item-image-container">
-            <img src="${imageUrl}" alt="Photo of ${item.title}" class="item-image" loading="lazy">
-        </div>
-        <div class="item-details">
-            <h3 class="item-title">${item.title}</h3>
-            <p class="item-location">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><path fill="currentColor" d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm36.12,173.84C140.46,216.74,128,228.17,128,228.17s-12.46-11.43-36.12-38.33C67.43,161.63,56,132.11,56,104a72,72,0,0,1,144,0C200,132.11,188.57,161.63,164.12,189.84Z"></path></svg>
-                ${item.location}
-            </p>
-            <p class="item-date">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><path fill="currentColor" d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48Zm136,160H48V96H208V208Z"></path></svg>
-                ${formattedDate}
-            </p>
-            <p class="item-description">${item.description}</p>
-            ${tagsHtml}
-        </div>
-    `;
+    const details = document.createElement('div');
+    details.className = 'item-details';
 
+    const title = document.createElement('h3');
+    title.className = 'item-title';
+    title.textContent = item.title;
+
+    const locationP = document.createElement('p');
+    locationP.className = 'item-location';
+    locationP.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><path fill="currentColor" d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm36.12,173.84C140.46,216.74,128,228.17,128,228.17s-12.46-11.43-36.12-38.33C67.43,161.63,56,132.11,56,104a72,72,0,0,1,144,0C200,132.11,188.57,161.63,164.12,189.84Z"></path></svg>';
+    locationP.appendChild(document.createTextNode(' ' + item.location));
+
+    const dateP = document.createElement('p');
+    dateP.className = 'item-date';
+    dateP.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><path fill="currentColor" d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48Zm136,160H48V96H208V208Z"></path></svg>';
+    dateP.appendChild(document.createTextNode(' ' + formattedDate));
+
+    const descP = document.createElement('p');
+    descP.className = 'item-description';
+    descP.textContent = item.description;
+
+    details.append(title, locationP, dateP, descP);
+
+    // Build tags safely
+    if (item.tags && item.tags.length > 0) {
+        const tagsDiv = document.createElement('div');
+        tagsDiv.className = 'item-tags';
+        item.tags.forEach(tag => {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = tag;
+            tagsDiv.appendChild(span);
+        });
+        details.appendChild(tagsDiv);
+    }
+
+    card.append(imageContainer, details);
     return card;
+}
+
+// Debounce utility
+function debounce(fn, delay = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+    };
 }
 
 // Handle Search
@@ -205,17 +242,28 @@ export function setupSearch(itemType) {
         executeSearch(itemType);
     });
 
-    // Optional: Add debounced input listeners for real-time search
+    // Debounced real-time search on input/change
+    const debouncedSearch = debounce(() => executeSearch(itemType), 300);
     const inputs = searchForm.querySelectorAll('input, select');
     inputs.forEach(input => {
-        input.addEventListener('change', () => executeSearch(itemType));
+        input.addEventListener('input', debouncedSearch);
+        input.addEventListener('change', debouncedSearch);
     });
+
+    // Reset button
+    const resetBtn = searchForm.querySelector('.btn-reset');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            searchForm.reset();
+            fetchItems(itemType);
+        });
+    }
 }
 
 function executeSearch(itemType) {
     const searchInput = document.getElementById('search-input')?.value;
     const tagsInput = document.getElementById('search-tags-input')?.value;
-    const locationInput = document.getElementById('location')?.value;
+    const locationInput = document.getElementById('search-location')?.value;
     const sortSelect = document.getElementById('sort')?.value;
 
     const queries = [];

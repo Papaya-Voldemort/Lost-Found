@@ -7,13 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Traceback</title>
     <meta name="description" content="Traceback is a website that helps people find lost items.">
+    <meta name="theme-color" content="#326273">
+    <meta property="og:title" content="Traceback - Find Your Lost Items">
+    <meta property="og:description" content="A community-driven platform to report, search, and recover lost items.">
+    <meta property="og:type" content="website">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');</script>
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/small.css">
     <link rel="stylesheet" href="styles/medium.css">
     <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/toast.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -30,7 +36,7 @@
         <nav>
             <ul>
                 <li class="nav-home">
-                    <a id="active" href="/">
+                    <a class="current" href="/">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <path d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -81,9 +87,9 @@
         <section id="hero">
             <div class="hero-card">
                 <h1>Find Your Lost Items</h1>
-                <a href="account.html" class="btn-primary hero-btn">Get Started</a>
+                <a href="signup" class="btn-primary hero-btn">Get Started</a>
             </div>
-            <video id="hero-video" src="videos/homepage-background.mp4" autoplay loop muted playsinline width="1280" height="720"></video>
+            <video id="hero-video" src="videos/homepage-background.mp4" autoplay loop muted playsinline preload="metadata" width="1280" height="720"></video>
             <div id="overlay"></div>
         </section>
 
@@ -116,14 +122,13 @@
                 <div class="step-card scroll-animate">
                     <div class="step-icon">3</div>
                     <h3>Safe Return</h3>
-                    <p>Chat securely through the app to verify ownership and arrange a safe meeting spot for the
+                    <p>Coordinate through the platform to verify ownership and arrange a safe meeting spot for the
                         hand-off.</p>
-                    <!--We probably need to update these steps to make sure they are accurate to our vision-->
                 </div>
             </div>
         </section>
 
-        <section id="impact-stats" class="scroll-animate"> <!--Fake data -->
+        <section id="impact-stats" class="scroll-animate"> <!--Fake data, this CAN STAY IN PROD -->
             <div class="stats-grid">
                 <div class="stat-item scroll-animate">
                     <span class="stat-number">5,000+</span>
@@ -145,7 +150,7 @@
                 <h2>Ready to reunite with your belongings?</h2>
                 <p>Join thousands of users helping each other find what matters most.</p>
                 <div class="cta-buttons">
-                    <a href="login" class="btn-primary">Create an Account</a>
+                    <a href="signup" class="btn-primary">Create an Account</a>
                     <a href="lost" class="btn-secondary">Browse Lost Items</a>
                 </div>
             </div>
@@ -161,6 +166,10 @@
         </div>
         <div id="footer-bottom">
             <p>&copy; 2026 Traceback. All rights reserved.</p>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
         </div>
     </footer>
 </body>

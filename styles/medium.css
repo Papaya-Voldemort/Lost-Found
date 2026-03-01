@@ -104,11 +104,11 @@
         transform: scaleX(1);
     }
 
-    nav a#active {
+    nav a.current {
         font-weight: bold;
     }
 
-    nav a#active::after {
+    nav a.current::after {
         transform: scaleX(1);
     }
 

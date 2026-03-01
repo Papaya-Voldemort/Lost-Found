@@ -7,13 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Account - Traceback</title>
     <meta name="description" content="Manage your Traceback account">
+    <meta name="theme-color" content="#326273">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');</script>
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/small.css">
     <link rel="stylesheet" href="styles/medium.css">
     <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/toast.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -58,8 +61,8 @@
                         Found
                     </a>
                 </li>
-                <li class="nav-account current">
-                    <a href="account">
+                <li class="nav-account">
+                    <a class="current" href="account">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
                             <path d="M30.9,206.6a112,112,0,0,1,194.2,0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -85,9 +88,10 @@
                         <h2 id="user-name">Loading Profile...</h2>
                         <p id="user-email">please wait</p>
                         <span id="user-verified" class="badge">Checking status...</span>
+                        <button id="resend-verification" class="btn-secondary sm" style="display:none;">Resend Verification Email</button>
                     </div>
                     <div class="user-actions">
-                        <button id="logout-btn" class="btn-primary" style="background-color: var(--color-error, #dc3545);">Sign Out</button>
+                        <button id="logout-btn" class="btn-danger">Sign Out</button>
                     </div>
                 </div>
             </div>
@@ -114,12 +118,35 @@
                     <div class="settings-card">
                         <h3>Change Password</h3>
                         <form id="change-password-form">
+                            <label for="old-password">Current Password</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="old-password" required placeholder="Enter current password">
+                                <button type="button" class="toggle-password" aria-label="Show password">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,123.97,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A169.47,169.47,0,0,1,25,128,169.47,169.47,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A169.47,169.47,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
+                                </button>
+                            </div>
+
                             <label for="new-password">New Password</label>
-                            <input type="password" id="new-password" required minlength="8" placeholder="At least 8 characters">
+                            <div class="password-wrapper">
+                                <input type="password" id="new-password" required minlength="8" pattern="^\S{8,}$" title="Password must be at least 8 characters with no spaces" placeholder="At least 8 characters">
+                                <button type="button" class="toggle-password" aria-label="Show password">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,123.97,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A169.47,169.47,0,0,1,25,128,169.47,169.47,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A169.47,169.47,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
+                                </button>
+                            </div>
                             
                             <label for="confirm-password">Confirm Password</label>
-                            <input type="password" id="confirm-password" required minlength="8" placeholder="Confirm new password">
+                            <div class="password-wrapper">
+                                <input type="password" id="confirm-password" required minlength="8" pattern="^\S{8,}$" title="Password must be at least 8 characters with no spaces" placeholder="Confirm new password">
+                                <button type="button" class="toggle-password" aria-label="Show password">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,123.97,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A169.47,169.47,0,0,1,25,128,169.47,169.47,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A169.47,169.47,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
+                                </button>
+                            </div>
                             
+                            <div class="password-strength" id="password-strength-account">
+                                <div class="strength-bar"><div class="strength-fill"></div></div>
+                                <span class="strength-text"></span>
+                            </div>
+
                             <button type="submit" class="btn-secondary no-left-margin">Update Password</button>
                         </form>
                     </div>
@@ -148,8 +175,6 @@
         </section>
     </main>
 
-    <script type="module" src="js/account.js"></script>
-
     <footer>
         <div class="footer-container">
             <div class="footer-brand">
@@ -159,8 +184,14 @@
         </div>
         <div id="footer-bottom">
             <p>&copy; 2026 Traceback. All rights reserved.</p>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
         </div>
     </footer>
+
+    <script type="module" src="js/account.js"></script>
 </body>
 
 </html>
