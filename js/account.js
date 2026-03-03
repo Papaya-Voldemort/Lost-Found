@@ -1,4 +1,5 @@
 import { account, databases, Query, ID, storage } from './auth.js';
+import { t } from './i18n.js';
 import { showToast } from './toast.js';
 
 const DB_ID = 'traceback_db';
@@ -36,10 +37,10 @@ function renderUserProfile(user) {
     
     const verifiedBadge = document.getElementById('user-verified');
     if (user.emailVerification) {
-        verifiedBadge.textContent = 'Verified User';
+        verifiedBadge.textContent = t('account.verifiedUser');
         verifiedBadge.classList.add('verified');
     } else {
-        verifiedBadge.textContent = 'Unverified Email';
+        verifiedBadge.textContent = t('account.unverifiedEmail');
         verifiedBadge.classList.add('unverified');
         // Show resend verification button
         const resendBtn = document.getElementById('resend-verification');
@@ -54,13 +55,13 @@ document.getElementById('update-profile-form')?.addEventListener('submit', async
     
     try {
         await account.updateName(newName);
-        showToast('Profile updated successfully', 'success');
+        showToast(t('account.profileUpdated'), 'success');
         // Update local state and UI
         currentUser.name = newName;
         renderUserProfile(currentUser);
     } catch (error) {
         console.error('Update failed:', error);
-        showToast(error.message || 'Failed to update profile', 'error');
+        showToast(error.message || t('account.profileUpdateFailed'), 'error');
     }
 });
 
@@ -72,25 +73,25 @@ document.getElementById('change-password-form')?.addEventListener('submit', asyn
     const confirmPassword = document.getElementById('confirm-password').value;
     
     if (newPassword !== confirmPassword) {
-        showToast('Passwords do not match', 'error');
+        showToast(t('account.passwordsMismatch'), 'error');
         return;
     }
     
     // Check length just in case HTML validation is bypassed
     if (newPassword.length < 8) {
-        showToast('Password must be at least 8 characters', 'error');
+        showToast(t('account.passwordTooShort'), 'error');
         return;
     }
 
     // Block spaces
     if (/\s/.test(newPassword)) {
-        showToast('Password cannot contain spaces', 'error');
+        showToast(t('account.passwordHasSpaces'), 'error');
         return;
     }
 
     try {
         await account.updatePassword(newPassword, oldPassword);
-        showToast('Password updated successfully', 'success');
+        showToast(t('account.passwordUpdated'), 'success');
         e.target.reset();
         // Reset strength meter if present
         const fill = document.querySelector('#password-strength-account .strength-fill');
@@ -99,7 +100,7 @@ document.getElementById('change-password-form')?.addEventListener('submit', asyn
         if (text) { text.textContent = ''; }
     } catch (error) {
         console.error('Password update failed:', error);
-        showToast(error.message || 'Failed to update password', 'error');
+        showToast(error.message || t('account.passwordUpdateFailed'), 'error');
     }
 });
 
@@ -107,11 +108,11 @@ document.getElementById('change-password-form')?.addEventListener('submit', asyn
 document.getElementById('logout-btn')?.addEventListener('click', async () => {
     try {
         await account.deleteSession('current');
-        showToast('Logged out successfully', 'success');
+        showToast(t('account.loggedOut'), 'success');
         setTimeout(() => window.location.href = '/', 1000);
     } catch (error) {
         console.error('Logout failed:', error);
-        showToast('Failed to logout', 'error');
+        showToast(t('account.logoutFailed'), 'error');
     }
 });
 
@@ -162,7 +163,7 @@ async function fetchUserListings(loadMore = false) {
 
     } catch (error) {
         console.error('Error fetching listings:', error);
-        showToast('Failed to load your listings', 'error');
+        showToast(t('account.listingsLoadFailed'), 'error');
     }
 }
 
@@ -189,7 +190,7 @@ function createListingCard(doc) {
     img.loading = 'lazy';
     const badge = document.createElement('span');
     badge.className = `status-badge ${doc.type}`;
-    badge.textContent = doc.type;
+    badge.textContent = t(`nav.${doc.type}`);
     cardImage.append(img, badge);
 
     const cardContent = document.createElement('div');
@@ -211,13 +212,13 @@ function createListingCard(doc) {
 
     const resolveBtn = document.createElement('button');
     resolveBtn.className = 'btn-resolve';
-    resolveBtn.textContent = 'Resolve';
+    resolveBtn.textContent = t('account.resolve');
     resolveBtn.addEventListener('click', () => handleResolve(doc.$id));
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'btn-delete';
     deleteBtn.dataset.id = doc.$id;
-    deleteBtn.textContent = 'Delete';
+    deleteBtn.textContent = t('account.delete');
     deleteBtn.addEventListener('click', () => handleDelete(doc.$id));
     actions.append(resolveBtn, deleteBtn);
 
@@ -229,7 +230,7 @@ function createListingCard(doc) {
 
 // Resolve Listing Handler
 async function handleResolve(docId) {
-    if (!confirm('Mark this item as resolved? It will be removed from the public feed.')) return;
+    if (!confirm(t('account.resolveConfirm'))) return;
 
     try {
         const doc = await databases.getDocument(DB_ID, COLLECTION_ID, docId);
@@ -244,17 +245,17 @@ async function handleResolve(docId) {
 
         await databases.deleteDocument(DB_ID, COLLECTION_ID, docId);
 
-        showToast('Item marked as resolved', 'success');
+        showToast(t('account.resolved'), 'success');
         fetchUserListings(false);
     } catch (error) {
         console.error('Resolve failed:', error);
-        showToast('Failed to resolve listing', 'error');
+        showToast(t('account.resolveFailed'), 'error');
     }
 }
 
 // Delete Listing Handler
 async function handleDelete(docId) {
-    if (!confirm('Are you sure you want to delete this listing? This action cannot be undone.')) return;
+    if (!confirm(t('account.deleteConfirm'))) return;
 
     try {
         // First retrieve the document to find the imageId
@@ -273,12 +274,12 @@ async function handleDelete(docId) {
         // 2. Delete the original document
         await databases.deleteDocument(DB_ID, COLLECTION_ID, docId);
 
-        showToast('Listing deleted', 'success');
+        showToast(t('account.deleted'), 'success');
         // Refresh the list
         fetchUserListings(false);
     } catch (error) {
         console.error('Delete failed:', error);
-        showToast('Failed to delete listing', 'error');
+        showToast(t('account.deleteFailed'), 'error');
     }
 }
 
@@ -286,15 +287,15 @@ async function handleDelete(docId) {
 document.getElementById('resend-verification')?.addEventListener('click', async () => {
     const btn = document.getElementById('resend-verification');
     btn.disabled = true;
-    btn.textContent = 'Sending…';
+    btn.textContent = t('login.sending');
     try {
         await account.createVerification(window.location.origin + '/verify');
-        showToast('Verification email sent! Check your inbox.', 'success');
-        btn.textContent = 'Email Sent';
+        showToast(t('account.verificationSent'), 'success');
+        btn.textContent = t('account.emailSent');
     } catch (error) {
-        showToast(error.message || 'Failed to send verification email', 'error');
+        showToast(error.message || t('account.verificationFailed'), 'error');
         btn.disabled = false;
-        btn.textContent = 'Resend Verification Email';
+        btn.textContent = t('account.resendVerificationEmail');
     }
 });
 

@@ -1,4 +1,5 @@
 import { databases, storage, ID, Query, account, Permission, Role } from './auth.js';
+import { t } from './i18n.js';
 import { showToast } from './toast.js';
 
 const DB_ID = 'traceback_db';
@@ -6,8 +7,9 @@ const COLLECTION_ID = 'items';
 const BUCKET_ID = 'item_images';
 
 let feedOffset = 0;
-let currentFeedQueries = [];
 let currentFeedType = '';
+let currentFeedCriteria = {};
+let currentFilteredItems = [];
 const FEED_LIMIT = 12;
 
 // Handle Item Submission
@@ -20,7 +22,7 @@ export async function handleItemSubmission(formId, itemType) {
         
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalBtnText = submitBtn.textContent;
-        submitBtn.textContent = 'Submitting...';
+        submitBtn.textContent = t('common.submitting');
         submitBtn.disabled = true;
 
         try {
@@ -48,7 +50,7 @@ export async function handleItemSubmission(formId, itemType) {
                 );
                 imageId = uploadResponse.$id;
             } else {
-                throw new Error("An image is required.");
+                throw new Error(t('common.imageRequired'));
             }
 
             // 3. Gather Form Data
@@ -56,7 +58,7 @@ export async function handleItemSubmission(formId, itemType) {
             const category = form.querySelector('#category').value;
             
             if (category === 'none') {
-                throw new Error('Please select a category.');
+                throw new Error(t(`${itemType}.selectCategory`));
             }
 
             const dateInput = form.querySelector('input[type="date"]').value;
@@ -98,7 +100,7 @@ export async function handleItemSubmission(formId, itemType) {
                 ]
             );
 
-            showToast(`${itemType === 'lost' ? 'Lost' : 'Found'} item reported successfully!`, 'success');
+            showToast(`${t(itemType === 'lost' ? 'lost.reportTitle' : 'found.reportTitle')} ${t('common.submit')}.`, 'success');
             form.reset();
             
             // Reset image preview
@@ -121,7 +123,7 @@ export async function handleItemSubmission(formId, itemType) {
 
         } catch (error) {
             console.error('Submission error:', error);
-            showToast(error.message || 'Failed to submit item.', 'error');
+            showToast(error.message || t('common.submitFailed'), 'error');
         } finally {
             submitBtn.textContent = originalBtnText;
             submitBtn.disabled = false;
@@ -129,58 +131,144 @@ export async function handleItemSubmission(formId, itemType) {
     });
 }
 
+async function listAllActiveItems(itemType) {
+    const documents = [];
+    let offset = 0;
+
+    while (true) {
+        const response = await databases.listDocuments(
+            DB_ID,
+            COLLECTION_ID,
+            [
+                Query.equal('type', itemType),
+                Query.equal('status', 'active'),
+                Query.orderDesc('date'),
+                Query.limit(100),
+                Query.offset(offset)
+            ]
+        );
+
+        documents.push(...response.documents);
+        offset += response.documents.length;
+
+        if (offset >= response.total || response.documents.length === 0) {
+            break;
+        }
+    }
+
+    return documents;
+}
+
+function normalizeSearchValue(value) {
+    return value.trim().toLowerCase();
+}
+
+function filterAndSortItems(items, criteria = {}) {
+    const title = normalizeSearchValue(criteria.searchInput || '');
+    const tags = (criteria.tagsInput || '')
+        .split(',')
+        .map((tag) => normalizeSearchValue(tag))
+        .filter(Boolean);
+    const location = normalizeSearchValue(criteria.locationInput || '');
+    const dateFrom = criteria.dateFrom || '';
+    const dateTo = criteria.dateTo || '';
+    const sort = criteria.sortSelect || 'Newest First';
+
+    const filtered = items.filter((item) => {
+        const itemTitle = normalizeSearchValue(item.title || '');
+        const itemDescription = normalizeSearchValue(item.description || '');
+        const itemLocation = normalizeSearchValue(item.location || '');
+        const itemTags = Array.isArray(item.tags) ? item.tags.map((tag) => normalizeSearchValue(tag)) : [];
+        const itemDate = new Date(item.date);
+
+        if (title && !itemTitle.includes(title) && !itemDescription.includes(title)) {
+            return false;
+        }
+
+        if (tags.length > 0 && !tags.every((tag) => itemTags.some((itemTag) => itemTag.includes(tag)))) {
+            return false;
+        }
+
+        if (location && !itemLocation.includes(location)) {
+            return false;
+        }
+
+        if (dateFrom) {
+            const fromDate = new Date(`${dateFrom}T00:00:00`);
+            if (itemDate < fromDate) {
+                return false;
+            }
+        }
+
+        if (dateTo) {
+            const toDate = new Date(`${dateTo}T23:59:59.999`);
+            if (itemDate > toDate) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+
+    filtered.sort((a, b) => {
+        const aDate = new Date(a.date).getTime();
+        const bDate = new Date(b.date).getTime();
+        return sort === 'Oldest First' || sort === t(`${currentFeedType}.oldestFirst`)
+            ? aDate - bDate
+            : bDate - aDate;
+    });
+
+    return filtered;
+}
+
+function renderFeedItems(feedContainer, loadMoreBtn, loadMore = false) {
+    if (!loadMore) {
+        feedContainer.innerHTML = '';
+    }
+
+    const nextItems = currentFilteredItems.slice(feedOffset, feedOffset + FEED_LIMIT);
+
+    if (nextItems.length === 0 && feedOffset === 0) {
+        feedContainer.innerHTML = `<p class="no-items">${t('common.noItemsFound')}</p>`;
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+        return;
+    }
+
+    nextItems.forEach((item) => {
+        const card = createItemCard(item);
+        feedContainer.appendChild(card);
+    });
+
+    feedOffset += nextItems.length;
+
+    if (loadMoreBtn) {
+        loadMoreBtn.style.display = feedOffset >= currentFilteredItems.length ? 'none' : 'block';
+    }
+}
+
 // Fetch and Render Items
-export async function fetchItems(itemType, queries = [], loadMore = false) {
+export async function fetchItems(itemType, criteria = {}, loadMore = false) {
     const feedContainer = document.getElementById('items-feed');
     const loadMoreBtn = document.getElementById('feed-load-more');
     if (!feedContainer) return;
 
     if (!loadMore) {
         feedOffset = 0;
-        currentFeedQueries = queries;
         currentFeedType = itemType;
+        currentFeedCriteria = criteria;
     }
 
     try {
-        const defaultQueries = [
-            Query.equal('type', itemType),
-            Query.equal('status', 'active'),
-            Query.orderDesc('date'),
-            Query.limit(FEED_LIMIT),
-            Query.offset(feedOffset)
-        ];
-
-        const response = await databases.listDocuments(
-            DB_ID,
-            COLLECTION_ID,
-            [...defaultQueries, ...queries]
-        );
-
-        if (response.documents.length === 0 && feedOffset === 0) {
-            feedContainer.innerHTML = '<p class="no-items">No items found.</p>';
-            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
-            return;
-        }
-
         if (!loadMore) {
-            feedContainer.innerHTML = '';
+            const allItems = await listAllActiveItems(itemType);
+            currentFilteredItems = filterAndSortItems(allItems, currentFeedCriteria);
         }
 
-        response.documents.forEach(item => {
-            const card = createItemCard(item);
-            feedContainer.appendChild(card);
-        });
-
-        feedOffset += response.documents.length;
-
-        if (loadMoreBtn) {
-            loadMoreBtn.style.display = feedOffset >= response.total ? 'none' : 'block';
-        }
-
+        renderFeedItems(feedContainer, loadMoreBtn, loadMore);
     } catch (error) {
         console.error('Error fetching items:', error);
         if (feedOffset === 0) {
-            feedContainer.innerHTML = '<p class="error-message">Failed to load items. Please try again later.</p>';
+            feedContainer.innerHTML = `<p class="error-message">${t('common.itemsLoadFailed')}</p>`;
         }
         if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     }
@@ -212,7 +300,7 @@ function createItemCard(item) {
     imageContainer.className = 'item-image-container';
     const img = document.createElement('img');
     img.src = imageUrl;
-    img.alt = `Photo of ${item.title}`;
+    img.alt = `${t('common.cropImage')}: ${item.title}`;
     img.className = 'item-image';
     img.loading = 'lazy';
     imageContainer.appendChild(img);
@@ -276,7 +364,7 @@ function openItemDetailModal(item) {
     } else {
         modalImage.src = 'images/placeholder-item.svg';
     }
-    modalImage.alt = `Photo of ${item.title}`;
+    modalImage.alt = `${t('common.cropImage')}: ${item.title}`;
 
     // Format date
     const dateObj = new Date(item.date);
@@ -309,20 +397,20 @@ function openItemDetailModal(item) {
 
     // Contact button — click 1: reveal email, click 2: open mailto
     const contactBtn = document.getElementById('modal-contact-btn');
-    contactBtn.textContent = 'Contact Reporter';
+    contactBtn.textContent = t('common.contactReporter');
     contactBtn.disabled = false;
     contactBtn.title = '';
     let emailRevealed = false;
     contactBtn.onclick = () => {
         if (!item.userEmail) {
-            contactBtn.textContent = 'Contact info not available';
+            contactBtn.textContent = t('common.contactUnavailable');
             contactBtn.disabled = true;
             return;
         }
         if (!emailRevealed) {
             emailRevealed = true;
             contactBtn.textContent = item.userEmail;
-            contactBtn.title = 'Click again to open email client';
+            contactBtn.title = '';
         } else {
             window.location.href = 'mailto:' + item.userEmail;
         }
@@ -336,7 +424,7 @@ function openItemDetailModal(item) {
 export function setupLoadMore() {
     const loadMoreBtn = document.getElementById('feed-load-more');
     if (!loadMoreBtn) return;
-    loadMoreBtn.addEventListener('click', () => fetchItems(currentFeedType, currentFeedQueries, true));
+    loadMoreBtn.addEventListener('click', () => fetchItems(currentFeedType, currentFeedCriteria, true));
 }
 
 // Debounce utility
@@ -355,7 +443,6 @@ export function setupSearch(itemType) {
 
     searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        executeSearch(itemType);
     });
 
     // Debounced real-time search on input/change
@@ -365,48 +452,17 @@ export function setupSearch(itemType) {
         input.addEventListener('input', debouncedSearch);
         input.addEventListener('change', debouncedSearch);
     });
-
-    // Reset button
-    const resetBtn = searchForm.querySelector('.btn-reset');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-            searchForm.reset();
-            fetchItems(itemType);
-        });
-    }
 }
 
 function executeSearch(itemType) {
-    const searchInput = document.getElementById('search-input')?.value;
-    const tagsInput = document.getElementById('search-tags-input')?.value;
-    const locationInput = document.getElementById('search-location')?.value;
-    const sortSelect = document.getElementById('sort')?.value;
+    const criteria = {
+        searchInput: document.getElementById('search-input')?.value || '',
+        tagsInput: document.getElementById('search-tags-input')?.value || '',
+        locationInput: document.getElementById('search-location')?.value || '',
+        dateFrom: document.getElementById('date-from')?.value || '',
+        dateTo: document.getElementById('date-to')?.value || '',
+        sortSelect: document.getElementById('sort')?.value || 'Newest First',
+    };
 
-    const queries = [];
-
-    if (searchInput) {
-        // Appwrite requires a full-text index for search, assuming 'title' has one or we use equal/startsWith
-        // For simplicity, we might use startsWith or equal if full-text isn't set up, but let's assume search is available
-        queries.push(Query.search('title', searchInput)); 
-    }
-
-    if (tagsInput) {
-        const tags = tagsInput.split(',').map(t => t.trim()).filter(t => t);
-        if (tags.length > 0) {
-            // Appwrite array contains
-            tags.forEach(tag => queries.push(Query.contains('tags', tag)));
-        }
-    }
-
-    if (locationInput && locationInput !== 'none') {
-        queries.push(Query.search('location', locationInput));
-    }
-
-    if (sortSelect === 'Oldest First') {
-        queries.push(Query.orderAsc('date'));
-    } else {
-        queries.push(Query.orderDesc('date'));
-    }
-
-    fetchItems(itemType, queries);
+    fetchItems(itemType, criteria);
 }

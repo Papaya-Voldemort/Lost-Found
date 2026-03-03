@@ -1,3 +1,5 @@
+import { t } from './i18n.js';
+
 export function showToast(message, type = 'info') {
     // Create container if it doesn't exist
     let container = document.getElementById('toast-container');
@@ -23,7 +25,7 @@ export function showToast(message, type = 'info') {
     toast.innerHTML = `
         <div class="toast-icon">${iconSvg}</div>
         <div class="toast-message">${message}</div>
-        <button class="toast-close" aria-label="Close">&times;</button>
+        <button class="toast-close" aria-label="${t('common.close')}">&times;</button>
     `;
     
     container.appendChild(toast);

@@ -6,7 +6,7 @@
     <title>Processing Sign-In - Traceback</title>
     <meta name="theme-color" content="#326273">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script>if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');</script>
+    <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;})();</script>
     <style>
         body {
             display: flex;

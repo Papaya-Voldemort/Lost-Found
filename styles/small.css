@@ -27,13 +27,13 @@
         list-style: none;
     }
 
-    nav li:has(#login-link) {
+    .nav-login {
         display: none;
     }
 
     nav li {
         /* Removed the border cause it was ugly sorry*/
-        width: calc(100% / 3);
+        flex: 1 1 0;
         border-radius: 8px 8px 0 0;
     }
 
@@ -45,11 +45,6 @@
         text-decoration: none;
         color: inherit;
         color: var(--color-primary);
-    }
-
-    #login-link {
-        display: none;
-        visibility: hidden;
     }
 
     .nav-icon {
@@ -91,6 +86,10 @@
     }
 
     .nav-login {
+        order: 4;
+    }
+
+    .nav-account {
         order: 4;
     }
 
@@ -147,6 +146,28 @@
 
     .secondary-search-items {
         grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .search-actions {
+        flex-direction: column;
+    }
+
+    .search-actions .btn-primary,
+    .search-actions .btn-secondary {
+        width: 100%;
+    }
+
+    section#call-to-action .cta-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    section#call-to-action .btn-primary,
+    section#call-to-action .btn-secondary {
+        width: min(100%, 20rem);
+        margin-inline: 0;
     }
 
 }

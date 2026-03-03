@@ -9,7 +9,7 @@
     <meta name="description" content="Sign in to your Traceback account">
     <meta name="theme-color" content="#326273">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script>if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');</script>
+    <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;})();</script>
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
@@ -69,17 +69,20 @@
     </main>
 
     <script type="module">
+        import { applyTranslations, t } from './js/i18n.js';
         import { showToast } from './js/toast.js';
 
+        applyTranslations();
+
         const params = new URLSearchParams(window.location.search);
-        const errorMessage = params.get('message') || 'An unexpected error occurred during sign-in.';
+        const errorMessage = params.get('message') || t('error.unexpectedMessage');
         const errorDisplay = document.getElementById('error-message');
         
         if (errorDisplay) {
             errorDisplay.textContent = errorMessage;
         }
 
-        showToast('Google sign-in failed. ' + errorMessage, 'error');
+        showToast(t('error.googleFailedPrefix') + errorMessage, 'error');
     </script>
 </body>
 

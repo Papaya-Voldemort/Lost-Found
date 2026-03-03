@@ -1,30 +1,120 @@
 import { account, ID } from './auth.js';
+import { applyTranslations, getArray, t } from './i18n.js';
 import { showToast } from './toast.js';
 import { handleItemSubmission, fetchItems, setupSearch, setupLoadMore } from './items.js';
 
 let Cropper = null;
 let cropperInstance = null;
 
+const THEME_STORAGE_KEY = 'theme';
+const LANGUAGE_STORAGE_KEY = 'language';
+
+function prefersDarkMode() {
+    return window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : true;
+}
+
+function getStoredThemePreference() {
+    return localStorage.getItem(THEME_STORAGE_KEY) || 'system';
+}
+
+function getEffectiveTheme(themePreference = getStoredThemePreference()) {
+    if (themePreference === 'dark' || themePreference === 'light') {
+        return themePreference;
+    }
+
+    return prefersDarkMode() ? 'dark' : 'light';
+}
+
+function applyTheme(themePreference = getStoredThemePreference()) {
+    const effectiveTheme = getEffectiveTheme(themePreference);
+    const isDark = effectiveTheme === 'dark';
+
+    document.documentElement.classList.toggle('dark-mode', isDark);
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) {
+        meta.setAttribute('content', isDark ? '#121212' : '#326273');
+    }
+
+    return effectiveTheme;
+}
+
+function saveThemePreference(themePreference) {
+    localStorage.setItem(THEME_STORAGE_KEY, themePreference);
+    return applyTheme(themePreference);
+}
+
+function applyStoredLanguage() {
+    const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (storedLanguage) {
+        document.documentElement.lang = storedLanguage;
+        document.documentElement.dir = storedLanguage === 'ar' ? 'rtl' : 'ltr';
+    }
+}
+
+function initializePreferenceControls() {
+    applyStoredLanguage();
+    applyTheme();
+    applyTranslations();
+
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const nextTheme = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+            saveThemePreference(nextTheme);
+        });
+    }
+
+    const themePreferenceSelect = document.getElementById('theme-preference');
+    if (themePreferenceSelect) {
+        themePreferenceSelect.value = getStoredThemePreference();
+        themePreferenceSelect.addEventListener('change', () => {
+            saveThemePreference(themePreferenceSelect.value);
+            showToast(t('forms.accountSaved'), 'success');
+        });
+    }
+
+    const languagePreferenceSelect = document.getElementById('language-preference');
+    if (languagePreferenceSelect) {
+        const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY) || document.documentElement.lang || 'en';
+        languagePreferenceSelect.value = storedLanguage;
+        document.documentElement.lang = storedLanguage;
+
+        languagePreferenceSelect.addEventListener('change', () => {
+            const nextLanguage = languagePreferenceSelect.value;
+            localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
+            document.documentElement.lang = nextLanguage;
+            document.documentElement.dir = nextLanguage === 'ar' ? 'rtl' : 'ltr';
+            applyTranslations();
+            words = getArray('home.typewriterWords');
+            wordIndex = 0;
+            charIndex = 0;
+            isDeleting = false;
+            showToast(t('forms.languageSaved'), 'success');
+        });
+    }
+
+    if (window.matchMedia) {
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        darkModeMediaQuery.addEventListener('change', () => {
+            if (getStoredThemePreference() === 'system') {
+                applyTheme('system');
+            }
+        });
+    }
+}
+
 /* ============================================
    DARK / LIGHT MODE TOGGLE
    ============================================ */
 
-const themeToggle = document.getElementById('theme-toggle');
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.toggle('dark-mode');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        // Update theme-color meta tag
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', isDark ? '#121212' : '#326273');
-    });
-}
+initializePreferenceControls();
 
 /* ============================================
    TYPEWRITER EFFECT
    ============================================ */
 
-const words = ["search", "recover", "report"];
+let words = getArray('home.typewriterWords');
 
 let wordIndex = 0;
 let charIndex = 0;
@@ -329,6 +419,7 @@ document.querySelectorAll('.toggle-password').forEach(btn => {
         const isPassword = input.type === 'password';
         input.type = isPassword ? 'text' : 'password';
         btn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+        btn.setAttribute('aria-label', isPassword ? t('forms.hidePassword') : t('forms.showPassword'));
         btn.classList.toggle('showing', !isPassword);
     });
 });
@@ -372,11 +463,11 @@ function initStrengthMeter(inputId, containerId) {
 
         const levels = [
             { label: '', color: 'transparent', width: '0%' },
-            { label: 'Weak', color: '#dc3545', width: '20%' },
-            { label: 'Fair', color: '#fd7e14', width: '40%' },
-            { label: 'Good', color: '#ffc107', width: '60%' },
-            { label: 'Strong', color: '#28a745', width: '80%' },
-            { label: 'Very Strong', color: '#20c997', width: '100%' },
+            { label: t('common.passwordStrength.1'), color: '#dc3545', width: '20%' },
+            { label: t('common.passwordStrength.2'), color: '#fd7e14', width: '40%' },
+            { label: t('common.passwordStrength.3'), color: '#ffc107', width: '60%' },
+            { label: t('common.passwordStrength.4'), color: '#28a745', width: '80%' },
+            { label: t('common.passwordStrength.5'), color: '#20c997', width: '100%' },
         ];
 
         const level = levels[score];
@@ -424,15 +515,15 @@ initStrengthMeter('new-password', 'password-strength-account');
         if (resendBtn) {
             resendBtn.addEventListener('click', async () => {
                 resendBtn.disabled = true;
-                resendBtn.textContent = 'Sending…';
+                resendBtn.textContent = t('login.sending');
                 try {
                     await account.createVerification(window.location.origin + '/verify');
-                    showToast('Verification email sent! Check your inbox.', 'success');
+                    showToast(t('login.verificationSentToast'), 'success');
                 } catch (err) {
-                    showToast('Failed to send email: ' + err.message, 'error');
+                    showToast(t('login.verificationFailedPrefix') + err.message, 'error');
                 } finally {
                     resendBtn.disabled = false;
-                    resendBtn.textContent = 'Resend Verification Email';
+                    resendBtn.textContent = t('login.resendVerificationEmail');
                 }
             });
         }
@@ -486,13 +577,15 @@ initStrengthMeter('new-password', 'password-strength-account');
 
         const loginLink = document.getElementById('login-link');
         if (loginLink) {
+            loginLink.parentElement?.classList.remove('nav-login');
+            loginLink.parentElement?.classList.add('nav-account');
             loginLink.href = 'account';
             loginLink.innerHTML = `
                 <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="8" r="5"/>
                     <path d="M20 21a8 8 0 0 0-16 0"/>
                 </svg>
-                Account
+                ${t('nav.account')}
             `;
         }
     } catch (error) {
@@ -547,19 +640,19 @@ initStrengthMeter('new-password', 'password-strength-account');
             const submitBtn = signupForm.querySelector('input[type="submit"]');
 
             if (password !== confirmPassword) {
-                showToast("Passwords do not match!", "error");
+                showToast(t('signup.passwordsMismatch'), 'error');
                 return;
             }
 
             // Username validation
             const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
             if (!usernameRegex.test(username)) {
-                showToast("Username must be 3-20 characters and contain only letters, numbers, and underscores.", "error");
+                showToast(t('signup.invalidUsername'), 'error');
                 return;
             }
 
             submitBtn.disabled = true;
-            submitBtn.value = 'Creating account…';
+            submitBtn.value = t('signup.creatingAccount');
 
             try {
                 try {
@@ -577,23 +670,23 @@ initStrengthMeter('new-password', 'password-strength-account');
                 // Send verification email
                 try {
                     await account.createVerification(window.location.origin + '/verify');
-                    showToast("Account created! Check your inbox to verify your email.", "success");
+                    showToast(t('signup.accountCreatedVerify'), 'success');
 
                     // Redirect to login where the verification panel will auto-show
                     setTimeout(() => {
                         window.location.href = 'login';
                     }, 3000);
                 } catch (verifyError) {
-                    showToast("Account created, but failed to send verification email.", "error");
+                    showToast(t('signup.accountCreatedVerifyFailed'), 'error');
                     setTimeout(() => {
                         window.location.href = 'login';
                     }, 3000);
                 }
                 
             } catch (error) {
-                showToast("Signup failed: " + error.message, "error");
+                showToast(t('signup.signupFailedPrefix') + error.message, 'error');
                 submitBtn.disabled = false;
-                submitBtn.value = 'Sign Up';
+                submitBtn.value = t('signup.signUp');
             }
         });
     }
@@ -608,7 +701,7 @@ initStrengthMeter('new-password', 'password-strength-account');
             const submitBtn = loginForm.querySelector('input[type="submit"]');
 
             submitBtn.disabled = true;
-            submitBtn.value = 'Signing in…';
+            submitBtn.value = t('login.signingIn');
 
             try {
                 // If user is already logged in, delete current session
@@ -625,16 +718,16 @@ initStrengthMeter('new-password', 'password-strength-account');
                     window.location.href = 'account';
                 } else {
                     submitBtn.disabled = false;
-                    submitBtn.value = 'Sign In';
+                    submitBtn.value = t('login.signIn');
                     showVerificationPanel(loggedInUser.email);
                 }
             } catch (error) {
                 submitBtn.disabled = false;
-                submitBtn.value = 'Sign In';
+                submitBtn.value = t('login.signIn');
                 if (error.code === 401) {
-                    showToast("Invalid credentials. If you registered with Google, please use the 'Sign in with Google' button.", "error");
+                    showToast(t('login.invalidCredentials'), 'error');
                 } else {
-                    showToast("Login failed: " + error.message, "error");
+                    showToast(t('login.loginFailedPrefix') + error.message, 'error');
                 }
             }
         });
@@ -663,7 +756,7 @@ initStrengthMeter('new-password', 'password-strength-account');
                     window.location.origin + '/error'
                 );
             } catch (error) {
-                showToast("Google sign-in failed. Please try again.", "error");
+                showToast(t('login.googleFailed'), 'error');
             }
         });
     });
@@ -677,7 +770,7 @@ initStrengthMeter('new-password', 'password-strength-account');
                 await account.deleteSession('current');
                 window.location.href = '/';
             } catch (error) {
-                showToast("Logout failed: " + error.message, "error");
+                showToast(t('account.logoutFailed') + ': ' + error.message, 'error');
             }
         });
     }
@@ -717,18 +810,18 @@ initStrengthMeter('new-password', 'password-strength-account');
             const email = document.getElementById('forgot-email').value.trim();
             const submitBtn = forgotPasswordForm.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Sending...';
+            submitBtn.textContent = t('login.sending');
 
             try {
                 await account.createRecovery(email, window.location.origin + '/reset-password');
-                showToast('Recovery email sent! Check your inbox.', 'success');
+                showToast(t('login.recoverySent'), 'success');
                 document.getElementById('forgot-password-modal').classList.remove('active');
                 forgotPasswordForm.reset();
             } catch (error) {
-                showToast('Failed to send recovery email: ' + error.message, 'error');
+                showToast(t('login.recoveryFailedPrefix') + error.message, 'error');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Send Reset Link';
+                submitBtn.textContent = t('login.sendResetLink');
             }
         });
     }

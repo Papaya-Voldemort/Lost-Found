@@ -120,21 +120,23 @@
         grid-template-columns: 1fr 1fr;
         gap: 1.2rem;
         max-width: 800px;
+        align-items: start;
     }
 
     .item-form > .full-width {
         grid-column: 1 / -1;
     }
 
-    .search-form {
+    #search-form {
         max-width: 920px;
     }
 
-    .search-form > .full-width {
+    #search-form > .full-width {
         grid-column: 1 / -1;
     }
 
-    .search-form .secondary-search-items {
+    #search-form .secondary-search-items,
+    #search-form .search-actions {
         grid-column: 1 / -1;
     }
 

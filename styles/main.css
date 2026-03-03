@@ -185,7 +185,7 @@ section#hero h1 {
     right: auto;
     margin-bottom: 1.5rem;
     font-size: var(--font-size-3xl);
-    color: var(--color-primary-dark);
+    color: var(--color-white);
 }
 
 /* Background card for hero section contrast */
@@ -442,7 +442,9 @@ section#call-to-action h2 {
 .btn-secondary {
     position: relative;
     z-index: 1;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin: 1rem;
     padding: 0.8rem 1.5rem;
     border-radius: var(--radius-md);
@@ -493,9 +495,12 @@ section#call-to-action h2 {
 
 /* CTA-scoped button overrides */
 section#call-to-action .btn-primary {
+    min-width: 13.5rem;
+    padding: 0.95rem 1.6rem;
     background-color: var(--color-white);
     color: var(--color-primary-dark);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 600;
 }
 
 section#call-to-action .btn-primary:hover {
@@ -508,6 +513,8 @@ section#call-to-action .btn-primary::before {
 }
 
 section#call-to-action .btn-secondary {
+    min-width: 13.5rem;
+    padding: 0.95rem 1.6rem;
     background-color: transparent;
     border: 2px solid rgba(255, 255, 255, 0.75);
     color: var(--color-white);
@@ -650,10 +657,6 @@ input:not([required]).touched:invalid {
     display: flex;
 }
 
-#location-other {
-    margin-left: 1.5rem;
-}
-
 .upload-form {
     margin-left: auto;
     margin-right: auto;
@@ -681,6 +684,10 @@ input:not([required]).touched:invalid {
     box-sizing: border-box;
 }
 
+.item-form > * {
+    min-width: 0;
+}
+
 .item-form label {
     display: flex;
     flex-direction: column;
@@ -691,6 +698,7 @@ input:not([required]).touched:invalid {
 .item-form input,
 .item-form select,
 .item-form textarea {
+    width: 100%;
     margin-top: 0.3rem;
     padding: 0.5rem;
     font-size: 1rem;
@@ -730,6 +738,22 @@ input:not([required]).touched:invalid {
 
 .item-form input:active {
     outline: none;
+}
+
+#location-other-label {
+    margin: 0;
+}
+
+#location-other-label input {
+    margin-left: 0;
+}
+
+.image-upload-section,
+#tags-container,
+#location-other-label,
+.search-actions,
+.secondary-search-items {
+    width: 100%;
 }
 
 #photo-hint {
@@ -825,17 +849,16 @@ input:not([required]).touched:invalid {
 }
 
 .secondary-search-items {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
     width: 100%;
     box-sizing: border-box;
-    justify-content: space-between;
+    align-items: start;
 }
 
 .secondary-search-items label {
-    flex: 1 1 120px;
+    width: 100%;
     min-width: 0;
 }
 
@@ -1028,6 +1051,7 @@ footer {
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
+    flex-wrap: wrap;
 }
 
 .search-actions .btn-primary,
@@ -1038,6 +1062,7 @@ footer {
     line-height: 1.4;
     height: auto;
     min-height: 0;
+    min-width: 10rem;
 }
 
 .btn-reset {
@@ -1532,7 +1557,24 @@ footer {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.settings-card select {
+    padding: 10px;
+    border: 1px solid var(--color-dark-gray);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    width: 100%;
+    background: var(--color-white);
+    color: var(--color-black);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
 .settings-card input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(92, 158, 173, 0.2);
+}
+
+.settings-card select:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 2px rgba(92, 158, 173, 0.2);
@@ -1572,6 +1614,19 @@ footer {
 .settings-card .toggle-password:hover {
     background: none;
     color: var(--color-primary-dark);
+}
+
+.settings-preferences {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.settings-note {
+    margin: 0;
+    color: var(--color-dark-gray);
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 /* ==================== Skeleton Loading ==================== */
@@ -1796,6 +1851,16 @@ html.dark-mode .settings-card input {
     background: var(--color-background);
     border-color: var(--color-light-gray);
     color: var(--color-white);
+}
+
+html.dark-mode .settings-card select {
+    background: var(--color-background);
+    border-color: var(--color-light-gray);
+    color: var(--color-white);
+}
+
+html.dark-mode .settings-note {
+    color: var(--color-dark-gray);
 }
 
 html.dark-mode .toggle-password {
