@@ -74,7 +74,9 @@ async function setup() {
         { key: 'tags', type: 'string', size: 36, array: true, required: false }, // Store as array of strings
         { key: 'imageId', type: 'string', size: 36, required: true },
         { key: 'userId', type: 'string', size: 36, required: true },
-        { key: 'status', type: 'string', size: 16, required: false, default: 'active' }
+        { key: 'status', type: 'string', size: 16, required: false, default: 'active' },
+        { key: 'userName', type: 'string', size: 128, required: false },
+        { key: 'userEmail', type: 'string', size: 320, required: false }
     ];
 
     for (const attr of attributesToAdd) {

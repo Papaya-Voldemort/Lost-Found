@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="styles/medium.css">
     <link rel="stylesheet" href="styles/large.css">
     <link rel="stylesheet" href="styles/toast.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -152,7 +153,7 @@
                     <div class="full-width image-upload-section">
                         <label for="image-upload">Image Upload</label>
                         <input type="file" accept="image/*" id="image-upload" aria-describedby="photo-hint" required>
-                        <p id="photo-hint" class="form-hint">A photo is required to help identify the item.</p>
+                        <p id="photo-hint" class="form-hint">A photo is required to help identify the item. (Max 5 MB)</p>
 
                         <div id="image-preview-container">
                             <img id="image-preview" src="" alt="Preview of uploaded image">
@@ -198,11 +199,56 @@
 
         <section class="items-feed-section scroll-animate">
             <div id="items-feed" class="items-grid">
-                <!-- Items will be dynamically injected here -->
+                <!-- Skeleton loading cards -->
+                <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+                <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+                <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+            </div>
+            <div class="feed-load-more-wrapper">
+                <button id="feed-load-more" class="btn-secondary" style="display: none;">Load More</button>
             </div>
         </section>
 
     </main>
+
+    <!-- Crop Modal -->
+    <div class="modal-overlay" id="crop-modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2>Crop Image</h2>
+                <button class="modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="crop-container">
+                    <img id="crop-image" src="" alt="Image to crop">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" id="crop-cancel">Cancel</button>
+                <button type="button" class="btn-primary" id="crop-confirm">Crop &amp; Use</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Detail Modal -->
+    <div class="modal-overlay" id="item-detail-modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2 id="modal-item-title"></h2>
+                <button class="modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img id="modal-item-image" class="modal-item-image" src="" alt="">
+                <p id="modal-item-location" class="item-location"></p>
+                <p id="modal-item-date" class="item-date"></p>
+                <p id="modal-item-description" class="modal-item-description"></p>
+                <div id="modal-item-tags" class="item-tags"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-contact-btn" class="btn-primary">Contact Reporter</button>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="footer-container">

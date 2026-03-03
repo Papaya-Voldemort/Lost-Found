@@ -208,17 +208,48 @@ function createListingCard(doc) {
 
     const actions = document.createElement('div');
     actions.className = 'actions';
+
+    const resolveBtn = document.createElement('button');
+    resolveBtn.className = 'btn-resolve';
+    resolveBtn.textContent = 'Resolve';
+    resolveBtn.addEventListener('click', () => handleResolve(doc.$id));
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'btn-delete';
     deleteBtn.dataset.id = doc.$id;
     deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', () => handleDelete(doc.$id));
-    actions.appendChild(deleteBtn);
+    actions.append(resolveBtn, deleteBtn);
 
     cardContent.append(h3, meta, actions);
     card.append(cardImage, cardContent);
 
     return card;
+}
+
+// Resolve Listing Handler
+async function handleResolve(docId) {
+    if (!confirm('Mark this item as resolved? It will be removed from the public feed.')) return;
+
+    try {
+        const doc = await databases.getDocument(DB_ID, COLLECTION_ID, docId);
+
+        if (doc.imageId) {
+            try {
+                await storage.deleteFile(BUCKET_ID, doc.imageId);
+            } catch (err) {
+                console.warn('Failed to delete associated image:', err);
+            }
+        }
+
+        await databases.deleteDocument(DB_ID, COLLECTION_ID, docId);
+
+        showToast('Item marked as resolved', 'success');
+        fetchUserListings(false);
+    } catch (error) {
+        console.error('Resolve failed:', error);
+        showToast('Failed to resolve listing', 'error');
+    }
 }
 
 // Delete Listing Handler

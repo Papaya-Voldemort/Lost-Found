@@ -8,6 +8,46 @@
         margin: 1rem;
         font-size: 1.3rem;
     }
+
+    /* #info 2-column layout */
+    section#info {
+        padding: var(--space-3xl) var(--space-2xl);
+    }
+
+    div#description {
+        flex-direction: row;
+        align-items: center;
+        gap: 4rem;
+    }
+
+    .info-headline {
+        flex: 1;
+    }
+
+    .info-features {
+        flex: 1;
+    }
+
+    /* Step cards connector line */
+    .steps-container {
+        position: relative;
+    }
+
+    .steps-container::before {
+        content: '';
+        position: absolute;
+        top: 4.5rem;
+        left: 18%;
+        width: 64%;
+        height: 2px;
+        background: repeating-linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 6px, transparent 6px, transparent 14px);
+        z-index: 0;
+    }
+
+    .step-card {
+        position: relative;
+        z-index: 1;
+    }
 }
 
 /* Extra Large Desktop - min-width: 75rem (1200px) */

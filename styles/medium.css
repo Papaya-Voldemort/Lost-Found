@@ -126,6 +126,14 @@
         grid-column: 1 / -1;
     }
 
+    /* #info stacked layout at tablet (columns, but not yet side-by-side) */
+    section#info {
+        padding: var(--space-2xl) var(--space-xl);
+    }
 
+    div#description {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 
 }

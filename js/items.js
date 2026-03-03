@@ -5,6 +5,11 @@ const DB_ID = 'traceback_db';
 const COLLECTION_ID = 'items';
 const BUCKET_ID = 'item_images';
 
+let feedOffset = 0;
+let currentFeedQueries = [];
+let currentFeedType = '';
+const FEED_LIMIT = 12;
+
 // Handle Item Submission
 export async function handleItemSubmission(formId, itemType) {
     const form = document.getElementById(formId);
@@ -26,8 +31,10 @@ export async function handleItemSubmission(formId, itemType) {
             const imageInput = form.querySelector('#image-upload');
             let imageId = null;
             
-            if (imageInput.files && imageInput.files[0]) {
-                const file = imageInput.files[0];
+            // Use cropped file if available, otherwise use raw file input
+            const file = imageInput._croppedFile || (imageInput.files && imageInput.files[0]);
+            
+            if (file) {
                 const uploadResponse = await storage.createFile(
                     BUCKET_ID,
                     ID.unique(),
@@ -80,6 +87,8 @@ export async function handleItemSubmission(formId, itemType) {
                     tags: tagsArray,
                     imageId: imageId,
                     userId: user.$id,
+                    userName: user.name || '',
+                    userEmail: user.email || '',
                     status: 'active'
                 },
                 [
@@ -99,6 +108,8 @@ export async function handleItemSubmission(formId, itemType) {
                 imagePreview.src = '';
                 previewContainer.style.display = 'none';
             }
+            // Clear cropped file
+            if (imageInput) imageInput._croppedFile = null;
             
             // Reset tags
             const tagPills = document.getElementById('tag-pills');
@@ -119,17 +130,24 @@ export async function handleItemSubmission(formId, itemType) {
 }
 
 // Fetch and Render Items
-export async function fetchItems(itemType, queries = []) {
+export async function fetchItems(itemType, queries = [], loadMore = false) {
     const feedContainer = document.getElementById('items-feed');
+    const loadMoreBtn = document.getElementById('feed-load-more');
     if (!feedContainer) return;
 
-    feedContainer.innerHTML = '<div class="loading-spinner">Loading items...</div>';
+    if (!loadMore) {
+        feedOffset = 0;
+        currentFeedQueries = queries;
+        currentFeedType = itemType;
+    }
 
     try {
         const defaultQueries = [
             Query.equal('type', itemType),
             Query.equal('status', 'active'),
-            Query.orderDesc('date')
+            Query.orderDesc('date'),
+            Query.limit(FEED_LIMIT),
+            Query.offset(feedOffset)
         ];
 
         const response = await databases.listDocuments(
@@ -138,26 +156,42 @@ export async function fetchItems(itemType, queries = []) {
             [...defaultQueries, ...queries]
         );
 
-        if (response.documents.length === 0) {
+        if (response.documents.length === 0 && feedOffset === 0) {
             feedContainer.innerHTML = '<p class="no-items">No items found.</p>';
+            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
             return;
         }
 
-        feedContainer.innerHTML = '';
+        if (!loadMore) {
+            feedContainer.innerHTML = '';
+        }
+
         response.documents.forEach(item => {
             const card = createItemCard(item);
             feedContainer.appendChild(card);
         });
 
+        feedOffset += response.documents.length;
+
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = feedOffset >= response.total ? 'none' : 'block';
+        }
+
     } catch (error) {
         console.error('Error fetching items:', error);
-        feedContainer.innerHTML = '<p class="error-message">Failed to load items. Please try again later.</p>';
+        if (feedOffset === 0) {
+            feedContainer.innerHTML = '<p class="error-message">Failed to load items. Please try again later.</p>';
+        }
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     }
 }
 
 function createItemCard(item) {
     const card = document.createElement('div');
     card.className = 'item-card';
+
+    // Click handler to open detail modal
+    card.addEventListener('click', () => openItemDetailModal(item));
 
     // Get image URL with fallback
     let imageUrl = 'images/placeholder-item.svg';
@@ -221,6 +255,88 @@ function createItemCard(item) {
 
     card.append(imageContainer, details);
     return card;
+}
+
+// Open item detail modal
+function openItemDetailModal(item) {
+    const modal = document.getElementById('item-detail-modal');
+    if (!modal) return;
+
+    // Populate title
+    document.getElementById('modal-item-title').textContent = item.title;
+
+    // Populate image
+    const modalImage = document.getElementById('modal-item-image');
+    if (item.imageId) {
+        try {
+            modalImage.src = storage.getFileView(BUCKET_ID, item.imageId);
+        } catch (e) {
+            modalImage.src = 'images/placeholder-item.svg';
+        }
+    } else {
+        modalImage.src = 'images/placeholder-item.svg';
+    }
+    modalImage.alt = `Photo of ${item.title}`;
+
+    // Format date
+    const dateObj = new Date(item.date);
+    const formattedDate = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+
+    // Populate location (safe DOM APIs)
+    const locationEl = document.getElementById('modal-item-location');
+    locationEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><path fill="currentColor" d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm36.12,173.84C140.46,216.74,128,228.17,128,228.17s-12.46-11.43-36.12-38.33C67.43,161.63,56,132.11,56,104a72,72,0,0,1,144,0C200,132.11,188.57,161.63,164.12,189.84Z"></path></svg>';
+    locationEl.appendChild(document.createTextNode(' ' + item.location));
+
+    // Populate date
+    const dateEl = document.getElementById('modal-item-date');
+    dateEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><path fill="currentColor" d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48Zm136,160H48V96H208V208Z"></path></svg>';
+    dateEl.appendChild(document.createTextNode(' ' + formattedDate));
+
+    // Populate description (full, not clamped)
+    document.getElementById('modal-item-description').textContent = item.description;
+
+    // Populate tags
+    const tagsEl = document.getElementById('modal-item-tags');
+    tagsEl.innerHTML = '';
+    if (item.tags && item.tags.length > 0) {
+        item.tags.forEach(tag => {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = tag;
+            tagsEl.appendChild(span);
+        });
+    }
+
+    // Contact button — click 1: reveal email, click 2: open mailto
+    const contactBtn = document.getElementById('modal-contact-btn');
+    contactBtn.textContent = 'Contact Reporter';
+    contactBtn.disabled = false;
+    contactBtn.title = '';
+    let emailRevealed = false;
+    contactBtn.onclick = () => {
+        if (!item.userEmail) {
+            contactBtn.textContent = 'Contact info not available';
+            contactBtn.disabled = true;
+            return;
+        }
+        if (!emailRevealed) {
+            emailRevealed = true;
+            contactBtn.textContent = item.userEmail;
+            contactBtn.title = 'Click again to open email client';
+        } else {
+            window.location.href = 'mailto:' + item.userEmail;
+        }
+    };
+
+    // Show modal
+    modal.classList.add('active');
+}
+
+// Setup Load More button for feed pagination
+export function setupLoadMore() {
+    const loadMoreBtn = document.getElementById('feed-load-more');
+    if (!loadMoreBtn) return;
+    loadMoreBtn.addEventListener('click', () => fetchItems(currentFeedType, currentFeedQueries, true));
 }
 
 // Debounce utility
