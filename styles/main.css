@@ -185,7 +185,7 @@ section#hero h1 {
     right: auto;
     margin-bottom: 1.5rem;
     font-size: var(--font-size-3xl);
-    color: var(--color-white);
+    color: var(--color-black);
 }
 
 /* Background card for hero section contrast */
@@ -1837,6 +1837,10 @@ html.dark-mode .feature-pill {
 html.dark-mode .hero-card {
     background-color: rgba(18, 18, 18, 0.92);
     border-color: rgba(255, 255, 255, 0.08);
+}
+
+html.dark-mode section#hero h1 {
+    color: var(--color-white);
 }
 
 html.dark-mode .item-form input,
