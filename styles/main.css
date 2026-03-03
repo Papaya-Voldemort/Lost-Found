@@ -12,7 +12,7 @@ html {
     box-sizing: border-box;
 }
 
-/* Signed in/out item divs - hidden by default, JavaScript will toggle visibility */
+/* Signed in/out item divs */
 #signed-in-lost-item-div,
 #signed-in-found-item-div {
     display: none;
