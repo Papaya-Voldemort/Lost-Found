@@ -300,11 +300,88 @@ initStrengthMeter('new-password', 'password-strength-account');
         await new Promise(r => document.addEventListener('DOMContentLoaded', r, { once: true }));
     }
 
+    // Show the email verification panel on the login page (hides the login form)
+    function showVerificationPanel(email) {
+        const panel = document.getElementById('verification-panel');
+        if (!panel) return;
+
+        const googleBtn = document.querySelector('.google-btn');
+        const orDivider = document.querySelector('.or-divider');
+        const loginForm = document.getElementById('login-form');
+        const authLink = document.querySelector('.auth-link');
+        if (googleBtn) googleBtn.style.display = 'none';
+        if (orDivider) orDivider.style.display = 'none';
+        if (loginForm) loginForm.style.display = 'none';
+        if (authLink) authLink.style.display = 'none';
+
+        const emailSpan = document.getElementById('verification-email');
+        if (emailSpan) emailSpan.textContent = email;
+        panel.style.display = 'block';
+
+        const resendBtn = document.getElementById('resend-verification-login');
+        if (resendBtn) {
+            resendBtn.addEventListener('click', async () => {
+                resendBtn.disabled = true;
+                resendBtn.textContent = 'Sending…';
+                try {
+                    await account.createVerification(window.location.origin + '/verify');
+                    showToast('Verification email sent! Check your inbox.', 'success');
+                } catch (err) {
+                    showToast('Failed to send email: ' + err.message, 'error');
+                } finally {
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = 'Resend Verification Email';
+                }
+            });
+        }
+
+        const signoutBtn = document.getElementById('signout-unverified');
+        if (signoutBtn) {
+            signoutBtn.addEventListener('click', async () => {
+                try {
+                    await account.deleteSession('current');
+                } catch (e) { /* session already gone */ }
+                location.reload();
+            });
+        }
+    }
+
     // Check if user is logged in
     let isLoggedIn = false;
     try {
         const user = await account.get();
         isLoggedIn = true;
+        const isVerified = user.emailVerification;
+        const path = window.location.pathname;
+
+        const isProtectedPage =
+            path.endsWith('account') || path.endsWith('account.html') ||
+            path.endsWith('lost') || path.endsWith('lost.html') ||
+            path.endsWith('found') || path.endsWith('found.html');
+        const isLoginPage = path.endsWith('login') || path.endsWith('login.html');
+        const isSignupPage = path.endsWith('signup') || path.endsWith('signup.html');
+
+        // Block unverified users from accessing protected pages
+        if (isProtectedPage && !isVerified) {
+            window.location.href = 'login';
+            return;
+        }
+
+        // Redirect already-logged-in verified users away from auth pages
+        if (isLoginPage && isVerified) {
+            window.location.href = 'account';
+            return;
+        }
+        if (isSignupPage) {
+            window.location.href = isVerified ? 'account' : 'login';
+            return;
+        }
+
+        // Logged in but unverified on the login page — show verification panel
+        if (isLoginPage && !isVerified) {
+            showVerificationPanel(user.email);
+        }
+
         const loginLink = document.getElementById('login-link');
         if (loginLink) {
             loginLink.href = 'account';
@@ -397,16 +474,16 @@ initStrengthMeter('new-password', 'password-strength-account');
                 // Send verification email
                 try {
                     await account.createVerification(window.location.origin + '/verify');
-                    showToast("Account created! Please check your email to verify your account.", "success");
-                    
-                    // Redirect after a short delay so they can read the toast
+                    showToast("Account created! Check your inbox to verify your email.", "success");
+
+                    // Redirect to login where the verification panel will auto-show
                     setTimeout(() => {
-                        window.location.href = 'account';
+                        window.location.href = 'login';
                     }, 3000);
                 } catch (verifyError) {
                     showToast("Account created, but failed to send verification email.", "error");
                     setTimeout(() => {
-                        window.location.href = 'account';
+                        window.location.href = 'login';
                     }, 3000);
                 }
                 
@@ -440,7 +517,14 @@ initStrengthMeter('new-password', 'password-strength-account');
                 }
 
                 await account.createEmailPasswordSession(email, password);
-                window.location.href = 'account';
+                const loggedInUser = await account.get();
+                if (loggedInUser.emailVerification) {
+                    window.location.href = 'account';
+                } else {
+                    submitBtn.disabled = false;
+                    submitBtn.value = 'Sign In';
+                    showVerificationPanel(loggedInUser.email);
+                }
             } catch (error) {
                 submitBtn.disabled = false;
                 submitBtn.value = 'Sign In';

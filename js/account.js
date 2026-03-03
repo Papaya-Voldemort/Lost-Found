@@ -13,6 +13,10 @@ const LIMIT = 10;
 async function initAccount() {
     try {
         currentUser = await account.get();
+        if (!currentUser.emailVerification) {
+            window.location.href = '/login';
+            return;
+        }
         renderUserProfile(currentUser);
         await fetchUserListings();
     } catch (error) {

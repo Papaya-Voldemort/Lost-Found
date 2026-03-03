@@ -131,6 +131,14 @@
 
                 <input type="submit" value="Sign In" class="btn-primary full-width">
             </form>
+
+            <div id="verification-panel" style="display:none; text-align:center;">
+                <h3>Check Your Inbox</h3>
+                <p>We sent a verification email to <strong><span id="verification-email"></span></strong>.</p>
+                <p>Click the link in the email to activate your account, then come back here and sign in.</p>
+                <button type="button" id="resend-verification-login" class="btn-primary full-width">Resend Verification Email</button>
+                <button type="button" id="signout-unverified" class="btn-secondary full-width" style="margin-top:0.75rem;">Sign out &amp; use a different account</button>
+            </div>
             
             <a href="signup" class="auth-link">Don't have an account? Sign up</a>
         </section>
