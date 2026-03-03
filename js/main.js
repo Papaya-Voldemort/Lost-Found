@@ -468,11 +468,12 @@ initStrengthMeter('new-password', 'password-strength-account');
                     // Not logged in, proceed
                 }
 
-                // Appwrite OAuth2
-                account.createOAuth2Session(
+                // Use OAuth2 Token Flow instead of Session (works on mobile)
+                // Token flow doesn't rely on cross-site cookies
+                account.createOAuth2Token(
                     'google',
-                    window.location.origin + '/account',
-                    window.location.origin + '/login'
+                    window.location.origin + '/callback',
+                    window.location.origin + '/error'
                 );
             } catch (error) {
                 showToast("Google sign-in failed. Please try again.", "error");

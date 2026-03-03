@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign In Error - Traceback</title>
+    <meta name="description" content="Sign in to your Traceback account">
+    <meta name="theme-color" content="#326273">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');</script>
+    <script type="module" src="js/main.js" defer></script>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/small.css">
+    <link rel="stylesheet" href="styles/medium.css">
+    <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/toast.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div id="logo-div">
+            <h1>Traceback</h1>
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
+        </div>
+        <nav>
+            <ul>
+                <li class="nav-home">
+                    <a href="/">
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                            height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <path
+                                d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z"
+                                fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
+                        </svg>
+                        Home
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1>Sign In Error</h1>
+                <p id="error-message">An error occurred during sign-in. Please try again.</p>
+                <div style="margin-top: 30px;">
+                    <a href="/login" class="btn btn-primary" style="display: inline-block; padding: 12px 24px; text-decoration: none; border-radius: 8px;">
+                        Return to Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { showToast } from './js/toast.js';
+
+        const params = new URLSearchParams(window.location.search);
+        const errorMessage = params.get('message') || 'An unexpected error occurred during sign-in.';
+        const errorDisplay = document.getElementById('error-message');
+        
+        if (errorDisplay) {
+            errorDisplay.textContent = errorMessage;
+        }
+
+        showToast('Google sign-in failed. ' + errorMessage, 'error');
+    </script>
+</body>
+
+</html>
