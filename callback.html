@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Sign-In - Traceback</title>
+    <meta name="theme-color" content="#326273">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');</script>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: #326273;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        p {
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="spinner"></div>
+        <p>Signing in...</p>
+    </div>
+
+    <script type="module">
+        import { account } from './js/auth.js';
+        import { showToast } from './js/toast.js';
+
+        (async () => {
+            try {
+                // Extract userId and secret from URL parameters
+                const params = new URLSearchParams(window.location.search);
+                const userId = params.get('userId');
+                const secret = params.get('secret');
+
+                if (!userId || !secret) {
+                    throw new Error('Missing authentication parameters from OAuth provider');
+                }
+
+                await account.createSession(userId, secret);
+
+                window.location.href = '/account';
+            } catch (error) {
+                console.error('OAuth callback error:', error);
+                showToast('Sign-in failed: ' + error.message, 'error');
+                // If it doesn't work, redirect to error page
+                setTimeout(() => {
+                    window.location.href = '/error?message=' + encodeURIComponent(error.message);
+                }, 2000);
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -7,7 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sign In - Traceback</title>
     <meta name="description" content="Sign in to your Traceback account">
+    <meta name="theme-color" content="#326273">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');</script>
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
@@ -32,7 +34,7 @@
             <ul>
                 <li class="nav-home">
                     <a href="/">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
                             <path
@@ -45,7 +47,7 @@
                 </li>
                 <li class="nav-lost">
                     <a href="lost">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
                             <path d="M128,160V144c30.93,0,56-21.49,56-48s-25.07-48-56-48S72,69.49,72,96" fill="none"
@@ -58,7 +60,7 @@
                 </li>
                 <li class="nav-found">
                     <a href="found">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
                             <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round"
@@ -70,8 +72,8 @@
                     </a>
                 </li>
                 <li class="nav-login">
-                    <a id="active" href="login" id="login-link" class="active">
-                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
+                    <a href="login" id="login-link" class="current">
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
                             <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round"
@@ -109,7 +111,7 @@
                 <span>Or</span>
             </div>
 
-            <form id="login-form" class="item-form" action="#" method="POST">
+            <form id="login-form" class="item-form">
                 <label>
                     <span>Email Address <span class="required-asterisk">*</span></span>
                     <input type="email" id="login-email" name="email" placeholder="e.g. your.email@domain.com" required>
@@ -117,15 +119,50 @@
                 
                 <label>
                     <span>Password <span class="required-asterisk">*</span></span>
-                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-password" aria-label="Show password">
+                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,123.97,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A169.47,169.47,0,0,1,25,128,169.47,169.47,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A169.47,169.47,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
+                        </button>
+                    </div>
                 </label>
+
+                <button type="button" class="forgot-password-link" id="forgot-password-link">Forgot your password?</button>
 
                 <input type="submit" value="Sign In" class="btn-primary full-width">
             </form>
+
+            <div id="verification-panel" style="display:none; text-align:center;">
+                <h3>Check Your Inbox</h3>
+                <p>We sent a verification email to <strong><span id="verification-email"></span></strong>.</p>
+                <p>Click the link in the email to activate your account, then come back here and sign in.</p>
+                <button type="button" id="resend-verification-login" class="btn-primary full-width">Resend Verification Email</button>
+                <button type="button" id="signout-unverified" class="btn-secondary full-width" style="margin-top:0.75rem;">Sign out &amp; use a different account</button>
+            </div>
             
             <a href="signup" class="auth-link">Don't have an account? Sign up</a>
         </section>
     </main>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal-overlay" id="forgot-password-modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2>Reset Password</h2>
+                <button class="modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-top: 0;">Enter your email address and we'll send you a link to reset your password.</p>
+                <form id="forgot-password-form" class="item-form" style="gap: 1rem;">
+                    <label>
+                        <span>Email Address</span>
+                        <input type="email" id="forgot-email" placeholder="your.email@domain.com" required>
+                    </label>
+                    <button type="submit" class="btn-primary" style="margin: 0;">Send Reset Link</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="footer-container">
@@ -136,6 +173,10 @@
         </div>
         <div id="footer-bottom">
             <p>&copy; 2026 Traceback. All rights reserved.</p>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
         </div>
     </footer>
 </body>

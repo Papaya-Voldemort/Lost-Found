@@ -110,7 +110,7 @@
 /* Mobile responsiveness */
 @media (max-width: 480px) {
     #toast-container {
-        bottom: 16px;
+        bottom: 100px; /* Above the fixed bottom nav */
         right: 16px;
         left: 16px;
     }
