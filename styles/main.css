@@ -137,6 +137,19 @@ nav a:active .nav-icon {
     transform: scale(0.95);
 }
 
+/* Auth-aware nav text toggle */
+.nav-text-account {
+    display: none;
+}
+
+html.logged-in .nav-text-signin {
+    display: none;
+}
+
+html.logged-in .nav-text-account {
+    display: inline;
+}
+
 /* ==================== Main ==================== */
 
 main {
@@ -892,6 +905,95 @@ footer {
     font-weight: 300;
 }
 
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-md);
+}
+
+.footer-legal {
+    display: flex;
+    gap: var(--space-lg);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.footer-legal a {
+    color: white;
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    transition: opacity 0.2s ease;
+    padding-bottom: 0;
+}
+
+.footer-legal a::after {
+    display: none;
+}
+
+.footer-legal a:hover {
+    opacity: 0.8;
+}
+
+.footer-legal a:active {
+    opacity: 0.6;
+}
+
+/* ==================== Legal Pages ==================== */
+
+.legal-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 var(--space-lg);
+    font-family: var(--font-body);
+}
+
+.legal-container h1 {
+    margin-bottom: 0.5rem;
+}
+
+.legal-meta {
+    color: var(--color-dark-gray);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.legal-container h2 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-display);
+}
+
+.legal-container h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-display);
+}
+
+.legal-container ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.legal-container li {
+    margin-bottom: 0.5rem;
+}
+
+.legal-container a {
+    color: var(--color-primary);
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.legal-container a:hover {
+    text-decoration: underline;
+}
+
+.legal-container a:active {
+    color: var(--color-primary-dark);
+}
+
 /* ==================== Reduced Motion Support ==================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1226,6 +1328,16 @@ footer {
     padding-bottom: var(--space-2xl);
 }
 
+.report-new-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    margin: 0 0 var(--space-xl);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+}
+
 .user-listings .container {
     padding: 0 var(--space-md);
     max-width: 1200px;
@@ -1239,7 +1351,14 @@ footer {
     margin-bottom: var(--space-xl);
     flex-wrap: wrap;
     gap: var(--space-md);
-    flex-direction:column;
+    flex-direction: column;
+    position: static;
+    z-index: auto;
+    width: auto;
+    bottom: auto;
+    top: auto;
+    background-color: transparent;
+    border-bottom: none;
 }
 
 .section-header h2 {
@@ -1911,63 +2030,134 @@ html.dark-mode .modal-close:hover {
     background-color: #2a2a2a;
 }
 
-/* ==================== Theme Toggle ==================== */
+html.dark-mode section#call-to-action .btn-primary:hover {
+    background-color: var(--color-white);
+}
 
-.theme-toggle {
-    background: none;
-    border: 2px solid var(--color-dark-gray);
+html.dark-mode .legal-container {
+    color: var(--color-white);
+}
+
+html.dark-mode .legal-meta {
+    color: var(--color-dark-gray);
+}
+
+html.dark-mode .legal-container a {
+    color: var(--color-primary);
+}
+
+html.dark-mode .legal-container a:active {
+    color: var(--color-accent);
+}
+
+/* ==================== Settings Gear ==================== */
+
+.settings-gear-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 999;
+    background: var(--color-surface);
+    border: 1px solid var(--color-light-gray);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    transition: border-color 0.3s, transform 0.3s;
-    position: relative;
-    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s, background-color 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.theme-toggle:hover {
+.settings-gear-btn:hover {
     border-color: var(--color-primary);
     transform: scale(1.1);
 }
 
-.theme-toggle .icon-sun,
-.theme-toggle .icon-moon {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    transition: transform 0.4s ease, opacity 0.4s ease;
+.settings-gear-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--color-primary-dark);
+    transition: stroke 0.3s;
 }
 
-.theme-toggle .icon-sun {
-    opacity: 1;
-    transform: rotate(0deg) scale(1);
+.settings-gear-btn:hover svg {
+    stroke: var(--color-primary);
 }
 
-.theme-toggle .icon-moon {
-    opacity: 0;
-    transform: rotate(-90deg) scale(0.5);
+.settings-popup {
+    position: fixed;
+    top: 4.5rem;
+    right: 1rem;
+    z-index: 998;
+    background: var(--color-background);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    min-width: 220px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: none;
 }
 
-html.dark-mode .theme-toggle .icon-sun {
-    opacity: 0;
-    transform: rotate(90deg) scale(0.5);
+.settings-popup.open {
+    display: block;
 }
 
-html.dark-mode .theme-toggle .icon-moon {
-    opacity: 1;
-    transform: rotate(0deg) scale(1);
+.settings-popup-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-primary-dark);
+    margin-bottom: var(--space-xs);
 }
 
-html.dark-mode .theme-toggle {
-    border-color: var(--color-dark-gray);
+.settings-popup-label:not(:first-child) {
+    margin-top: var(--space-md);
 }
 
-html.dark-mode .theme-toggle:hover {
-    border-color: var(--color-primary);
+.settings-popup select {
+    width: 100%;
+    padding: var(--space-sm) var(--space-sm);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: inherit;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+}
+
+.settings-popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 997;
+    display: none;
+}
+
+.settings-popup-overlay.open {
+    display: block;
+}
+
+html.dark-mode .settings-gear-btn {
+    background: #2a2a2a;
+    border-color: #444;
+}
+
+html.dark-mode .settings-gear-btn svg {
+    stroke: var(--color-primary);
+}
+
+html.dark-mode .settings-popup {
+    background: #1e1e1e;
+    border-color: #444;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .settings-popup select {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
 }
 
 #footer-bottom {
@@ -1976,4 +2166,7 @@ html.dark-mode .theme-toggle:hover {
     align-items: center;
     gap: var(--space-md);
     flex-wrap: wrap;
+    background-color: var(--color-primary-dark);
+    color: white;
+    padding: 0.5rem;
 }

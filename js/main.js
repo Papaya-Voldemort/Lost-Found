@@ -52,47 +52,87 @@ function applyStoredLanguage() {
     }
 }
 
+function createSettingsGear() {
+    // Overlay (closes popup when clicking outside)
+    const overlay = document.createElement('div');
+    overlay.className = 'settings-popup-overlay';
+    document.body.appendChild(overlay);
+
+    // Gear button
+    const btn = document.createElement('button');
+    btn.className = 'settings-gear-btn';
+    btn.setAttribute('aria-label', 'Settings');
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.671 4.136a1.998 1.998 0 0 1 4.658 0c.07.353.273.66.566.866a2 2 0 0 0 2.174.16 1.998 1.998 0 0 1 2.733 2.733 2 2 0 0 0 .16 2.174c.206.293.513.496.866.566a1.998 1.998 0 0 1 0 4.658 2 2 0 0 0-.866.566 2 2 0 0 0-.16 2.174 1.998 1.998 0 0 1-2.733 2.733 2 2 0 0 0-2.174.16 2 2 0 0 0-.566.866 1.998 1.998 0 0 1-4.658 0 2 2 0 0 0-.566-.866 2 2 0 0 0-2.174-.16 1.998 1.998 0 0 1-2.733-2.733 2 2 0 0 0-.16-2.174 2 2 0 0 0-.866-.566 1.998 1.998 0 0 1 0-4.658 2 2 0 0 0 .866-.566 2 2 0 0 0 .16-2.174A1.998 1.998 0 0 1 6.931 5.16a2 2 0 0 0 2.174-.16 2 2 0 0 0 .566-.866z"/><circle cx="12" cy="12" r="3"/></svg>';
+    document.body.appendChild(btn);
+
+    // Popup
+    const popup = document.createElement('div');
+    popup.className = 'settings-popup';
+
+    const storedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY) || document.documentElement.lang || 'en';
+    const storedTheme = getStoredThemePreference();
+
+    popup.innerHTML =
+        '<label class="settings-popup-label gear-language-label"></label>' +
+        '<select id="gear-language">' +
+            '<option value="en">English</option>' +
+            '<option value="es">Español</option>' +
+            '<option value="hi">हिन्दी</option>' +
+            '<option value="zh">中文</option>' +
+            '<option value="ar">العربية</option>' +
+        '</select>' +
+        '<label class="settings-popup-label gear-theme-label"></label>' +
+        '<select id="gear-theme">' +
+            '<option value="system"></option>' +
+            '<option value="light"></option>' +
+            '<option value="dark"></option>' +
+        '</select>';
+    document.body.appendChild(popup);
+
+    // Set initial values
+    popup.querySelector('#gear-language').value = storedLang;
+    popup.querySelector('#gear-theme').value = storedTheme;
+
+    // Toggle popup
+    function togglePopup() {
+        const isOpen = popup.classList.toggle('open');
+        overlay.classList.toggle('open', isOpen);
+    }
+
+    function closePopup() {
+        popup.classList.remove('open');
+        overlay.classList.remove('open');
+    }
+
+    btn.addEventListener('click', togglePopup);
+    overlay.addEventListener('click', closePopup);
+
+    // Language change
+    popup.querySelector('#gear-language').addEventListener('change', (e) => {
+        const lang = e.target.value;
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        applyTranslations();
+        words = getArray('home.typewriterWords');
+        wordIndex = 0;
+        charIndex = 0;
+        isDeleting = false;
+        showToast(t('forms.languageSaved'), 'success');
+    });
+
+    // Theme change
+    popup.querySelector('#gear-theme').addEventListener('change', (e) => {
+        saveThemePreference(e.target.value);
+        showToast(t('forms.accountSaved'), 'success');
+    });
+}
+
 function initializePreferenceControls() {
     applyStoredLanguage();
     applyTheme();
+    createSettingsGear();
     applyTranslations();
-
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const nextTheme = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
-            saveThemePreference(nextTheme);
-        });
-    }
-
-    const themePreferenceSelect = document.getElementById('theme-preference');
-    if (themePreferenceSelect) {
-        themePreferenceSelect.value = getStoredThemePreference();
-        themePreferenceSelect.addEventListener('change', () => {
-            saveThemePreference(themePreferenceSelect.value);
-            showToast(t('forms.accountSaved'), 'success');
-        });
-    }
-
-    const languagePreferenceSelect = document.getElementById('language-preference');
-    if (languagePreferenceSelect) {
-        const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY) || document.documentElement.lang || 'en';
-        languagePreferenceSelect.value = storedLanguage;
-        document.documentElement.lang = storedLanguage;
-
-        languagePreferenceSelect.addEventListener('change', () => {
-            const nextLanguage = languagePreferenceSelect.value;
-            localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
-            document.documentElement.lang = nextLanguage;
-            document.documentElement.dir = nextLanguage === 'ar' ? 'rtl' : 'ltr';
-            applyTranslations();
-            words = getArray('home.typewriterWords');
-            wordIndex = 0;
-            charIndex = 0;
-            isDeleting = false;
-            showToast(t('forms.languageSaved'), 'success');
-        });
-    }
 
     if (window.matchMedia) {
         const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -544,6 +584,8 @@ initStrengthMeter('new-password', 'password-strength-account');
     try {
         const user = await account.get();
         isLoggedIn = true;
+        localStorage.setItem('loggedIn', 'true');
+        document.documentElement.classList.add('logged-in');
         const isVerified = user.emailVerification;
         const path = window.location.pathname;
 
@@ -580,17 +622,12 @@ initStrengthMeter('new-password', 'password-strength-account');
             loginLink.parentElement?.classList.remove('nav-login');
             loginLink.parentElement?.classList.add('nav-account');
             loginLink.href = 'account';
-            loginLink.innerHTML = `
-                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="8" r="5"/>
-                    <path d="M20 21a8 8 0 0 0-16 0"/>
-                </svg>
-                ${t('nav.account')}
-            `;
         }
     } catch (error) {
         // User is not logged in - this is expected, don't log error
         isLoggedIn = false;
+        localStorage.removeItem('loggedIn');
+        document.documentElement.classList.remove('logged-in');
         if (window.location.pathname.endsWith('account') || window.location.pathname.endsWith('account.html')) {
             window.location.href = 'login';
         }
@@ -768,6 +805,7 @@ initStrengthMeter('new-password', 'password-strength-account');
             e.preventDefault();
             try {
                 await account.deleteSession('current');
+                localStorage.removeItem('loggedIn');
                 window.location.href = '/';
             } catch (error) {
                 showToast(t('account.logoutFailed') + ': ' + error.message, 'error');

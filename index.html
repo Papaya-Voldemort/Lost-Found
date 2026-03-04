@@ -12,7 +12,7 @@
     <meta property="og:description" content="A community-driven platform to report, search, and recover lost items.">
     <meta property="og:type" content="website">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;})();</script>
+    <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');if(localStorage.getItem('loggedIn'))document.documentElement.classList.add('logged-in');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;})();</script>
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
@@ -71,7 +71,7 @@
                             <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
                             <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
                         </svg> 
-                        Sign In
+                        <span class="nav-text-signin">Sign In</span><span class="nav-text-account">Account</span>
                     </a>
                 </li>
             </ul>
@@ -192,6 +192,10 @@
         </div>
         <div id="footer-bottom">
             <p>&copy; 2026 Traceback. All rights reserved.</p>
+            <nav class="footer-legal" aria-label="Legal">
+                <a href="tos.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </nav>
         </div>
     </footer>
 </body>

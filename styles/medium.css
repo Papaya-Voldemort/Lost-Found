@@ -150,4 +150,12 @@
         gap: 1.5rem;
     }
 
+    .settings-gear-btn {
+        top: 6rem;
+    }
+
+    .settings-popup {
+        top: 9.5rem;
+    }
+
 }

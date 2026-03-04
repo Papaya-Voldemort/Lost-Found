@@ -1522,12 +1522,10 @@ function translateCommon() {
 
     const loginLink = document.getElementById('login-link');
     if (loginLink) {
-        const parent = loginLink.parentElement;
-        const isAccount = parent?.classList.contains('nav-account') || loginLink.getAttribute('href') === 'account';
-        const textNode = [...loginLink.childNodes].reverse().find((node) => node.nodeType === Node.TEXT_NODE);
-        if (textNode) {
-            textNode.textContent = isAccount ? ` ${t('nav.account')}` : ` ${t('nav.signIn')}`;
-        }
+        const signinSpan = loginLink.querySelector('.nav-text-signin');
+        const accountSpan = loginLink.querySelector('.nav-text-account');
+        if (signinSpan) signinSpan.textContent = t('nav.signIn');
+        if (accountSpan) accountSpan.textContent = t('nav.account');
     }
 
     setText('footer .footer-brand p', 'common.brandTagline');
@@ -1547,6 +1545,19 @@ function translateCommon() {
             button.setAttribute('aria-label', t('forms.showPassword'));
         }
     });
+
+    // Settings gear popup translations
+    setAllText('.settings-popup-label.gear-language-label', 'account.language');
+    setAllText('.settings-popup-label.gear-theme-label', 'account.appearance');
+    const gearTheme = document.getElementById('gear-theme');
+    if (gearTheme) {
+        const opts = gearTheme.options;
+        for (let i = 0; i < opts.length; i++) {
+            if (opts[i].value === 'system') opts[i].textContent = t('account.systemDefault');
+            if (opts[i].value === 'light') opts[i].textContent = t('account.light');
+            if (opts[i].value === 'dark') opts[i].textContent = t('account.dark');
+        }
+    }
 }
 
 function translateHome() {

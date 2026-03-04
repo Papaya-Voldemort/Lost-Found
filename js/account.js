@@ -108,6 +108,7 @@ document.getElementById('change-password-form')?.addEventListener('submit', asyn
 document.getElementById('logout-btn')?.addEventListener('click', async () => {
     try {
         await account.deleteSession('current');
+        localStorage.removeItem('loggedIn');
         showToast(t('account.loggedOut'), 'success');
         setTimeout(() => window.location.href = '/', 1000);
     } catch (error) {

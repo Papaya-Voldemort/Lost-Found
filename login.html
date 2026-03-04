@@ -9,7 +9,7 @@
     <meta name="description" content="Sign in to your Traceback account">
     <meta name="theme-color" content="#326273">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;})();</script>
+    <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');if(localStorage.getItem('loggedIn'))document.documentElement.classList.add('logged-in');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;})();</script>
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
@@ -82,7 +82,7 @@
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="16" />
                         </svg>
-                        Sign In
+                        <span class="nav-text-signin">Sign In</span><span class="nav-text-account">Account</span>
                     </a>
                 </li>
             </ul>
@@ -173,6 +173,10 @@
         </div>
         <div id="footer-bottom">
             <p>&copy; 2026 Traceback. All rights reserved.</p>
+            <nav class="footer-legal" aria-label="Legal">
+                <a href="tos.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </nav>
         </div>
     </footer>
 </body>
