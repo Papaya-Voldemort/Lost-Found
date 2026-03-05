@@ -1,7 +1,7 @@
 import { account, ID } from './auth.js';
 import { applyTranslations, getArray, t } from './i18n.js';
 import { showToast } from './toast.js';
-import { handleItemSubmission, fetchItems, setupSearch, setupLoadMore } from './items.js';
+import { handleItemSubmission, fetchItems, setupSearch, setupLoadMore, openItemById } from './items.js';
 
 let Cropper = null;
 let cropperInstance = null;
@@ -731,6 +731,8 @@ initStrengthMeter('new-password', 'password-strength-account');
     const signedInFoundDiv = document.getElementById('signed-in-found-item-div');
     const signedOutFoundDiv = document.getElementById('signed-out-found-item-div');
 
+    const itemIdFromQuery = new URLSearchParams(window.location.search).get('item');
+
     // Set initial visibility based on auth state
     if (signedInLostDiv && signedOutLostDiv) {
         signedInLostDiv.style.display = isLoggedIn ? 'block' : 'none';
@@ -740,9 +742,12 @@ initStrengthMeter('new-password', 'password-strength-account');
         if (isLoggedIn) {
             handleItemSubmission('lost-item-form', 'lost');
         }
-        fetchItems('lost');
+        await fetchItems('lost');
         setupSearch('lost');
         setupLoadMore();
+        if (itemIdFromQuery) {
+            await openItemById('lost', itemIdFromQuery);
+        }
     }
     if (signedInFoundDiv && signedOutFoundDiv) {
         signedInFoundDiv.style.display = isLoggedIn ? 'block' : 'none';
@@ -752,9 +757,12 @@ initStrengthMeter('new-password', 'password-strength-account');
         if (isLoggedIn) {
             handleItemSubmission('found-item-form', 'found');
         }
-        fetchItems('found');
+        await fetchItems('found');
         setupSearch('found');
         setupLoadMore();
+        if (itemIdFromQuery) {
+            await openItemById('found', itemIdFromQuery);
+        }
     }
 
     // Handle Signup

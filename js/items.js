@@ -274,6 +274,21 @@ export async function fetchItems(itemType, criteria = {}, loadMore = false) {
     }
 }
 
+export async function openItemById(itemType, itemId) {
+    if (!itemId) return false;
+
+    try {
+        const allItems = await listAllActiveItems(itemType);
+        const match = allItems.find((item) => item.$id === itemId);
+        if (!match) return false;
+        openItemDetailModal(match);
+        return true;
+    } catch (error) {
+        console.error('Error opening item by id:', error);
+        return false;
+    }
+}
+
 function createItemCard(item) {
     const card = document.createElement('div');
     card.className = 'item-card';
@@ -395,23 +410,26 @@ function openItemDetailModal(item) {
         });
     }
 
-    // Contact button — click 1: reveal email, click 2: open mailto with a prefilled claim template
+    // Contact link — click 1: reveal email and prepare mailto, click 2: native anchor navigation
     const contactBtn = document.getElementById('modal-contact-btn');
     contactBtn.textContent = t('common.contactReporter');
-    contactBtn.disabled = false;
+    contactBtn.removeAttribute('aria-disabled');
     contactBtn.title = '';
+    contactBtn.href = '#';
     let emailRevealed = false;
-    contactBtn.onclick = () => {
+    contactBtn.onclick = (e) => {
         if (!item.userEmail) {
+            e.preventDefault();
             contactBtn.textContent = t('common.contactUnavailable');
-            contactBtn.disabled = true;
+            contactBtn.setAttribute('aria-disabled', 'true');
+            contactBtn.href = '#';
             return;
         }
         if (!emailRevealed) {
+            e.preventDefault();
             emailRevealed = true;
             contactBtn.textContent = item.userEmail;
             contactBtn.title = '';
-        } else {
             const siteName = 'Traceback';
             const siteUrl = window.location.origin;
             const reporterName = item.userName || 'Unknown account';
@@ -455,10 +473,11 @@ function openItemDetailModal(item) {
                 proofLine,
                 '',
                 `P.S. If this item is successfully claimed, please delete the listing on ${siteName} so others know it is resolved.`,
-            ].join('\n');
+            ].join('\r\n');
 
             const mailtoLink = `mailto:${item.userEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
+            contactBtn.href = mailtoLink;
+            contactBtn.setAttribute('aria-label', `Email ${reporterName}`);
         }
     };
 
