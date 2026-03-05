@@ -28,9 +28,9 @@
     <header>
         <div id="logo-div">
             <h1>Traceback</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185" aria-hidden="true">
         </div>
-        <nav>
+        <nav aria-label="Main navigation">
             <ul>
                 <li class="nav-home">
                     <a href="/">
@@ -72,7 +72,7 @@
                     </a>
                 </li>
                 <li class="nav-login">
-                    <a href="login" id="login-link" class="current">
+                    <a href="login" id="login-link" class="current" aria-current="page">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32"
                             height="32">
                             <rect width="256" height="256" fill="none" />
@@ -96,7 +96,7 @@
         </section>
 
         <section class="upload-form scroll-animate">
-            <button class="google-btn">
+            <button class="google-btn" aria-label="Sign in with Google">
                 <svg class="google-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
@@ -111,7 +111,7 @@
                 <span>Or</span>
             </div>
 
-            <form id="login-form" class="item-form">
+            <form id="login-form" class="item-form" aria-label="Sign in with email and password">
                 <label>
                     <span>Email Address <span class="required-asterisk">*</span></span>
                     <input type="email" id="login-email" name="email" placeholder="e.g. your.email@domain.com" required>
@@ -132,7 +132,7 @@
                 <input type="submit" value="Sign In" class="btn-primary full-width">
             </form>
 
-            <div id="verification-panel" style="display:none; text-align:center;">
+            <div id="verification-panel" style="display:none; text-align:center;" role="status" aria-live="polite">
                 <h3>Check Your Inbox</h3>
                 <p>We sent a verification email to <strong><span id="verification-email"></span></strong>.</p>
                 <p>Click the link in the email to activate your account, then come back here and sign in.</p>
@@ -145,10 +145,10 @@
     </main>
 
     <!-- Forgot Password Modal -->
-    <div class="modal-overlay" id="forgot-password-modal">
+    <div class="modal-overlay" id="forgot-password-modal" role="dialog" aria-modal="true" aria-labelledby="forgot-password-modal-heading">
         <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
-                <h2>Reset Password</h2>
+                <h2 id="forgot-password-modal-heading">Reset Password</h2>
                 <button class="modal-close" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body">

@@ -28,9 +28,9 @@
     <header>
         <div id="logo-div">
             <h1>Traceback</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185" aria-hidden="true">
         </div>
-        <nav>
+        <nav aria-label="Main navigation">
             <ul>
                 <li class="nav-home">
                     <a href="/">
@@ -82,7 +82,7 @@
         </section>
 
         <section class="upload-form scroll-animate">
-            <button class="google-btn">
+            <button class="google-btn" aria-label="Sign up with Google">
                 <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
                 Sign up with Google
             </button>
@@ -91,7 +91,7 @@
                 <span>Or</span>
             </div>
 
-            <form id="signup-form" class="item-form">
+            <form id="signup-form" class="item-form" aria-label="Create a new account">
                 <label>
                     <span>Email Address <span class="required-asterisk">*</span></span>
                     <input type="email" id="signup-email" name="email" placeholder="e.g. your.email@domain.com" required>
@@ -110,7 +110,7 @@
                             <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,123.97,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A169.47,169.47,0,0,1,25,128,169.47,169.47,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A169.47,169.47,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
                         </button>
                     </div>
-                    <div class="password-strength" id="password-strength">
+                    <div class="password-strength" id="password-strength" role="status" aria-live="polite">
                         <div class="strength-bar"><div class="strength-fill"></div></div>
                         <span class="strength-text"></span>
                     </div>

@@ -29,9 +29,9 @@
     <header>
         <div id="logo-div">
             <h1>Traceback</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185" aria-hidden="true">
         </div>
-        <nav>
+        <nav aria-label="Main navigation">
             <ul>
                 <li class="nav-home">
                     <a href="/">
@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-found">
-                    <a class="current" href="found">
+                    <a class="current" href="found" aria-current="page">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -82,10 +82,10 @@
             <!-- Found items reporting section-->
         </section>
 
-        <section class="upload-form scroll-animate">
-            <h2>Report a Found Item</h2>
+        <section class="upload-form scroll-animate" aria-labelledby="report-found-heading">
+            <h2 id="report-found-heading">Report a Found Item</h2>
             <div id="signed-in-found-item-div">
-                <form class="item-form" id="found-item-form">
+                <form class="item-form" id="found-item-form" aria-label="Report a found item">
                     <label for="item-name">Item Name</label>
                     <input type="text" id="item-name" name="title" placeholder="e.g. Black North Face Backpack" aria-required="true" required>
 
@@ -156,9 +156,9 @@
             </div>
         </section>
 
-        <section class="search-bar scroll-animate">
-            <h2>Search Found Items</h2>
-            <form id="search-form" class="item-form">
+        <section class="search-bar scroll-animate" aria-labelledby="search-found-heading">
+            <h2 id="search-found-heading">Search Found Items</h2>
+            <form id="search-form" class="item-form" role="search" aria-label="Search found items">
                 <label class="full-width">Item Name<input type="text" id="search-input" placeholder="Search by item name..."></label>
                 <label class="full-width">Item Tags<input type="text" id="search-tags-input" placeholder="Search by tags..."></label>
 
@@ -178,23 +178,23 @@
         </section>
 
         <section class="items-feed-section scroll-animate">
-            <div id="items-feed" class="items-grid">
+            <div id="items-feed" class="items-grid" aria-label="Found items" aria-live="polite" aria-busy="true">
                 <!-- Skeleton loading cards -->
                 <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
                 <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
                 <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
             </div>
             <div class="feed-load-more-wrapper">
-                <button id="feed-load-more" class="btn-secondary" style="display: none;">Load More</button>
+                <button id="feed-load-more" class="btn-secondary" style="display: none;" aria-label="Load more found items">Load More</button>
             </div>
         </section>
     </main>
 
     <!-- Crop Modal -->
-    <div class="modal-overlay" id="crop-modal">
+    <div class="modal-overlay" id="crop-modal" role="dialog" aria-modal="true" aria-labelledby="crop-modal-heading">
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
-                <h2>Crop Image</h2>
+                <h2 id="crop-modal-heading">Crop Image</h2>
                 <button class="modal-close" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body">
@@ -210,7 +210,7 @@
     </div>
 
     <!-- Item Detail Modal -->
-    <div class="modal-overlay" id="item-detail-modal">
+    <div class="modal-overlay" id="item-detail-modal" role="dialog" aria-modal="true" aria-labelledby="modal-item-title">
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
                 <h2 id="modal-item-title"></h2>

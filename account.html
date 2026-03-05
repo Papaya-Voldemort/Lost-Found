@@ -28,9 +28,9 @@
     <header>
         <div id="logo-div">
             <h1>Traceback</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185" aria-hidden="true">
         </div>
-        <nav>
+        <nav aria-label="Main navigation">
             <ul>
                 <li class="nav-home">
                     <a href="/">
@@ -62,7 +62,7 @@
                     </a>
                 </li>
                 <li class="nav-account">
-                    <a class="current" href="account">
+                    <a class="current" href="account" aria-current="page">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -76,11 +76,11 @@
     </header>
 
     <main id="account-main">
-        <section class="user-profile">
+        <section class="user-profile" aria-label="User profile">
             <div class="container">
                 <div class="profile-header">
                     <div class="user-avatar-placeholder">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <circle cx="12" cy="8" r="5"/>
                             <path d="M20 21a8 8 0 0 0-16 0"/>
                         </svg>
@@ -98,17 +98,17 @@
             </div>
         </section>
 
-        <section class="user-settings">
+        <section class="user-settings" aria-labelledby="account-settings-heading">
             <div class="container">
                 <header class="section-header">
-                    <h2>Account Settings</h2>
+                    <h2 id="account-settings-heading">Account Settings</h2>
                 </header>
 
                 <div class="settings-grid">
                     <!-- Update Name -->
                     <div class="settings-card">
                         <h3>Update Profile</h3>
-                        <form id="update-profile-form">
+                        <form id="update-profile-form" aria-label="Update your profile">
                             <label for="new-name">Display Name</label>
                             <input type="text" id="new-name" required placeholder="Enter new name">
                             <button type="submit" class="btn-secondary no-left-margin">Save</button>
@@ -118,7 +118,7 @@
                     <!-- Change Password -->
                     <div class="settings-card">
                         <h3>Change Password</h3>
-                        <form id="change-password-form">
+                        <form id="change-password-form" aria-label="Change your password">
                             <label for="old-password">Current Password</label>
                             <div class="password-wrapper">
                                 <input type="password" id="old-password" required placeholder="Enter current password">
@@ -143,7 +143,7 @@
                                 </button>
                             </div>
                             
-                            <div class="password-strength" id="password-strength-account">
+                            <div class="password-strength" id="password-strength-account" role="status" aria-live="polite">
                                 <div class="strength-bar"><div class="strength-fill"></div></div>
                                 <span class="strength-text"></span>
                             </div>
@@ -155,15 +155,15 @@
             </div>
         </section>
 
-        <section class="user-listings">
+        <section class="user-listings" aria-labelledby="my-listings-heading">
             <div class="container">
                 <a href="lost" class="btn-primary report-new-btn">Report New Lost Item</a>
 
                 <header class="section-header">
-                    <h2>My Listings</h2>
+                    <h2 id="my-listings-heading">My Listings</h2>
                 </header>
                 
-                <div id="listings-grid" class="listings-grid">
+                <div id="listings-grid" class="listings-grid" aria-live="polite">
                     <!-- Listings will be injected here -->
                 </div>
 

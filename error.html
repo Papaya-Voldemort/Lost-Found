@@ -33,9 +33,9 @@
     <header>
         <div id="logo-div">
             <h1>Traceback</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185" aria-hidden="true">
         </div>
-        <nav>
+        <nav aria-label="Main navigation">
             <ul>
                 <li class="nav-home">
                     <a href="/">
@@ -56,7 +56,7 @@
 
     <main>
         <div class="auth-container">
-            <div class="auth-card">
+            <div class="auth-card" role="alert">
                 <h1>Sign In Error</h1>
                 <p id="error-message">An error occurred during sign-in. Please try again.</p>
                 <div style="margin-top: 30px;">

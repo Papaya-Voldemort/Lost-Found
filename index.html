@@ -31,12 +31,12 @@
     <header>
         <div id="logo-div">
             <h1>Traceback</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185"> 
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185" aria-hidden="true"> 
         </div>
-        <nav>
+        <nav aria-label="Main navigation">
             <ul>
                 <li class="nav-home">
-                    <a class="current" href="/">
+                    <a class="current" href="/" aria-current="page">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <path d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -79,21 +79,21 @@
     </header>
 
     <main>
-        <div id="mobile-header">
+        <div id="mobile-header" aria-hidden="true">
             <h1>Traceback</h1>
-            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185">
+            <img src="images/logo.webp" alt="" width="350" height="185" aria-hidden="true">
         </div>
 
-        <section id="hero">
+        <section id="hero" aria-label="Welcome">
             <div class="hero-card">
                 <h1>Find Your Lost Items</h1>
-                <a href="signup" class="btn-primary hero-btn">Get Started</a>
+                <a href="signup" class="btn-primary hero-btn" aria-label="Get started with Traceback">Get Started</a>
             </div>
-            <video id="hero-video" src="videos/homepage-background.mp4" autoplay loop muted playsinline preload="metadata" width="1280" height="720"></video>
+            <video id="hero-video" src="videos/homepage-background.mp4" autoplay loop muted playsinline preload="metadata" width="1280" height="720" aria-hidden="true"></video>
             <div id="overlay"></div>
         </section>
 
-        <section id="info">
+        <section id="info" aria-label="App features">
             <div id="description">
                 <div class="info-headline">
                     <h1>A simple app to <span id="typewriter"></span></h1>
@@ -116,9 +116,9 @@
             </div>
         </section>
 
-        <section id="how-it-works">
+        <section id="how-it-works" aria-labelledby="how-it-works-heading">
             <div class="section-header">
-                <h2>How It Works</h2>
+                <h2 id="how-it-works-heading">How It Works</h2>
                 <p>Reconnecting you with your belongings in three simple steps.</p>
             </div>
             <div class="steps-container">
@@ -154,7 +154,7 @@
             </div>
         </section>
 
-        <section id="impact-stats" class="scroll-animate"> <!--Fake data, this CAN STAY IN PROD -->
+        <section id="impact-stats" class="scroll-animate" aria-label="Site statistics"> <!--Fake data, this CAN STAY IN PROD -->
             <div class="stats-grid">
                 <div class="stat-item scroll-animate">
                     <span class="stat-number" data-target="5000" data-suffix="+">5,000+</span>
@@ -171,9 +171,9 @@
             </div>
         </section>
 
-        <section id="call-to-action" class="scroll-animate">
+        <section id="call-to-action" class="scroll-animate" aria-labelledby="cta-heading">
             <div class="cta-content">
-                <h2>Ready to reunite with your belongings?</h2>
+                <h2 id="cta-heading">Ready to reunite with your belongings?</h2>
                 <p>Join thousands of users helping each other find what matters most.</p>
                 <div class="cta-buttons">
                     <a href="signup" class="btn-primary">Create an Account</a>
