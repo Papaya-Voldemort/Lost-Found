@@ -9,7 +9,7 @@
     <meta name="description" content="Browse lost items reported by our community">
     <meta name="theme-color" content="#326273">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');if(localStorage.getItem('loggedIn'))document.documentElement.classList.add('logged-in');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;})();</script>
+    <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');if(localStorage.getItem('loggedIn'))document.documentElement.classList.add('logged-in');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;if(localStorage.getItem('dyslexicFont')==='true'){document.documentElement.classList.add('dyslexic-font');const fl=document.createElement('link');fl.rel='stylesheet';fl.href='https://fonts.cdnfonts.com/css/opendyslexic';document.head.appendChild(fl);}})();</script>
     <script type="module" src="js/main.js" defer></script>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/main.css">

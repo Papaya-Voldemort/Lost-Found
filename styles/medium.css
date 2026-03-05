@@ -150,12 +150,15 @@
         gap: 1.5rem;
     }
 
+    /* On desktop: hide the mobile gear, show the nav gear */
     .settings-gear-btn {
-        top: 6rem;
+        display: none;
     }
 
-    .settings-popup {
-        top: 9.5rem;
+    .nav-settings-li {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
     }
 
 }

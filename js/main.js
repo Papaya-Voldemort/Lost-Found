@@ -8,6 +8,8 @@ let cropperInstance = null;
 
 const THEME_STORAGE_KEY = 'theme';
 const LANGUAGE_STORAGE_KEY = 'language';
+const DYSLEXIC_STORAGE_KEY = 'dyslexicFont';
+const SUPPORTED_LANGUAGES = ['en', 'es', 'fr', 'it', 'zh', 'ar'];
 
 function prefersDarkMode() {
     return window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : true;
@@ -52,64 +54,145 @@ function applyStoredLanguage() {
     }
 }
 
+function applyDyslexicFont(enabled) {
+    document.documentElement.classList.toggle('dyslexic-font', enabled);
+    if (enabled && !document.querySelector('link[data-font="opendyslexic"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.cdnfonts.com/css/opendyslexic';
+        link.setAttribute('data-font', 'opendyslexic');
+        document.head.appendChild(link);
+    }
+}
+
 function createSettingsGear() {
+    const gearSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" aria-hidden="true"><circle cx="128" cy="128" r="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M41.43,178.09A99.14,99.14,0,0,1,31.36,153.8l16.78-21a81.59,81.59,0,0,1,0-9.64l-16.77-21a99.43,99.43,0,0,1,10.05-24.3l26.71-3a81,81,0,0,1,6.81-6.81l3-26.7A99.14,99.14,0,0,1,102.2,31.36l21,16.78a81.59,81.59,0,0,1,9.64,0l21-16.77a99.43,99.43,0,0,1,24.3,10.05l3,26.71a81,81,0,0,1,6.81,6.81l26.7,3a99.14,99.14,0,0,1,10.07,24.29l-16.78,21a81.59,81.59,0,0,1,0,9.64l16.77,21a99.43,99.43,0,0,1-10,24.3l-26.71,3a81,81,0,0,1-6.81,6.81l-3,26.7a99.14,99.14,0,0,1-24.29,10.07l-21-16.78a81.59,81.59,0,0,1-9.64,0l-21,16.77a99.43,99.43,0,0,1-24.3-10l-3-26.71a81,81,0,0,1-6.81-6.81Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>';
+
     // Overlay (closes popup when clicking outside)
     const overlay = document.createElement('div');
     overlay.className = 'settings-popup-overlay';
     document.body.appendChild(overlay);
 
-    // Gear button
+    // Mobile: fixed gear button (appended to body, positioned via CSS)
     const btn = document.createElement('button');
     btn.className = 'settings-gear-btn';
     btn.setAttribute('aria-label', 'Settings');
-    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.671 4.136a1.998 1.998 0 0 1 4.658 0c.07.353.273.66.566.866a2 2 0 0 0 2.174.16 1.998 1.998 0 0 1 2.733 2.733 2 2 0 0 0 .16 2.174c.206.293.513.496.866.566a1.998 1.998 0 0 1 0 4.658 2 2 0 0 0-.866.566 2 2 0 0 0-.16 2.174 1.998 1.998 0 0 1-2.733 2.733 2 2 0 0 0-2.174.16 2 2 0 0 0-.566.866 1.998 1.998 0 0 1-4.658 0 2 2 0 0 0-.566-.866 2 2 0 0 0-2.174-.16 1.998 1.998 0 0 1-2.733-2.733 2 2 0 0 0-.16-2.174 2 2 0 0 0-.866-.566 1.998 1.998 0 0 1 0-4.658 2 2 0 0 0 .866-.566 2 2 0 0 0 .16-2.174A1.998 1.998 0 0 1 6.931 5.16a2 2 0 0 0 2.174-.16 2 2 0 0 0 .566-.866z"/><circle cx="12" cy="12" r="3"/></svg>';
+    btn.setAttribute('aria-haspopup', 'dialog');
+    btn.innerHTML = gearSvg;
     document.body.appendChild(btn);
 
-    // Popup
+    // Desktop: gear injected into the nav as the last item
+    const navUl = document.querySelector('header nav ul');
+    let navBtn = null;
+    if (navUl) {
+        const navLi = document.createElement('li');
+        navLi.className = 'nav-settings-li';
+        navBtn = document.createElement('button');
+        navBtn.className = 'nav-settings-btn';
+        navBtn.setAttribute('aria-label', 'Settings');
+        navBtn.setAttribute('aria-haspopup', 'dialog');
+        navBtn.innerHTML = gearSvg;
+        navLi.appendChild(navBtn);
+        navUl.appendChild(navLi);
+    }
+
+    // Popup panel
     const popup = document.createElement('div');
     popup.className = 'settings-popup';
+    popup.setAttribute('role', 'dialog');
+    popup.setAttribute('aria-label', 'Settings');
 
-    const storedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY) || document.documentElement.lang || 'en';
+    const requestedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY) || document.documentElement.lang || 'en';
+    const storedLang = SUPPORTED_LANGUAGES.includes(requestedLang) ? requestedLang : 'en';
     const storedTheme = getStoredThemePreference();
 
     popup.innerHTML =
-        '<label class="settings-popup-label gear-language-label"></label>' +
-        '<select id="gear-language">' +
-            '<option value="en">English</option>' +
-            '<option value="es">Español</option>' +
-            '<option value="hi">हिन्दी</option>' +
-            '<option value="zh">中文</option>' +
-            '<option value="ar">العربية</option>' +
-        '</select>' +
-        '<label class="settings-popup-label gear-theme-label"></label>' +
-        '<select id="gear-theme">' +
-            '<option value="system"></option>' +
-            '<option value="light"></option>' +
-            '<option value="dark"></option>' +
-        '</select>';
+        '<div class="settings-popup-header">' +
+            '<span class="settings-popup-title">Settings</span>' +
+            '<button class="settings-popup-close" aria-label="Close settings">' +
+                '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            '</button>' +
+        '</div>' +
+        '<div class="settings-popup-body">' +
+            '<div class="settings-popup-group">' +
+                '<label class="settings-popup-label gear-language-label" for="gear-language"></label>' +
+                '<select id="gear-language">' +
+                    '<option value="en">English</option>' +
+                    '<option value="es">Español</option>' +
+                    '<option value="fr">Français</option>' +
+                    '<option value="it">Italiano</option>' +
+                    '<option value="zh">中文</option>' +
+                    '<option value="ar">العربية</option>' +
+                '</select>' +
+            '</div>' +
+            '<div class="settings-popup-group">' +
+                '<label class="settings-popup-label gear-theme-label" for="gear-theme"></label>' +
+                '<select id="gear-theme">' +
+                    '<option value="system"></option>' +
+                    '<option value="light"></option>' +
+                    '<option value="dark"></option>' +
+                '</select>' +
+            '</div>' +
+            '<div class="settings-popup-group">' +
+                '<label class="settings-popup-label gear-dyslexic-label"></label>' +
+                '<label class="settings-toggle">' +
+                    '<input type="checkbox" id="gear-dyslexic" aria-label="Dyslexic Font">' +
+                    '<span class="settings-toggle-track"></span>' +
+                '</label>' +
+            '</div>' +
+        '</div>';
     document.body.appendChild(popup);
 
     // Set initial values
     popup.querySelector('#gear-language').value = storedLang;
     popup.querySelector('#gear-theme').value = storedTheme;
+    popup.querySelector('#gear-dyslexic').checked = localStorage.getItem(DYSLEXIC_STORAGE_KEY) === 'true';
 
     // Toggle popup
+    function syncMobileGearVisibility() {
+        const isMobile = window.matchMedia('(max-width: 47.99rem)').matches;
+        const nearPageBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 120;
+        const shouldHide = isMobile && nearPageBottom && !popup.classList.contains('open');
+        btn.classList.toggle('is-hidden', shouldHide);
+    }
+
     function togglePopup() {
         const isOpen = popup.classList.toggle('open');
         overlay.classList.toggle('open', isOpen);
+        if (isOpen) {
+            popup.querySelector('.settings-popup-close').focus();
+        }
+        syncMobileGearVisibility();
     }
 
     function closePopup() {
         popup.classList.remove('open');
         overlay.classList.remove('open');
+        syncMobileGearVisibility();
     }
 
     btn.addEventListener('click', togglePopup);
+    if (navBtn) navBtn.addEventListener('click', togglePopup);
     overlay.addEventListener('click', closePopup);
+    popup.querySelector('.settings-popup-close').addEventListener('click', closePopup);
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && popup.classList.contains('open')) {
+            closePopup();
+        }
+    });
+
+    window.addEventListener('scroll', syncMobileGearVisibility, { passive: true });
+    window.addEventListener('resize', syncMobileGearVisibility);
+    syncMobileGearVisibility();
 
     // Language change
     popup.querySelector('#gear-language').addEventListener('change', (e) => {
         const lang = e.target.value;
+        if (!SUPPORTED_LANGUAGES.includes(lang)) {
+            return;
+        }
         localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -126,11 +209,20 @@ function createSettingsGear() {
         saveThemePreference(e.target.value);
         showToast(t('forms.accountSaved'), 'success');
     });
+
+    // Dyslexic font toggle
+    popup.querySelector('#gear-dyslexic').addEventListener('change', (e) => {
+        const enabled = e.target.checked;
+        localStorage.setItem(DYSLEXIC_STORAGE_KEY, enabled);
+        applyDyslexicFont(enabled);
+        showToast(t('forms.accountSaved'), 'success');
+    });
 }
 
 function initializePreferenceControls() {
     applyStoredLanguage();
     applyTheme();
+    applyDyslexicFont(localStorage.getItem(DYSLEXIC_STORAGE_KEY) === 'true');
     createSettingsGear();
     applyTranslations();
 

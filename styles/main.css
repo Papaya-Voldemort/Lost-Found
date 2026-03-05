@@ -2052,57 +2052,146 @@ html.dark-mode .legal-container a:active {
 
 /* ==================== Settings Gear ==================== */
 
+/* Mobile settings trigger */
 .settings-gear-btn {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 999;
-    background: var(--color-surface);
-    border: 1px solid var(--color-light-gray);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
+    right: calc(env(safe-area-inset-right, 0px) + 0.9rem);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 5.35rem);
+    z-index: 1050;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    transition: border-color 0.3s, transform 0.3s, background-color 0.3s;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    border-radius: 999px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
-.settings-gear-btn:hover {
-    border-color: var(--color-primary);
-    transform: scale(1.1);
+.settings-gear-btn:hover,
+.settings-gear-btn:active {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+}
+
+.settings-gear-btn.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(14px) scale(0.92);
+}
+
+.settings-gear-btn:focus-visible {
+    outline: 2px solid var(--color-primary-dark);
+    outline-offset: 2px;
 }
 
 .settings-gear-btn svg {
-    width: 22px;
-    height: 22px;
-    stroke: var(--color-primary-dark);
-    transition: stroke 0.3s;
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .settings-gear-btn:hover svg {
-    stroke: var(--color-primary);
+    transform: rotate(90deg);
 }
 
+/* Overlay — full screen click-away target */
+.settings-popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    transition: background 0.25s ease;
+}
+
+.settings-popup-overlay.open {
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+/* Compact settings menu */
 .settings-popup {
     position: fixed;
-    top: 4.5rem;
+    top: calc(5rem + 0.6rem);
     right: 1rem;
-    z-index: 998;
+    z-index: 1101;
+    width: min(19rem, calc(100vw - 1rem));
+    max-height: min(32rem, 74vh);
     background: var(--color-background);
     border: 1px solid var(--color-light-gray);
-    border-radius: var(--radius-lg);
-    padding: var(--space-lg);
-    min-width: 220px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    display: none;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+    transform-origin: top right;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 .settings-popup.open {
-    display: block;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.settings-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--color-surface);
+}
+
+.settings-popup-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-primary-dark);
+}
+
+.settings-popup-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-dark-gray);
+    transition: background 0.15s, color 0.15s;
+}
+
+.settings-popup-close:hover {
+    background: var(--color-surface);
+    color: var(--color-primary-dark);
+}
+
+.settings-popup-body {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.settings-popup-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
 }
 
 .settings-popup-label {
@@ -2110,54 +2199,211 @@ html.dark-mode .legal-container a:active {
     font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--color-primary-dark);
-    margin-bottom: var(--space-xs);
-}
-
-.settings-popup-label:not(:first-child) {
-    margin-top: var(--space-md);
 }
 
 .settings-popup select {
     width: 100%;
-    padding: var(--space-sm) var(--space-sm);
-    border: 1px solid var(--color-light-gray);
-    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.75rem;
+    border: 1.5px solid var(--color-light-gray);
+    border-radius: var(--radius-md);
     background: var(--color-surface);
     color: inherit;
     font-size: var(--font-size-sm);
+    font-family: var(--font-body);
     cursor: pointer;
+    transition: border-color 0.2s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
 }
 
-.settings-popup-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 997;
-    display: none;
+.settings-popup select:focus {
+    outline: none;
+    border-color: var(--color-primary);
 }
 
-.settings-popup-overlay.open {
-    display: block;
+/* Settings toggle switch */
+.settings-toggle {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: var(--space-xs) 0;
+    user-select: none;
 }
 
-html.dark-mode .settings-gear-btn {
-    background: #2a2a2a;
-    border-color: #444;
+.settings-toggle input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
-html.dark-mode .settings-gear-btn svg {
-    stroke: var(--color-primary);
+.settings-toggle-track {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: var(--color-light-gray);
+    border-radius: 12px;
+    transition: background 0.25s ease;
+    flex-shrink: 0;
+}
+
+.settings-toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.settings-toggle input:checked + .settings-toggle-track {
+    background: var(--color-primary);
+}
+
+.settings-toggle input:checked + .settings-toggle-track::after {
+    transform: translateX(20px);
+}
+
+.settings-toggle input:focus-visible + .settings-toggle-track {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Dyslexia-friendly font */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('https://cdn.jsdelivr.net/npm/opendyslexic@0.91.0/fonts/OpenDyslexic-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+html.dyslexic-font,
+html.dyslexic-font body,
+html.dyslexic-font * {
+    font-family: 'OpenDyslexic', Arial, sans-serif !important;
+    letter-spacing: 0.02em;
+}
+
+/* Dark mode overrides for settings */
+html.dark-mode .settings-gear-btn:hover,
+html.dark-mode .settings-gear-btn:active {
+    background: #4b8ea5;
+}
+
+html.dark-mode .settings-gear-btn:focus-visible {
+    outline-color: var(--color-primary);
 }
 
 html.dark-mode .settings-popup {
-    background: #1e1e1e;
-    border-color: #444;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    background: #1a1a1a;
+    border-color: #333;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+html.dark-mode .settings-popup-header {
+    border-bottom-color: #333;
+}
+
+html.dark-mode .settings-popup-title {
+    color: var(--color-primary);
+}
+
+html.dark-mode .settings-popup-close {
+    color: #999;
+}
+
+html.dark-mode .settings-popup-close:hover {
+    background: #333;
+    color: #e0e0e0;
 }
 
 html.dark-mode .settings-popup select {
     background: #2a2a2a;
     border-color: #444;
     color: #e0e0e0;
+}
+
+html.dark-mode .settings-popup select:focus {
+    border-color: var(--color-primary);
+}
+
+html.dark-mode .settings-popup-overlay.open {
+    background: rgba(0, 0, 0, 0.36);
+}
+
+/* Desktop nav settings button (hidden on mobile) */
+.nav-settings-li {
+    display: none;
+}
+
+.nav-settings-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+
+.nav-settings-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+html.dark-mode .nav-settings-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-settings-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-settings-btn:hover svg {
+    transform: rotate(90deg);
+}
+
+@media only screen and (max-width: 47.99rem) {
+    .settings-popup {
+        top: auto;
+        right: calc(env(safe-area-inset-right, 0px) + 0.75rem);
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 9rem);
+        width: min(18.5rem, calc(100vw - 1.5rem));
+        max-height: min(24rem, 58vh);
+        transform: translateY(8px) scale(0.98);
+        transform-origin: bottom right;
+    }
+
+    .settings-popup.open {
+        transform: translateY(0) scale(1);
+    }
+
+    .settings-popup-header {
+        padding: 0.5rem 0.7rem;
+    }
+
+    .settings-popup-body {
+        padding: 0.65rem 0.7rem 0.8rem;
+    }
+
+    html.dark-mode .settings-popup {
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+    }
 }
 
 #footer-bottom {
