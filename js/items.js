@@ -395,7 +395,7 @@ function openItemDetailModal(item) {
         });
     }
 
-    // Contact button — click 1: reveal email, click 2: open mailto
+    // Contact button — click 1: reveal email, click 2: open mailto with a prefilled claim template
     const contactBtn = document.getElementById('modal-contact-btn');
     contactBtn.textContent = t('common.contactReporter');
     contactBtn.disabled = false;
@@ -412,7 +412,53 @@ function openItemDetailModal(item) {
             contactBtn.textContent = item.userEmail;
             contactBtn.title = '';
         } else {
-            window.location.href = 'mailto:' + item.userEmail;
+            const siteName = 'Traceback';
+            const siteUrl = window.location.origin;
+            const reporterName = item.userName || 'Unknown account';
+            const itemTypeLabel = item.type === 'found' ? 'found item' : 'lost item';
+            const isFoundListing = item.type === 'found';
+            const itemDate = item.date
+                ? new Date(item.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
+                : 'Unknown date';
+            const itemId = item.$id || '';
+            const itemPagePath = item.type === 'found' ? 'found' : 'lost';
+            const itemUrl = itemId
+                ? `${siteUrl}/${itemPagePath}?item=${encodeURIComponent(itemId)}`
+                : `${siteUrl}/${itemPagePath}`;
+
+            const subject = isFoundListing
+                ? `Claim request for found item "${item.title}" via ${siteName}`
+                : `Response to lost item "${item.title}" on ${siteName}`;
+
+            const introLine = isFoundListing
+                ? `I believe this may be my item from your ${siteName} listing.`
+                : `I may have found your lost item listed on ${siteName}.`;
+
+            const proofLine = isFoundListing
+                ? 'I can share identifying details to confirm ownership.'
+                : 'I can share where and when I found it so we can verify details.';
+
+            const body = [
+                `Hi ${reporterName},`,
+                '',
+                introLine,
+                '',
+                `Listing details from ${siteName}:`,
+                `- Item: ${item.title}`,
+                `- Type: ${itemTypeLabel}`,
+                `- Location: ${item.location || 'Unknown location'}`,
+                `- Date: ${itemDate}`,
+                `- Posted by account: ${reporterName}`,
+                `- Item link: ${itemUrl}`,
+                `- Website: ${siteName} (${siteUrl})`,
+                '',
+                proofLine,
+                '',
+                `P.S. If this item is successfully claimed, please delete the listing on ${siteName} so others know it is resolved.`,
+            ].join('\n');
+
+            const mailtoLink = `mailto:${item.userEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
         }
     };
 
