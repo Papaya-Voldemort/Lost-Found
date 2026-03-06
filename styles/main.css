@@ -25,9 +25,9 @@ html {
 
 :root {
     /* Color Variables */
-    --color-primary: #5C9EAD;
+    --color-primary: #357B91;
     --color-primary-dark: #326273;
-    --color-primary-light: #63bdde; /* This is a test color update to a real light color that fits */
+    --color-primary-light: #7FD0E7;
 
     /* --color-accent: #E39774; */
     --color-accent: #8dcbd8; /* Remove maybe?*/
@@ -35,7 +35,7 @@ html {
     --color-black: #000;
     --color-white: #FFF;
 
-    --color-dark-gray: #808080;
+    --color-dark-gray: #5a5a5a;
     --color-light-gray: #d9d9d9;
 
     --color-background: #FFFFFF;
@@ -410,6 +410,7 @@ section#impact-stats {
     margin-bottom: 2rem;
     text-align: center;
     background-color: var(--color-primary-light);
+    color: #111111;
     clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%);
 }
 
@@ -2001,7 +2002,7 @@ html.dark-mode .strength-bar {
 }
 
 html.dark-mode .forgot-password-link {
-    color: var(--color-primary);
+    color: var(--color-primary-light);
 }
 
 html.dark-mode .empty-state {
@@ -2045,11 +2046,18 @@ html.dark-mode .legal-meta {
 }
 
 html.dark-mode .legal-container a {
-    color: var(--color-primary);
+    color: var(--color-primary-light);
 }
 
 html.dark-mode .legal-container a:active {
     color: var(--color-accent);
+}
+
+html.dark-mode .section-header h2,
+html.dark-mode .settings-popup-title,
+html.dark-mode .settings-popup-label,
+html.dark-mode .auth-link {
+    color: var(--color-primary-light);
 }
 
 /* ==================== Settings Gear ==================== */
