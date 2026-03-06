@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>References - Traceback</title>
+    <meta name="description" content="Sources, libraries, and references used in the development of Traceback.">
+    <meta name="theme-color" content="#326273">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>(()=>{if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark-mode');if(localStorage.getItem('loggedIn'))document.documentElement.classList.add('logged-in');if(localStorage.getItem('isAdmin'))document.documentElement.classList.add('is-admin');const l=localStorage.getItem('language');if(l)document.documentElement.lang=l;if(localStorage.getItem('dyslexicFont')==='true'){document.documentElement.classList.add('dyslexic-font');const fl=document.createElement('link');fl.rel='stylesheet';fl.href='https://fonts.cdnfonts.com/css/opendyslexic';document.head.appendChild(fl);}})();</script>
+    <script type="module" src="js/main.js" defer></script>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/small.css">
+    <link rel="stylesheet" href="styles/medium.css">
+    <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/toast.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header>
+        <div id="logo-div">
+            <h1>Traceback</h1>
+            <img id="header-logo" src="images/logo.webp" alt="Traceback logo" width="350" height="185" aria-hidden="true">
+        </div>
+        <nav aria-label="Main navigation">
+            <ul>
+                <li class="nav-home">
+                    <a href="/">
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <path d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li class="nav-lost">
+                    <a href="lost">
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <path d="M128,160V144c30.93,0,56-21.49,56-48s-25.07-48-56-48S72,69.49,72,96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+                            <circle cx="128" cy="208" r="16" />
+                        </svg>
+                        Lost
+                    </a>
+                </li>
+                <li class="nav-found">
+                    <a href="found">
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <circle cx="112" cy="112" r="80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+                            <line x1="168.57" y1="168.57" x2="224" y2="224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+                        </svg>
+                        Found
+                    </a>
+                </li>
+                <li class="nav-login">
+                    <a href="login" id="login-link">
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
+                            <rect width="256" height="256" fill="none" />
+                            <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+                            <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+                        </svg>
+                        <span class="nav-text-signin">Sign In</span><span class="nav-text-account">Account</span>
+                    </a>
+                </li>
+                <li class="nav-admin">
+                    <a href="admin">
+                        <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
+                            <rect width="256" height="256" fill="none"/>
+                            <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm40-96H88a8,8,0,0,1,0-16h80a8,8,0,0,1,0,16Zm0,32H88a8,8,0,0,1,0-16h80a8,8,0,0,1,0,16Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                        </svg>
+                        Admin
+                    </a>
+                </li>
+                <li class="nav-settings-li">
+                    <button class="nav-settings-btn" aria-label="Settings" aria-haspopup="dialog">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" aria-hidden="true"><circle cx="128" cy="128" r="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M41.43,178.09A99.14,99.14,0,0,1,31.36,153.8l16.78-21a81.59,81.59,0,0,1,0-9.64l-16.77-21a99.43,99.43,0,0,1,10.05-24.3l26.71-3a81,81,0,0,1,6.81-6.81l3-26.7A99.14,99.14,0,0,1,102.2,31.36l21,16.78a81.59,81.59,0,0,1,9.64,0l21-16.77a99.43,99.43,0,0,1,24.3,10.05l3,26.71a81,81,0,0,1,6.81,6.81l26.7,3a99.14,99.14,0,0,1,10.07,24.29l-16.78,21a81.59,81.59,0,0,1,0,9.64l16.77,21a99.43,99.43,0,0,1-10,24.3l-26.71,3a81,81,0,0,1-6.81,6.81l-3,26.7a99.14,99.14,0,0,1-24.29,10.07l-21-16.78a81.59,81.59,0,0,1-9.64,0l-21,16.77a99.43,99.43,0,0,1-24.3-10l-3-26.71a81,81,0,0,1-6.81-6.81Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <div class="legal-container">
+            <h1>Resources and Credits</h1>
+            <p class="legal-meta">Last updated: March 5, 2026</p>
+
+            <p>Traceback was built using the following open-source libraries, services, fonts, and external resources.
+               All third-party materials are used in accordance with their respective licenses.</p>
+
+            <!-- ======================== LIBRARIES ======================== -->
+            <h2>Libraries &amp; Frameworks</h2>
+
+            <h3>Appwrite Cloud</h3>
+            <p><strong>Author:</strong> Appwrite<br>
+               <strong>Source:</strong> <a href="https://appwrite.io" target="_blank" rel="noopener noreferrer">https://appwrite.io</a><br>
+               <strong>Usage:</strong> Appwrite hosted our website and backend services, including authentication and databases. </p>
+
+            <h3>CropperJS</h3>
+            <p><strong>Version:</strong> 1.6.2<br>
+               <strong>Author:</strong> Chen Fengyuan<br>
+               <strong>License:</strong> MIT License<br>
+               <strong>Source:</strong> <a href="https://github.com/fengyuanchen/cropperjs" target="_blank" rel="noopener noreferrer">https://github.com/fengyuanchen/cropperjs</a><br>
+               <strong>Usage:</strong> Image cropping for lost and found images.</p>
+
+            <h3>normalize.css</h3>
+            <p><strong>Version:</strong> 8.0.1<br>
+               <strong>Authors:</strong> Nicolas Gallagher and Jonathan Neal<br>
+               <strong>License:</strong> MIT License<br>
+               <strong>Source:</strong> <a href="https://github.com/necolas/normalize.css" target="_blank" rel="noopener noreferrer">https://github.com/necolas/normalize.css</a><br>
+               <strong>Usage:</strong> A CSS normalization stylesheet to ensure all browsers consistently render the site. </p>
+
+            <!-- ======================== FONTS ======================== -->
+            <h2>Fonts</h2>
+
+            <h3>Inter</h3>
+            <p><strong>Author:</strong> Rasmus Andersson<br>
+               <strong>License:</strong> SIL Open Font License 1.1<br>
+               <strong>Source:</strong> <a href="https://fonts.google.com/specimen/Inter" target="_blank" rel="noopener noreferrer">https://fonts.google.com/specimen/Inter</a><br>
+               <strong>Usage:</strong> Primary font for body text, labels, and interface elements throughout the site.</p>
+                
+            <h3>Poppins</h3>
+            <p><strong>Author:</strong> Jonny Pinhorn<br>
+               <strong>License:</strong> SIL Open Font License 1.1<br>
+               <strong>Source:</strong> <a href="https://fonts.google.com/specimen/Poppins" target="_blank" rel="noopener noreferrer">https://fonts.google.com/specimen/Poppins</a><br>
+               <strong>Usage:</strong> Heading font for page titles and section headings.</p>
+
+            <h3>OpenDyslexic</h3>
+            <p><strong>Author:</strong> Abelardo Gonzalez<br>
+               <strong>License:</strong> SIL Open Font License 1.1<br>
+               <strong>Source:</strong> <a href="https://opendyslexic.org" target="_blank" rel="noopener noreferrer">https://opendyslexic.org</a><br>
+               <strong>Usage:</strong> Accessibility font designed to help all users read text more easily.</p>
+
+            <!-- ======================== STANDARDS ======================== -->
+            <h2>Standards &amp; Guidelines</h2>
+
+            <h3>Web Content Accessibility Guidelines (WCAG)</h3>
+            <p><strong>Author:</strong> World Wide Web Consortium<br>
+               <strong>Source:</strong> <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener noreferrer">https://www.w3.org/TR/WCAG21/</a><br>
+               <strong>Usage:</strong> Our primary source to ensure the site is accessible to all users.</p>
+
+            <!-- ======================== TOOLS ======================== -->
+            <h2>Development Tools &amp; Services</h2>
+
+            <h3>jsDelivr</h3>
+            <p><strong>Source:</strong> <a href="https://www.jsdelivr.com" target="_blank" rel="noopener noreferrer">https://www.jsdelivr.com</a><br>
+               <strong>Usage:</strong> The content delivery network (CDN) used to serve many libraries on the site including Appwrite SDK and Cropperl.js.</p>
+
+            <h3>dotenv</h3>
+            <p><strong>License:</strong> BSD 2-Clause License<br>
+               <strong>Source:</strong> <a href="https://github.com/motdotla/dotenv" target="_blank" rel="noopener noreferrer">https://github.com/motdotla/dotenv</a><br>
+               <strong>Usage:</strong> An essential package to ensure API keys remain private and the app remains secure.</p>
+
+            <h3>Google OAuth 2.0</h3>
+            <p><strong>Author:</strong> Google LLC<br>
+               <strong>Source:</strong> <a href="https://developers.google.com/identity/protocols/oauth2" target="_blank" rel="noopener noreferrer">https://developers.google.com/identity/protocols/oauth2</a><br>
+               <strong>Usage:</strong> Google provided their OAuth 2.0 standard for secure authentication with the app, easily integrating with Google accounts.</p>
+
+
+            <!-- ======================== DESIGN ======================== -->
+            <h2>Design References</h2>
+
+            <h3>Phosphor Icons</h3>
+            <p><strong>Authors:</strong> Helena Zhang and Tobias Fried<br>
+               <strong>License:</strong> MIT License<br>
+               <strong>Source:</strong> <a href="https://phosphoricons.com" target="_blank" rel="noopener noreferrer">https://phosphoricons.com</a><br>
+               <strong>Usage:</strong> SVG icon set used throughout the navigation, cards, and UI elements.</p>
+
+            <h3>Lucide Icons</h3>
+            <p><strong>Authors:</strong> Eric Fennis and Cole Bemis<br>
+               <strong>License:</strong> ISC License<br>
+               <strong>Source:</strong> <a href="https://lucide.dev" target="_blank" rel="noopener noreferrer">https://lucide.dev</a><br>
+               <strong>Usage:</strong> SVG icon set used throughout the navigation, cards, and UI elements.</p>
+
+            <h3>Vecteezy</h3>
+            <p><strong>Author:</strong> Shawn Rubel<br>
+               <strong>License:</strong> Vecteezy Free License<br>
+               <strong>Source:</strong> <a href="https://www.vecteezy.com" target="_blank" rel="noopener noreferrer">https://www.vecteezy.com</a><br>
+               <strong>Usage:</strong> Source for the background video on the homepage.</p>
+
+            <!-- ======================== RESEARCH ======================== -->
+            <h2>Research</h2>
+
+            <h3>MDN Web Docs</h3>
+            <p><strong>Author:</strong> Mozilla Foundation<br>
+               <strong>Source:</strong> <a href="https://developer.mozilla.org" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org</a><br>
+               <strong>Usage:</strong> Our main reference for development standards including JavaScript APIs, CSS properties, and HTML elements.</p>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>Traceback</h3>
+                <p>Making the world a little less lost, one item at a time.</p>
+            </div>
+        </div>
+        <div id="footer-bottom">
+            <p>&copy; 2026 Traceback. All rights reserved.</p>
+            <nav class="footer-legal" aria-label="Legal">
+                <a href="tos.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="references.html" class="current" aria-current="page">References</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+
+</html>

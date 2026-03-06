@@ -1,3 +1,14 @@
+/**
+ * @module toast
+ * @description Toast notification system. Renders status
+ * messages (success/error/info) in a fixed overlay container. Each toast
+ * auto-dismisses after 5 seconds and includes a manual close button. An SVG
+ * icon is used per-type for quick visual recognition.
+ *
+ * @example
+ * showToast('Item submitted!', 'success');
+ * showToast('Something went wrong.', 'error');
+ */
 import { t } from './i18n.js';
 
 export function showToast(message, type = 'info') {

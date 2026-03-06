@@ -1,4 +1,11 @@
-﻿
+﻿/**
+ * @module confirm
+ * @description Custom confirmation modal that replaces the browser's
+ * window.confirm() dialog. Renders an accessible overlay with a title, message,
+ * cancel and confirm buttons, and an animated entrance/exit transition.
+ * The onConfirm callback is invoked only when the user clicks confirm.
+ */
+
 /* ============================================
    CONFIRMATION MODAL
    ============================================ */

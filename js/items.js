@@ -1,3 +1,12 @@
+/**
+ * @module items
+ * @description Core item data layer. Handles:
+ * Submission forms (image upload → Appwrite Storage, document create → Appwrite DB)
+ * Public feed rendering with pagination and load-more
+ * Real-time keyword search and filter (type, category, location, date range)
+ * Item detail modal with full description and claim/inquiry form
+ * Permission grants on new documents so owners retain update/delete rights
+ */
 import { databases, storage, ID, Query, account, Permission, Role } from './auth.js';
 import { t } from './i18n.js';
 import { showToast } from './toast.js';
@@ -11,6 +20,9 @@ let currentFeedType = '';
 let currentFeedCriteria = {};
 let currentFilteredItems = [];
 const FEED_LIMIT = 12;
+
+// Tracks the item currently shown in the detail modal
+let currentModalItem = null;
 
 // Handle Item Submission
 export async function handleItemSubmission(formId, itemType) {
@@ -413,76 +425,31 @@ function openItemDetailModal(item) {
         });
     }
 
-    // Contact link — click 1: reveal email and prepare mailto, click 2: native anchor navigation
-    const contactBtn = document.getElementById('modal-contact-btn');
-    contactBtn.textContent = t('common.contactReporter');
-    contactBtn.removeAttribute('aria-disabled');
-    contactBtn.title = '';
-    contactBtn.href = '#';
-    let emailRevealed = false;
-    contactBtn.onclick = (e) => {
-        if (!item.userEmail) {
-            e.preventDefault();
-            contactBtn.textContent = t('common.contactUnavailable');
-            contactBtn.setAttribute('aria-disabled', 'true');
-            contactBtn.href = '#';
-            return;
+    // Store the current item for the claim form submit handler
+    currentModalItem = item;
+
+    // Show/hide claim form vs. login prompt
+    const claimLoginNote = document.getElementById('claim-login-note');
+    const claimForm = document.getElementById('claim-form');
+    const isLoggedIn = !!localStorage.getItem('loggedIn');
+
+    if (claimLoginNote) claimLoginNote.style.display = isLoggedIn ? 'none' : '';
+    if (claimForm) {
+        claimForm.style.display = isLoggedIn ? '' : 'none';
+        // Reset textarea on each open
+        const msgEl = claimForm.querySelector('#claim-message');
+        if (msgEl) msgEl.value = '';
+
+        if (isLoggedIn) {
+            // Pre-fill readonly name/email from Appwrite
+            account.get().then(user => {
+                const nameInput = claimForm.querySelector('#claim-name');
+                const emailInput = claimForm.querySelector('#claim-email');
+                if (nameInput) nameInput.value = user.name || '';
+                if (emailInput) emailInput.value = user.email || '';
+            }).catch(() => {});
         }
-        if (!emailRevealed) {
-            e.preventDefault();
-            emailRevealed = true;
-            contactBtn.textContent = item.userEmail;
-            contactBtn.title = '';
-            const siteName = 'Traceback';
-            const siteUrl = window.location.origin;
-            const reporterName = item.userName || 'Unknown account';
-            const itemTypeLabel = item.type === 'found' ? 'found item' : 'lost item';
-            const isFoundListing = item.type === 'found';
-            const itemDate = item.date
-                ? new Date(item.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
-                : 'Unknown date';
-            const itemId = item.$id || '';
-            const itemPagePath = item.type === 'found' ? 'found' : 'lost';
-            const itemUrl = itemId
-                ? `${siteUrl}/${itemPagePath}?item=${encodeURIComponent(itemId)}`
-                : `${siteUrl}/${itemPagePath}`;
-
-            const subject = isFoundListing
-                ? `Claim request for found item "${item.title}" via ${siteName}`
-                : `Response to lost item "${item.title}" on ${siteName}`;
-
-            const introLine = isFoundListing
-                ? `I believe this may be my item from your ${siteName} listing.`
-                : `I may have found your lost item listed on ${siteName}.`;
-
-            const proofLine = isFoundListing
-                ? 'I can share identifying details to confirm ownership.'
-                : 'I can share where and when I found it so we can verify details.';
-
-            const body = [
-                `Hi ${reporterName},`,
-                '',
-                introLine,
-                '',
-                `Listing details from ${siteName}:`,
-                `- Item: ${item.title}`,
-                `- Type: ${itemTypeLabel}`,
-                `- Location: ${item.location || 'Unknown location'}`,
-                `- Date: ${itemDate}`,
-                `- Posted by account: ${reporterName}`,
-                `- Item link: ${itemUrl}`,
-                `- Website: ${siteName} (${siteUrl})`,
-                '',
-                proofLine,
-                '',
-                `P.S. If this item is successfully claimed, please delete the listing on ${siteName} so others know it is resolved.`,
-            ].join('\r\n');
-
-            const mailtoLink = `mailto:${item.userEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            contactBtn.href = mailtoLink;
-            contactBtn.setAttribute('aria-label', `Email ${reporterName}`);
-        }
-    };
+    }
 
     // Show modal
     modal.classList.add('active');
@@ -493,6 +460,67 @@ export function setupLoadMore() {
     const loadMoreBtn = document.getElementById('feed-load-more');
     if (!loadMoreBtn) return;
     loadMoreBtn.addEventListener('click', () => fetchItems(currentFeedType, currentFeedCriteria, true));
+}
+
+// Setup the claim/inquiry form submit handler (called once per page load)
+export function setupClaimForm() {
+    const claimForm = document.getElementById('claim-form');
+    if (!claimForm) return;
+
+    claimForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!currentModalItem) return;
+
+        const item = currentModalItem;
+
+        if (!item.userEmail) {
+            showToast(t('common.contactUnavailable'), 'error');
+            return;
+        }
+
+        const userMessage = document.getElementById('claim-message')?.value?.trim();
+        if (!userMessage) return;
+
+        const siteName = 'Traceback';
+        const siteUrl = window.location.origin;
+        const reporterName = item.userName || 'Unknown account';
+        const itemTypeLabel = item.type === 'found' ? 'found item' : 'lost item';
+        const isFoundListing = item.type === 'found';
+        const itemDate = item.date
+            ? new Date(item.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
+            : 'Unknown date';
+        const itemId = item.$id || '';
+        const itemPagePath = item.type === 'found' ? 'found' : 'lost';
+        const itemUrl = itemId
+            ? `${siteUrl}/${itemPagePath}?item=${encodeURIComponent(itemId)}`
+            : `${siteUrl}/${itemPagePath}`;
+
+        const subject = isFoundListing
+            ? `Claim request for found item "${item.title}" via ${siteName}`
+            : `Response to lost item "${item.title}" on ${siteName}`;
+
+        const body = [
+            `Hi ${reporterName},`,
+            '',
+            userMessage,
+            '',
+            `--- Listing details from ${siteName} ---`,
+            `Item: ${item.title}`,
+            `Type: ${itemTypeLabel}`,
+            `Location: ${item.location || 'Unknown location'}`,
+            `Date: ${itemDate}`,
+            `Item link: ${itemUrl}`,
+        ].join('\n');
+
+        // Use Gmail compose URL so it opens in the browser rather than a system mail app
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(item.userEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+        showToast(t('forms.claimSent'), 'success');
+
+        // Reset textarea after sending
+        const msgEl = document.getElementById('claim-message');
+        if (msgEl) msgEl.value = '';
+    });
 }
 
 // Debounce utility

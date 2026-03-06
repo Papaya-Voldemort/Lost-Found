@@ -1,4 +1,11 @@
-﻿
+﻿/**
+ * @module utils
+ * @description Shared utility helpers.
+ *
+ * @function formatRelativeDate
+ * Converts an ISO date string into a nice relative time format using Intl.RelativeTimeFormat.
+ */
+
 export function formatRelativeDate(dateString) {
     const date = new Date(dateString);
     const now = new Date();

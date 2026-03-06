@@ -1,3 +1,12 @@
+/**
+ * @module account
+ * @description Account page logic. Handles:
+ *   - Fetching and rendering the current user's profile
+ *   - Update display name and change password forms
+ *   - Fetching and rendering the user's own item listings with type + approval status badges
+ *   - Resolve and delete own listings, including associated storage files
+ *   - Logout, which clears session and localStorage auth flags
+ */
 import { account, databases, Query, ID, storage } from './auth.js';
 import { t } from './i18n.js';
 import { showToast } from './toast.js';

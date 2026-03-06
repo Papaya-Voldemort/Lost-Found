@@ -1,7 +1,18 @@
+/**
+ * @module main
+ * @description Application entry point loaded on every page. Responsibilities:
+ * Applies stored theme (dark/light/system), language, and dyslexic-font preferences
+ * immediately on load to prevent FOUC.
+ * Checks auth state and redirects users if accessing protected pages without being logged in.
+ * Injects and wires up the settings gear popup (theme, language, dyslexic font).
+ * Bootstraps page-specific logic (item feeds, submission forms, search) via
+ * data attributes on <body>.
+ * Manages the CropperJS image-crop workflow for upload forms.
+ */
 import { account, ID } from './auth.js';
 import { applyTranslations, getArray, t } from './i18n.js';
 import { showToast } from './toast.js';
-import { handleItemSubmission, fetchItems, setupSearch, setupLoadMore, openItemById } from './items.js';
+import { handleItemSubmission, fetchItems, setupSearch, setupLoadMore, openItemById, setupClaimForm } from './items.js';
 import { isAdmin } from './admin.js';
 
 let Cropper = null;
@@ -10,7 +21,7 @@ let cropperInstance = null;
 const THEME_STORAGE_KEY = 'theme';
 const LANGUAGE_STORAGE_KEY = 'language';
 const DYSLEXIC_STORAGE_KEY = 'dyslexicFont';
-const SUPPORTED_LANGUAGES = ['en', 'es', 'fr', 'it', 'zh', 'ar'];
+const SUPPORTED_LANGUAGES = ['en', 'es', 'fr', 'it', 'hi', 'zh', 'ar'];
 
 function prefersDarkMode() {
     return window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : true;
@@ -110,6 +121,7 @@ function createSettingsGear() {
                     '<option value="es">Español</option>' +
                     '<option value="fr">Français</option>' +
                     '<option value="it">Italiano</option>' +
+                    '<option value="hi">हिन्दी</option>' +
                     '<option value="zh">中文</option>' +
                     '<option value="ar">العربية</option>' +
                 '</select>' +
@@ -748,6 +760,7 @@ initStrengthMeter('new-password', 'password-strength-account');
         if (isLoggedIn) {
             handleItemSubmission('lost-item-form', 'lost');
         }
+        setupClaimForm();
         await fetchItems('lost');
         setupSearch('lost');
         setupLoadMore();
@@ -763,6 +776,7 @@ initStrengthMeter('new-password', 'password-strength-account');
         if (isLoggedIn) {
             handleItemSubmission('found-item-form', 'found');
         }
+        setupClaimForm();
         await fetchItems('found');
         setupSearch('found');
         setupLoadMore();

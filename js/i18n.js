@@ -1,5 +1,11 @@
+/**
+ * @module i18n
+ * @description Internationalization (i18n) module supporting 7 languages:
+ * English (en), Spanish (es), French (fr), Italian (it), Hindi (hi),
+ * Chinese Simplified (zh), and Arabic (ar).
+ */
 const LANGUAGE_STORAGE_KEY = 'language';
-const SUPPORTED_LANGUAGES = new Set(['en', 'es', 'fr', 'it', 'zh', 'ar']);
+const SUPPORTED_LANGUAGES = new Set(['en', 'es', 'fr', 'it', 'hi', 'zh', 'ar']);
 
 const translations = {
     en: {
@@ -46,7 +52,7 @@ const translations = {
             introTagline: 'No account needed to browse. Post in seconds.',
             feature1: 'Crop & upload photos',
             feature2: 'Search by title, tags & location',
-            feature3: 'One-click contact reveal',
+            feature3: 'Send a claim inquiry',
             howTitle: 'How It Works',
             howSubtitle: 'Reconnecting you with your belongings in three simple steps.',
             step1Title: 'Report Item',
@@ -311,6 +317,13 @@ const translations = {
             languageSaved: 'Language preference saved on this device',
             showPassword: 'Show password',
             hidePassword: 'Hide password',
+            claimYourName: 'Your Name',
+            claimYourEmail: 'Your Email',
+            claimMessage: 'Message to Reporter',
+            claimMessagePlaceholder: 'Describe why you believe this is your item, or how you can help...',
+            claimSubmit: 'Send Inquiry',
+            claimSent: 'Inquiry sent! Check your email app to finish sending.',
+            claimLoginRequired: 'Sign in to send a claim inquiry.',
         },
         admin: {
             title: 'Admin Panel',
@@ -374,7 +387,7 @@ const translations = {
             introTagline: 'No necesitas cuenta para explorar. Publica en segundos.',
             feature1: 'Recorta y sube fotos',
             feature2: 'Busca por título, etiquetas y ubicación',
-            feature3: 'Ver contacto con un clic',
+            feature3: 'Enviar una solicitud de reclamo',
             howTitle: 'Cómo funciona',
             howSubtitle: 'Te ayudamos a reencontrarte con tus pertenencias en tres simples pasos.',
             step1Title: 'Reporta el objeto',
@@ -619,6 +632,13 @@ const translations = {
             languageSaved: 'Preferencia de idioma guardada en este dispositivo',
             showPassword: 'Mostrar contraseña',
             hidePassword: 'Ocultar contraseña',
+            claimYourName: 'Tu nombre',
+            claimYourEmail: 'Tu correo',
+            claimMessage: 'Mensaje al reportero',
+            claimMessagePlaceholder: 'Describe por qué crees que es tuyo, o cómo puedes ayudar...',
+            claimSubmit: 'Enviar consulta',
+            claimSent: '¡Consulta enviada! Revisa tu aplicación de correo para terminar.',
+            claimLoginRequired: 'Inicia sesión para enviar una consulta.',
         },
         admin: {
             title: 'Panel de Administración',
@@ -700,7 +720,7 @@ const translations = {
             introTagline: "Aucun compte n'est nécessaire pour naviguer. Publiez en quelques secondes.",
             feature1: 'Recadrer et télécharger des photos',
             feature2: 'Rechercher par titre, tags et emplacement',
-            feature3: 'Révélation des contacts en un clic',
+            feature3: 'Envoyer une demande de réclamation',
             howTitle: 'Comment ça marche',
             howSubtitle: 'Vous reconnecter avec vos affaires en trois étapes simples.',
             step1Title: 'Signaler un objet',
@@ -964,7 +984,14 @@ const translations = {
             accountSaved: "Préférence d'apparence enregistrée",
             languageSaved: 'Préférence de langue enregistrée sur cet appareil',
             showPassword: 'Afficher le mot de passe',
-            hidePassword: 'Masquer le mot de passe'
+            hidePassword: 'Masquer le mot de passe',
+            claimYourName: 'Votre nom',
+            claimYourEmail: 'Votre e-mail',
+            claimMessage: 'Message au signalant',
+            claimMessagePlaceholder: 'Décrivez pourquoi vous pensez que cet objet vous appartient...',
+            claimSubmit: 'Envoyer la demande',
+            claimSent: 'Demande envoyée ! Vérifiez votre messagerie pour terminer.',
+            claimLoginRequired: 'Connectez-vous pour envoyer une demande.',
         },
         admin: {
             title: 'Panneau d\'administration',
@@ -1046,7 +1073,7 @@ const translations = {
             introTagline: 'Nessun account necessario per navigare. Pubblica in pochi secondi.',
             feature1: 'Ritaglia e carica foto',
             feature2: 'Cerca per titolo, tag e posizione',
-            feature3: 'Rivelazione dei contatti con un clic',
+            feature3: 'Invia una richiesta di reclamo',
             howTitle: 'Come funziona',
             howSubtitle: 'Riconnetterti con le tue cose in tre semplici passaggi.',
             step1Title: 'Segnala elemento',
@@ -1310,7 +1337,14 @@ const translations = {
             accountSaved: 'Preferenza di aspetto salvata',
             languageSaved: 'Preferenza della lingua salvata su questo dispositivo',
             showPassword: 'Mostra password',
-            hidePassword: 'Nascondi la password'
+            hidePassword: 'Nascondi la password',
+            claimYourName: 'Il tuo nome',
+            claimYourEmail: 'La tua email',
+            claimMessage: 'Messaggio al segnalatore',
+            claimMessagePlaceholder: 'Descrivi perché pensi che questo oggetto sia tuo...',
+            claimSubmit: 'Invia richiesta',
+            claimSent: 'Richiesta inviata! Controlla la tua email per completare.',
+            claimLoginRequired: 'Accedi per inviare una richiesta.',
         },
         admin: {
             title: 'Pannello di Amministrazione',
@@ -1374,7 +1408,7 @@ const translations = {
             introTagline: 'देखने के लिए खाते की ज़रूरत नहीं। सेकंडों में पोस्ट करें।',
             feature1: 'फोटो क्रॉप करें और अपलोड करें',
             feature2: 'शीर्षक, टैग और स्थान से खोजें',
-            feature3: 'एक क्लिक में संपर्क देखें',
+            feature3: 'दावा जांच भेजें',
             howTitle: 'यह कैसे काम करता है',
             howSubtitle: 'तीन आसान चरणों में आपकी चीज़ें वापस दिलाने में मदद।',
             step1Title: 'वस्तु रिपोर्ट करें',
@@ -1619,6 +1653,13 @@ const translations = {
             languageSaved: 'भाषा वरीयता इस डिवाइस पर सहेजी गई',
             showPassword: 'पासवर्ड दिखाएँ',
             hidePassword: 'पासवर्ड छिपाएँ',
+            claimYourName: 'आपका नाम',
+            claimYourEmail: 'आपका ईमेल',
+            claimMessage: 'रिपोर्टर को संदेश',
+            claimMessagePlaceholder: 'बताएं कि यह वस्तु आपकी क्यों लगती है...',
+            claimSubmit: 'जानकारी भेजें',
+            claimSent: 'जानकारी भेज दी गई! भेजने के लिए ईमेल ऐप देखें।',
+            claimLoginRequired: 'दावा भेजने के लिए साइन इन करें।',
         },
         admin: {
             title: 'एडमिन पैनल',
@@ -1682,7 +1723,7 @@ const translations = {
             introTagline: '无需账户即可浏览。几秒内即可发布。',
             feature1: '裁剪并上传照片',
             feature2: '按标题、标签和地点搜索',
-            feature3: '一键查看联系方式',
+            feature3: '发送认领申请',
             howTitle: '使用方式',
             howSubtitle: '三步帮你重新找回重要物品。',
             step1Title: '提交物品信息',
@@ -1927,6 +1968,13 @@ const translations = {
             languageSaved: '语言偏好已保存在此设备上',
             showPassword: '显示密码',
             hidePassword: '隐藏密码',
+            claimYourName: '您的姓名',
+            claimYourEmail: '您的邮箱',
+            claimMessage: '给发布者的留言',
+            claimMessagePlaceholder: '请说明您为何认为这是您的物品...',
+            claimSubmit: '发送询问',
+            claimSent: '询问已发送！请查看邮件应用完成发送。',
+            claimLoginRequired: '请登录后发送认领申请。',
         },
         admin: {
             title: '管理面板',
@@ -1990,7 +2038,7 @@ const translations = {
             introTagline: 'لا حاجة إلى حساب للتصفح. انشر خلال ثوانٍ.',
             feature1: 'اقتصاص الصور ورفعها',
             feature2: 'البحث بالعنوان والوسوم والموقع',
-            feature3: 'إظهار التواصل بنقرة واحدة',
+            feature3: 'إرسال طلب مطالبة',
             howTitle: 'كيف يعمل',
             howSubtitle: 'إعادتك إلى مقتنياتك في ثلاث خطوات بسيطة.',
             step1Title: 'أبلغ عن الغرض',
@@ -2235,6 +2283,13 @@ const translations = {
             languageSaved: 'تم حفظ تفضيل اللغة على هذا الجهاز',
             showPassword: 'إظهار كلمة المرور',
             hidePassword: 'إخفاء كلمة المرور',
+            claimYourName: 'اسمك',
+            claimYourEmail: 'بريدك الإلكتروني',
+            claimMessage: 'رسالة إلى المبلِّغ',
+            claimMessagePlaceholder: 'اشرح سبب اعتقادك أن هذه العناصر تخصك...',
+            claimSubmit: 'إرسال الاستفسار',
+            claimSent: 'تم إرسال الاستفسار! تحقق من تطبيق البريد لإتمام الإرسال.',
+            claimLoginRequired: 'سجّل دخولك لإرسال طلب المطالبة.',
         },
         admin: {
             title: 'لوحة الإدارة',
@@ -2358,6 +2413,13 @@ function translateCommon() {
     setAllText('#crop-cancel', 'common.cancel');
     setAllText('#crop-confirm', 'common.cropUse');
     setAllText('#modal-contact-btn', 'common.contactReporter');
+    // Claim form translations
+    setAllText('label[for="claim-name"]', 'forms.claimYourName');
+    setAllText('label[for="claim-email"]', 'forms.claimYourEmail');
+    setAllText('label[for="claim-message"]', 'forms.claimMessage');
+    setAllAttr('#claim-message', 'placeholder', 'forms.claimMessagePlaceholder');
+    setAllText('#claim-submit', 'forms.claimSubmit');
+    setAllText('#claim-login-note a', 'forms.claimLoginRequired');
     setAllText('#feed-load-more', 'common.loadMore');
     setAllText('#load-more-btn', 'common.loadMore');
     setAllText('.btn-reset', 'common.resetFilters');
@@ -2623,7 +2685,6 @@ function translateItemForms(prefix) {
     setText('#crop-modal .modal-header h2', 'common.cropImage');
     setText('#crop-cancel', 'common.cancel');
     setText('#crop-confirm', 'common.cropUse');
-    setText('#modal-contact-btn', 'common.contactReporter');
 
     Object.entries({
         electronics: 'forms.categories.electronics',

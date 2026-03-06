@@ -1,5 +1,5 @@
 /**
- * Admin panel module — handles moderation of pending items and management of all items.
+ * Admin panel module: handles moderation of pending items and management of all items.
  * Admin access is restricted to a hardcoded list of authorized emails.
  */
 
