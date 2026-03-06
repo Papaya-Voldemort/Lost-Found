@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up - Traceback</title>
-    <meta name="description" content="Create a Traceback account">
+    <title>Admin Panel - Traceback</title>
+    <meta name="description" content="Traceback admin moderation panel">
     <meta name="theme-color" content="#326273">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script>(()=>{const theme=localStorage.getItem('theme');const prefersDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)').matches:true;if(theme==='dark'||((!theme||theme==='system')&&prefersDark))document.documentElement.classList.add('dark-mode');if(localStorage.getItem('loggedIn'))document.documentElement.classList.add('logged-in');if(localStorage.getItem('isAdmin'))document.documentElement.classList.add('is-admin');const language=localStorage.getItem('language');if(language)document.documentElement.lang=language;if(localStorage.getItem('dyslexicFont')==='true'){document.documentElement.classList.add('dyslexic-font');const fl=document.createElement('link');fl.rel='stylesheet';fl.href='https://fonts.cdnfonts.com/css/opendyslexic';document.head.appendChild(fl);}})();</script>
@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&family=Roboto:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@200;300;400;500&display=swap"
         rel="stylesheet">
 </head>
 
@@ -61,18 +61,18 @@
                         Found
                     </a>
                 </li>
-                <li class="nav-login">
-                    <a id="login-link" href="login">
+                <li class="nav-account">
+                    <a href="account">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
                             <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
                         </svg>
-                        <span class="nav-text-signin">Sign In</span><span class="nav-text-account">Account</span>
+                        Account
                     </a>
                 </li>
                 <li class="nav-admin">
-                    <a href="admin">
+                    <a href="admin" class="current" aria-current="page">
                         <svg class="nav-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
                             <rect width="256" height="256" fill="none"/>
                             <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm40-96H88a8,8,0,0,1,0-16h80a8,8,0,0,1,0,16Zm0,32H88a8,8,0,0,1,0-16h80a8,8,0,0,1,0,16Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
@@ -90,60 +90,57 @@
     </header>
 
     <main>
-        <section class="page-header scroll-animate">
-            <h1>Sign Up</h1>
-            <p>Join the Traceback community</p>
+        <section class="admin-header" aria-label="Admin overview">
+            <div class="container">
+                <h1 data-i18n="admin.title">Admin Panel</h1>
+                <p class="admin-subtitle" data-i18n="admin.subtitle">Review and manage item submissions.</p>
+
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="stat-pending">–</span>
+                        <span class="stat-label" data-i18n="admin.pending">Pending</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="stat-active">–</span>
+                        <span class="stat-label" data-i18n="admin.active">Active</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="stat-total">–</span>
+                        <span class="stat-label" data-i18n="admin.totalItems">Total</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section class="upload-form scroll-animate">
-            <button class="google-btn" aria-label="Sign up with Google">
-                <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
-                Sign up with Google
-            </button>
-            
-            <div class="or-divider">
-                <span>Or</span>
+        <section class="admin-content" aria-label="Item management">
+            <div class="container">
+                <div class="admin-tabs" role="tablist" aria-label="Admin sections">
+                    <button class="admin-tab active" role="tab" aria-selected="true" aria-controls="panel-pending" data-panel="panel-pending" data-i18n="admin.pendingQueue">
+                        Pending Queue
+                    </button>
+                    <button class="admin-tab" role="tab" aria-selected="false" aria-controls="panel-all" data-panel="panel-all" data-i18n="admin.allItems">
+                        All Items
+                    </button>
+                </div>
+
+                <div id="panel-pending" class="admin-panel active" role="tabpanel" aria-labelledby="panel-pending">
+                    <div id="pending-items-grid" class="listings-grid" aria-live="polite">
+                        <!-- Pending items injected by JS -->
+                    </div>
+                    <div class="listings-footer">
+                        <button id="pending-load-more" class="btn-secondary" style="display: none;" data-i18n="common.loadMore">Load More</button>
+                    </div>
+                </div>
+
+                <div id="panel-all" class="admin-panel" role="tabpanel" aria-labelledby="panel-all">
+                    <div id="all-items-grid" class="listings-grid" aria-live="polite">
+                        <!-- All items injected by JS -->
+                    </div>
+                    <div class="listings-footer">
+                        <button id="all-load-more" class="btn-secondary" style="display: none;" data-i18n="common.loadMore">Load More</button>
+                    </div>
+                </div>
             </div>
-
-            <form id="signup-form" class="item-form" aria-label="Create a new account">
-                <label>
-                    <span>Email Address <span class="required-asterisk">*</span></span>
-                    <input type="email" id="signup-email" name="email" placeholder="e.g. your.email@domain.com" required>
-                </label>
-
-                <label>
-                    <span>Username <span class="required-asterisk">*</span></span>
-                    <input type="text" id="signup-name" name="name" placeholder="3-20 characters (letters, numbers, _)" pattern="^[a-zA-Z0-9_]{3,20}$" title="Username must be 3-20 characters long and can only contain letters, numbers, and underscores." required>
-                </label>
-                
-                <label>
-                    <span>Password <span class="required-asterisk">*</span></span>
-                    <div class="password-wrapper">
-                        <input type="password" id="signup-password" name="password" placeholder="Create a password (min 8 chars)" minlength="8" pattern="^\S{8,}$" title="Password must be at least 8 characters with no spaces" required>
-                        <button type="button" class="toggle-password" aria-label="Show password">
-                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,123.97,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A169.47,169.47,0,0,1,25,128,169.47,169.47,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A169.47,169.47,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
-                        </button>
-                    </div>
-                    <div class="password-strength" id="password-strength" role="status" aria-live="polite">
-                        <div class="strength-bar"><div class="strength-fill"></div></div>
-                        <span class="strength-text"></span>
-                    </div>
-                </label>
-                
-                <label>
-                    <span>Confirm Password <span class="required-asterisk">*</span></span>
-                    <div class="password-wrapper">
-                        <input type="password" id="signup-confirm-password" name="confirm_password" placeholder="Confirm your password" minlength="8" required>
-                        <button type="button" class="toggle-password" aria-label="Show password">
-                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,123.97,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A169.47,169.47,0,0,1,25,128,169.47,169.47,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A169.47,169.47,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
-                        </button>
-                    </div>
-                </label>
-
-                <input type="submit" value="Sign Up" class="btn-primary full-width">
-            </form>
-            
-            <a href="login" class="auth-link">Already have an account? Sign in</a>
         </section>
     </main>
 
@@ -162,6 +159,8 @@
             </nav>
         </div>
     </footer>
+
+    <script type="module" src="js/admin.js"></script>
 </body>
 
 </html>

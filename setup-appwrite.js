@@ -41,22 +41,26 @@ async function setup() {
         await databases.create(DB_ID, DB_NAME);
     }
 
-    // 2. Collection Creation
+    // 2. Collection Creation / Permission Sync
+    const collectionPerms = [
+        Permission.read(Role.any()),
+        Permission.create(Role.users()),
+        Permission.update(Role.users()),
+        Permission.delete(Role.users()),
+    ];
     try {
         await databases.getCollection(DB_ID, COLLECTION_ID);
-        console.log(`- Collection "${COLLECTION_NAME}" (${COLLECTION_ID}) already exists.`);
+        console.log(`- Collection "${COLLECTION_NAME}" (${COLLECTION_ID}) already exists. Syncing permissions...`);
+        // Always sync permissions so adding Role.users() delete is applied to the live collection.
+        await databases.updateCollection(DB_ID, COLLECTION_ID, COLLECTION_NAME, collectionPerms, true);
+        console.log('- Collection permissions updated.');
     } catch (e) {
         console.log(`- Creating Collection: ${COLLECTION_NAME}...`);
-        // We set permissions so any user can read, but only logged-in users can create documents.
-        // For individual manageability, the code during creation will add more specific permissions later.
         await databases.createCollection(
             DB_ID,
             COLLECTION_ID,
             COLLECTION_NAME,
-            [
-                Permission.read(Role.any()),
-                Permission.create(Role.users()),
-            ],
+            collectionPerms,
             true // Enable Document Security
         );
     }

@@ -2,6 +2,7 @@ import { account, ID } from './auth.js';
 import { applyTranslations, getArray, t } from './i18n.js';
 import { showToast } from './toast.js';
 import { handleItemSubmission, fetchItems, setupSearch, setupLoadMore, openItemById } from './items.js';
+import { isAdmin } from './admin.js';
 
 let Cropper = null;
 let cropperInstance = null;
@@ -81,20 +82,8 @@ function createSettingsGear() {
     btn.innerHTML = gearSvg;
     document.body.appendChild(btn);
 
-    // Desktop: gear injected into the nav as the last item
-    const navUl = document.querySelector('header nav ul');
-    let navBtn = null;
-    if (navUl) {
-        const navLi = document.createElement('li');
-        navLi.className = 'nav-settings-li';
-        navBtn = document.createElement('button');
-        navBtn.className = 'nav-settings-btn';
-        navBtn.setAttribute('aria-label', 'Settings');
-        navBtn.setAttribute('aria-haspopup', 'dialog');
-        navBtn.innerHTML = gearSvg;
-        navLi.appendChild(navBtn);
-        navUl.appendChild(navLi);
-    }
+    // Desktop: use the static nav-settings-btn already in the HTML (avoids CLS)
+    let navBtn = document.querySelector('.nav-settings-btn');
 
     // Popup panel
     const popup = document.createElement('div');
@@ -684,7 +673,9 @@ initStrengthMeter('new-password', 'password-strength-account');
         const isProtectedPage =
             path.endsWith('account') || path.endsWith('account.html') ||
             path.endsWith('lost') || path.endsWith('lost.html') ||
-            path.endsWith('found') || path.endsWith('found.html');
+            path.endsWith('found') || path.endsWith('found.html') ||
+            path.endsWith('admin') || path.endsWith('admin.html');
+        const isAdminPage = path.endsWith('admin') || path.endsWith('admin.html');
         const isLoginPage = path.endsWith('login') || path.endsWith('login.html');
         const isSignupPage = path.endsWith('signup') || path.endsWith('signup.html');
 
@@ -709,16 +700,31 @@ initStrengthMeter('new-password', 'password-strength-account');
             showVerificationPanel(user.email);
         }
 
+        // Redirect non-admin users away from admin page
+        if (isAdminPage && !isAdmin(user)) {
+            window.location.href = '/';
+            return;
+        }
+
         const loginLink = document.getElementById('login-link');
         if (loginLink) {
             loginLink.parentElement?.classList.remove('nav-login');
             loginLink.parentElement?.classList.add('nav-account');
             loginLink.href = 'account';
         }
+
+        // Admin nav link is pre-rendered in HTML, revealed via CSS html.is-admin .nav-admin
+        if (isAdmin(user)) {
+            document.documentElement.classList.add('is-admin');
+            localStorage.setItem('isAdmin', 'true');
+        } else {
+            localStorage.removeItem('isAdmin');
+        }
     } catch (error) {
         // User is not logged in - this is expected, don't log error
         isLoggedIn = false;
         localStorage.removeItem('loggedIn');
+        localStorage.removeItem('isAdmin');
         document.documentElement.classList.remove('logged-in');
         if (window.location.pathname.endsWith('account') || window.location.pathname.endsWith('account.html')) {
             window.location.href = 'login';

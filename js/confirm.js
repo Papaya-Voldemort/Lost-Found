@@ -8,18 +8,18 @@ export function showConfirm(title, message, onConfirm) {
     const existing = document.getElementById('custom-confirm-modal');
     if (existing) existing.remove();
 
-    const modalHTML = \
-        <div id=\"custom-confirm-modal\" class=\"modal-overlay\">
-            <div class=\"modal-content\">
-                <h3>\</h3>
-                <p>\</p>
-                <div class=\"modal-actions\">
-                    <button id=\"confirm-cancel-btn\" class=\"btn-secondary\" style=\"background-color: var(--color-dark-gray);\">Cancel</button>
-                    <button id=\"confirm-ok-btn\" class=\"btn-primary\" style=\"background-color: var(--color-error, #dc3545);\">Confirm</button>
+    const modalHTML = `
+        <div id="custom-confirm-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h3>${title}</h3>
+                <p>${message}</p>
+                <div class="modal-actions">
+                    <button id="confirm-cancel-btn" class="btn-secondary" style="background-color: var(--color-dark-gray);">Cancel</button>
+                    <button id="confirm-ok-btn" class="btn-primary" style="background-color: var(--color-error, #dc3545);">Confirm</button>
                 </div>
             </div>
         </div>
-    \;
+    `;
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     const modal = document.getElementById('custom-confirm-modal');

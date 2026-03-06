@@ -109,6 +109,7 @@ document.getElementById('logout-btn')?.addEventListener('click', async () => {
     try {
         await account.deleteSession('current');
         localStorage.removeItem('loggedIn');
+        localStorage.removeItem('isAdmin');
         showToast(t('account.loggedOut'), 'success');
         setTimeout(() => window.location.href = '/', 1000);
     } catch (error) {
@@ -192,7 +193,11 @@ function createListingCard(doc) {
     const badge = document.createElement('span');
     badge.className = `status-badge ${doc.type}`;
     badge.textContent = t(`nav.${doc.type}`);
-    cardImage.append(img, badge);
+    const itemStatus = doc.status || 'pending';
+    const statusBadge = document.createElement('span');
+    statusBadge.className = `status-badge ${itemStatus}`;
+    statusBadge.textContent = t(`admin.${itemStatus}`);
+    cardImage.append(img, badge, statusBadge);
 
     const cardContent = document.createElement('div');
     cardContent.className = 'card-content';

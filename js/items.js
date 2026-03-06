@@ -46,6 +46,7 @@ export async function handleItemSubmission(formId, itemType) {
                         Permission.read(Role.any()),
                         Permission.update(Role.user(user.$id)),
                         Permission.delete(Role.user(user.$id)),
+                        Permission.delete(Role.users()),
                     ]
                 );
                 imageId = uploadResponse.$id;
@@ -91,16 +92,18 @@ export async function handleItemSubmission(formId, itemType) {
                     userId: user.$id,
                     userName: user.name || '',
                     userEmail: user.email || '',
-                    status: 'active'
+                    status: 'pending'
                 },
                 [
                     Permission.read(Role.any()),
                     Permission.update(Role.user(user.$id)),
                     Permission.delete(Role.user(user.$id)),
+                    Permission.update(Role.users()),
+                    Permission.delete(Role.users()),
                 ]
             );
 
-            showToast(`${t(itemType === 'lost' ? 'lost.reportTitle' : 'found.reportTitle')} ${t('common.submit')}.`, 'success');
+            showToast(t('common.submittedPending'), 'success');
             form.reset();
             
             // Reset image preview
