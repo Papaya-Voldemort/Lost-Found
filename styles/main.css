@@ -27,8 +27,10 @@ html {
     /* Color Variables */
     --color-primary: #5C9EAD;
     --color-primary-dark: #326273;
+    --color-primary-light: #63bdde; /* This is a test color update to a real light color that fits */
 
-    --color-accent: #E39774;
+    /* --color-accent: #E39774; */
+    --color-accent: #8dcbd8; /* Remove maybe?*/
 
     --color-black: #000;
     --color-white: #FFF;
@@ -292,10 +294,10 @@ div#description {
     /* Magic number to prevent layout shift when typing */
     text-align: left;
     vertical-align: bottom;
-    color: var(--color-accent);
+    color: var(--color-primary-light);
     text-transform: lowercase;
     font-family: var(--font-display);
-    text-shadow: 0 0 18px rgba(227, 151, 116, 0.45);
+    text-shadow: 0 0 18px rgba(0, 0, 0, 0.5);
 }
 
 #typewriter::after {
@@ -407,7 +409,7 @@ section#impact-stats {
     padding: 4rem 2rem;
     margin-bottom: 2rem;
     text-align: center;
-    background-color: var(--color-accent);
+    background-color: var(--color-primary-light);
     clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%);
 }
 
@@ -2415,4 +2417,5 @@ html.dark-mode .nav-settings-btn:hover {
     background-color: var(--color-primary-dark);
     color: white;
     padding: 0.5rem;
+    flex-direction: column;
 }
