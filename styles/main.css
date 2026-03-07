@@ -2740,7 +2740,7 @@ html.is-admin .nav-admin {
 }
 
 .nav-admin a {
-    color: #e67e22;
+    color: var(--color-accent-secondary);
 }
 
 /* Dark mode overrides for admin */
