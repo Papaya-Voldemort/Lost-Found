@@ -1,6 +1,6 @@
 /**
  * Admin panel module: handles moderation of pending items and management of all items.
- * Admin access is restricted to a hardcoded list of authorized emails.
+ * Admin access is restricted via Appwrite Auth labels.
  */
 
 import { account, databases, storage, Query } from './auth.js';
@@ -12,13 +12,8 @@ const DB_ID = 'traceback_db';
 const COLLECTION_ID = 'items';
 const BUCKET_ID = 'item_images';
 
-const ADMIN_EMAILS = [
-    'luke.c309@stu.nebo.edu',
-    'eli.n992@stu.nebo.edu',
-];
-
 export function isAdmin(user) {
-    return user && ADMIN_EMAILS.includes(user.email);
+    return user && user.labels && user.labels.includes('admin');
 }
 
 let pendingOffset = 0;

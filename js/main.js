@@ -730,6 +730,7 @@ initStrengthMeter('new-password', 'password-strength-account');
             document.documentElement.classList.add('is-admin');
             localStorage.setItem('isAdmin', 'true');
         } else {
+            document.documentElement.classList.remove('is-admin');
             localStorage.removeItem('isAdmin');
         }
     } catch (error) {
@@ -738,6 +739,7 @@ initStrengthMeter('new-password', 'password-strength-account');
         localStorage.removeItem('loggedIn');
         localStorage.removeItem('isAdmin');
         document.documentElement.classList.remove('logged-in');
+        document.documentElement.classList.remove('is-admin');
         if (window.location.pathname.endsWith('account') || window.location.pathname.endsWith('account.html')) {
             window.location.href = 'login';
         }

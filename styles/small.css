@@ -112,6 +112,8 @@
             height: 1.5rem;
         }
     }
+
+    #mobile-header {
         padding: 0 1rem;
         background-color: var(--color-light-gray);
     }

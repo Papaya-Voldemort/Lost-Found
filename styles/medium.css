@@ -161,4 +161,9 @@
         padding: 0.75rem;
     }
 
+    /* Show admin nav on desktop if is-admin */
+    html.is-admin .nav-admin {
+        display: block;
+    }
+
 }
