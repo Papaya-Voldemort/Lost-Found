@@ -98,6 +98,20 @@
         align-items: center;
         justify-content: space-between;
         gap: 0.75rem;
+    }
+
+    @media only screen and (max-width: 420px) {
+        nav a {
+            padding-left: 0.8rem;
+            padding-right: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .nav-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
         padding: 0 1rem;
         background-color: var(--color-light-gray);
     }
