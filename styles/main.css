@@ -52,8 +52,8 @@ html {
     --color-primary-dark: #326273;
     --color-primary-light: #7FD0E7;
 
-    /* --color-accent: #E39774; */
-    --color-accent: #8dcbd8; /* Remove maybe?*/
+    --color-accent-secondary: #E39774;
+    --color-accent: #8dcbd8;
 
     --color-black: #000;
     --color-white: #FFF;
@@ -432,7 +432,7 @@ section#impact-stats {
     padding: 4rem 2rem;
     margin-bottom: 2rem;
     text-align: center;
-    background-color: var(--color-primary-light);
+    background-color: var(--color-accent-secondary);
     color: #111111;
     clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%);
 }
@@ -450,9 +450,10 @@ section#impact-stats {
 
 .stat-number {
     display: block;
-    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    font-size: 5rem;
     font-weight: 700;
     font-family: var(--font-display);
+    color: black;
 }
 
 /* ==================== CTA Section ==================== */
@@ -2604,10 +2605,10 @@ html.dark-mode .nav-settings-btn:hover {
 }
 
 .stat-number {
-    font-size: 1.75rem;
+    font-size: 3rem;
     font-weight: 700;
-    color: var(--color-black);
     line-height: 1;
+    color: #EEEEEE;
 }
 
 .stat-label {
@@ -2727,7 +2728,8 @@ html.dark-mode .stat-card {
 }
 
 html.dark-mode .stat-number {
-    color: var(--color-primary-light);
+    color: #EEEEEE;
+    font-size: 3rem;
 }
 
 html.dark-mode .admin-tabs {
