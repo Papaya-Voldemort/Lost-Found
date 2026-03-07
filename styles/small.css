@@ -69,30 +69,6 @@
         fill: white;
     }
 
-    .nav-lost {
-        order: 1;
-    }
-
-    .nav-home {
-        order: 2;
-    }
-
-    .nav-found {
-        order: 3;
-    }
-
-    .nav-login {
-        order: 4;
-    }
-
-    .nav-account {
-        order: 4;
-    }
-
-    .nav-admin {
-        order: 5;
-    }
-
     #mobile-header {
         display: flex;
         align-items: center;
