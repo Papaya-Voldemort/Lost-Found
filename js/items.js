@@ -69,6 +69,7 @@ export async function handleItemSubmission(formId, itemType) {
             // 3. Gather Form Data
             const title = form.querySelector('#item-name').value;
             const category = form.querySelector('#category').value;
+            const categoryOther = form.querySelector('#category-other')?.value.trim() || '';
             
             if (category === 'none') {
                 throw new Error(t(`${itemType}.selectCategory`));
@@ -76,16 +77,25 @@ export async function handleItemSubmission(formId, itemType) {
 
             const dateInput = form.querySelector('input[type="date"]').value;
             const locationSelect = form.querySelector('#location').value;
-            const locationOther = form.querySelector('#location-other').value;
+            const locationOther = form.querySelector('#location-other')?.value.trim() || '';
             const description = form.querySelector('#description').value;
             const tagsHidden = form.querySelector('#tags-hidden').value;
 
+            if (category === 'other' && !categoryOther) {
+                throw new Error('Please describe the category.');
+            }
+
+            if (locationSelect === 'other' && !locationOther) {
+                throw new Error('Please describe the location.');
+            }
+
+            const finalCategory = category === 'other' ? categoryOther : category;
             const finalLocation = locationSelect === 'other' ? locationOther : locationSelect;
             const tagsArray = tagsHidden ? tagsHidden.split(',').map(t => t.trim()) : [];
             
             // Add category to tags for better searching
-            if (category && category !== 'none') {
-                tagsArray.push(category);
+            if (finalCategory && finalCategory !== 'none') {
+                tagsArray.push(finalCategory);
             }
 
             // 4. Create Document with explicit permissions for the owner

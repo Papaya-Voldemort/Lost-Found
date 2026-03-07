@@ -130,6 +130,11 @@
                         <option value="other">Other</option>
                     </select>
 
+                    <div id="category-other-label" class="full-width conditional-field" aria-hidden="true">
+                        <label for="category-other">Describe Category</label>
+                        <input type="text" id="category-other" name="category-other" placeholder="e.g. Lunchbox, sports gear, art supplies" disabled>
+                    </div>
+
                     <label for="date-lost">Date Lost</label>
                     <input type="date" id="date-lost" name="date" required>
 
@@ -148,9 +153,9 @@
                     </select>
 
                     <!-- Hidden until Other is selected -->
-                    <div id="location-other-label" class="full-width" style="display:none;">
+                    <div id="location-other-label" class="full-width conditional-field" aria-hidden="true">
                         <label for="location-other">Describe Location</label>
-                        <input type="text" id="location-other" name="location-other" placeholder="e.g. Mr. Anderson's Room, near the water fountain">
+                        <input type="text" id="location-other" name="location-other" placeholder="e.g. Mr. Anderson's Room, near the water fountain" disabled>
                     </div>
 
                     <div class="full-width" id="tags-container">

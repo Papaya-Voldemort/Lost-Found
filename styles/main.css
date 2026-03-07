@@ -453,7 +453,7 @@ section#impact-stats {
     font-size: 5rem;
     font-weight: 700;
     font-family: var(--font-display);
-    color: black;
+    color: black !important;
 }
 
 /* ==================== CTA Section ==================== */
@@ -780,16 +780,42 @@ input:not([required]).touched:invalid {
     outline: none;
 }
 
-#location-other-label {
+.conditional-field {
     margin: 0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-0.35rem);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        max-height 0.24s ease,
+        opacity 0.2s ease,
+        transform 0.24s ease,
+        visibility 0s linear 0.24s;
 }
 
-#location-other-label input {
+.conditional-field.is-visible {
+    max-height: 6.5rem;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+        max-height 0.24s ease,
+        opacity 0.2s ease,
+        transform 0.24s ease,
+        visibility 0s;
+}
+
+#location-other-label input,
+#category-other-label input {
     margin-left: 0;
 }
 
 .image-upload-section,
 #tags-container,
+#category-other-label,
 #location-other-label,
 .search-actions,
 .secondary-search-items {

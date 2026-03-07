@@ -342,15 +342,47 @@ document.addEventListener('DOMContentLoaded', () => {
    OTHER DROP DOWN
    ============================================ */
 
+function toggleConditionalField(selectEl, fieldId) {
+    const wrapper = document.getElementById(`${fieldId}-label`);
+    const input = document.getElementById(fieldId);
+
+    if (!selectEl || !wrapper || !input) return;
+
+    const isVisible = selectEl.value === 'other';
+    wrapper.classList.toggle('is-visible', isVisible);
+    wrapper.setAttribute('aria-hidden', String(!isVisible));
+    input.disabled = !isVisible;
+    input.required = isVisible;
+
+    if (!isVisible) {
+        input.value = '';
+    }
+}
+
 const locationSelect = document.getElementById('location');
 if (locationSelect) {
+    toggleConditionalField(locationSelect, 'location-other');
     locationSelect.addEventListener('change', function () {
-        const otherLabel = document.getElementById('location-other-label');
-        if (otherLabel) {
-            otherLabel.style.display = this.value === 'other' ? 'flex' : 'none';
-        }
-    }); 
+        toggleConditionalField(this, 'location-other');
+    });
 }
+
+const categorySelect = document.getElementById('category');
+if (categorySelect) {
+    toggleConditionalField(categorySelect, 'category-other');
+    categorySelect.addEventListener('change', function () {
+        toggleConditionalField(this, 'category-other');
+    });
+}
+
+document.querySelectorAll('.item-form').forEach((form) => {
+    form.addEventListener('reset', () => {
+        requestAnimationFrame(() => {
+            if (locationSelect) toggleConditionalField(locationSelect, 'location-other');
+            if (categorySelect) toggleConditionalField(categorySelect, 'category-other');
+        });
+    });
+});
 
 /* ============================================
    TAGS ON FORM
