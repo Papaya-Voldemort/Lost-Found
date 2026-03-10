@@ -62,7 +62,7 @@ export async function handleItemSubmission(formId, itemType) {
                     ]
                 );
                 imageId = uploadResponse.$id;
-            } else {
+            } else if (itemType === 'found') {
                 throw new Error(t('common.imageRequired'));
             }
 
@@ -99,23 +99,28 @@ export async function handleItemSubmission(formId, itemType) {
             }
 
             // 4. Create Document with explicit permissions for the owner
+            // Build document data; omit imageId if null to satisfy schema
+            const docData = {
+                type: itemType,
+                title: title,
+                description: description,
+                location: finalLocation,
+                date: new Date(dateInput).toISOString(),
+                tags: tagsArray,
+                userId: user.$id,
+                userName: user.name || '',
+                userEmail: user.email || '',
+                status: 'pending'
+            };
+            if (imageId) {
+                docData.imageId = imageId;
+            }
+
             await databases.createDocument(
                 DB_ID,
                 COLLECTION_ID,
                 ID.unique(),
-                {
-                    type: itemType,
-                    title: title,
-                    description: description,
-                    location: finalLocation,
-                    date: new Date(dateInput).toISOString(),
-                    tags: tagsArray,
-                    imageId: imageId,
-                    userId: user.$id,
-                    userName: user.name || '',
-                    userEmail: user.email || '',
-                    status: 'pending'
-                },
+                docData,
                 [
                     Permission.read(Role.any()),
                     Permission.update(Role.user(user.$id)),

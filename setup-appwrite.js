@@ -76,7 +76,7 @@ async function setup() {
         { key: 'location', type: 'string', size: 256, required: true },
         { key: 'date', type: 'datetime', required: true },
         { key: 'tags', type: 'string', size: 36, array: true, required: false }, // Store as array of strings
-        { key: 'imageId', type: 'string', size: 36, required: true },
+        { key: 'imageId', type: 'string', size: 36, required: false },
         { key: 'userId', type: 'string', size: 36, required: true },
         { key: 'status', type: 'string', size: 16, required: false, default: 'active' },
         { key: 'userName', type: 'string', size: 128, required: false },
@@ -97,6 +97,17 @@ async function setup() {
         }
         // Give time for backend to index or handle consecutive calls
         await new Promise(r => setTimeout(r, 1000));
+    }
+
+    // If the imageId attribute already existed and was previously required, ensure it is now optional
+    if (currentAttrs.includes('imageId')) {
+        try {
+            console.log('- Ensuring imageId attribute is optional...');
+            await databases.updateStringAttribute(DB_ID, COLLECTION_ID, 'imageId', 36, false);
+            console.log('  - imageId attribute updated to not required.');
+        } catch (e) {
+            console.warn('  - Failed to update imageId attribute requirement (it may already be optional):', e.message || e);
+        }
     }
 
     // 4. Bucket Creation

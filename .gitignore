@@ -7,3 +7,7 @@ node_modules/
 plans/
 
 docs/
+load-tests/results/*
+!load-tests/results/.gitkeep
+load-tests/**/*.html
+load-tests/**/*.csv

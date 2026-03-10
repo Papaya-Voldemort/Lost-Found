@@ -5,10 +5,11 @@
   "main": "setup-appwrite.js",
   "type": "module",
   "scripts": {
-    "setup": "node setup-appwrite.js"
+    "setup": "node setup-appwrite.js",
+    "loadtest:k6": "k6 run load-tests/k6/traceback-recovery.js"
   },
   "dependencies": {
-    "node-appwrite": "^14.1.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "node-appwrite": "^14.1.0"
   }
 }
