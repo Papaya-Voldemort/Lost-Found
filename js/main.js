@@ -13,7 +13,7 @@ import { account, ID } from './auth.js';
 import { applyTranslations, getArray, t } from './i18n.js';
 import { showToast } from './toast.js';
 import { handleItemSubmission, fetchItems, setupSearch, setupLoadMore, openItemById, setupClaimForm } from './items.js';
-import { isAdmin } from './admin.js';
+import { hasAdminAccess } from './admin.js';
 
 let Cropper = null;
 let cropperInstance = null;
@@ -745,7 +745,7 @@ initStrengthMeter('new-password', 'password-strength-account');
         }
 
         // Redirect non-admin users away from admin page
-        if (isAdminPage && !isAdmin(user)) {
+        if (isAdminPage && !hasAdminAccess(user)) {
             window.location.href = '/';
             return;
         }
@@ -758,7 +758,7 @@ initStrengthMeter('new-password', 'password-strength-account');
         }
 
         // Admin nav link is pre-rendered in HTML, revealed via CSS html.is-admin .nav-admin
-        if (isAdmin(user)) {
+        if (hasAdminAccess(user)) {
             document.documentElement.classList.add('is-admin');
             localStorage.setItem('isAdmin', 'true');
         } else {

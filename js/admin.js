@@ -1,6 +1,7 @@
 /**
  * Admin panel module: handles moderation of pending items and management of all items.
- * Admin access is restricted via Appwrite Auth labels.
+ * Admin access is normally restricted via Appwrite Auth labels, but can be
+ * temporarily opened to all verified users for judging/testing.
  */
 
 import { account, databases, storage, Query } from './auth.js';
@@ -11,9 +12,14 @@ import { showConfirm } from './confirm.js';
 const DB_ID = 'traceback_db';
 const COLLECTION_ID = 'items';
 const BUCKET_ID = 'item_images';
+export const ADMIN_TEST_MODE = true;
 
 export function isAdmin(user) {
     return user && user.labels && user.labels.includes('admin');
+}
+
+export function hasAdminAccess(user) {
+    return Boolean(user && user.emailVerification && (ADMIN_TEST_MODE || isAdmin(user)));
 }
 
 let pendingOffset = 0;
@@ -23,13 +29,14 @@ const PAGE_LIMIT = 12;
 async function initAdmin() {
     try {
         const user = await account.get();
-        if (!user.emailVerification) {
-            window.location.href = '/login';
+        if (!hasAdminAccess(user)) {
+            window.location.href = user.emailVerification ? '/' : '/login';
             return;
         }
-        if (!isAdmin(user)) {
-            window.location.href = '/';
-            return;
+
+        const accessNote = document.getElementById('admin-access-note');
+        if (accessNote) {
+            accessNote.hidden = !ADMIN_TEST_MODE;
         }
 
         document.documentElement.classList.add('is-admin');
